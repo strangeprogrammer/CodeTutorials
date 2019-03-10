@@ -1,0 +1,15 @@
+	# Stuff I added for the 'Django' app
+	
+	# location of wsgi script in project
+	WSGIScriptAlias /CodeTutorials /var/www/html/CodeTutorials/djangobox/src/CodeTutorials/wsgi.py
+	# location of python virtual environment
+	WSGIPythonHome /var/www/html/CodeTutorials/djangobox
+	# location of project
+	WSGIPythonPath /var/www/html/CodeTutorials/djangobox/src
+	
+	# directory containing wsgi script
+	<Directory /var/www/html/CodeTutorials/djangobox/src/CodeTutorials>
+		<Files wsgi.py>
+			Require all granted
+		</Files>
+	</Directory>
