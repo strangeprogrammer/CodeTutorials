@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     
     # Project specific
     
-    'spikes'
+    'spikes',
+    'editor',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-        	os.path.join(BASE_DIR, 'templates')
+        	os.path.join(BASE_DIR, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -124,3 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# The following is where 'collectstatic' puts files for the server to serve
+
+STATIC_ROOT = '/var/www/html/CodeTutorials/djangobox/src/static'

@@ -22,9 +22,11 @@ The following command can then be used to exit the virtual environment:
 
 deactivate
 
-# INFORMATION ON APACHE USAGE
+# INFORMATION ON APACHE AND PRODUCTION LEVEL USAGE
 
 The file 'WSGI_Config.txt' contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming it's located at '/var/www/html/CodeTutorials'). You should be able to just start your apache server afterward and navigate to the relevant URLs of your choice.
+
+The file 'djangobox/src/CodeTutorials/urls.py' contains information about static URLs that MUST be heeded if putting the server into a production environment. If you're just developing, however, that shouldn't be a problem. Note that the command 'collectstatic', which is used to copy static files to the appropriate location before usage, will only work on apps listed under 'INSTALLED_APPS' in 'djangobox/src/CodeTutorials/settings.py'.
 
 # ADDITIONAL INFORMATION
 
