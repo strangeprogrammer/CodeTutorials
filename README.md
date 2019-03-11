@@ -24,4 +24,10 @@ deactivate
 
 # INFORMATION ON APACHE USAGE
 
-The file 'WSGI_Config.txt' contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming it's located at '/var/www/html/CodeTutorials'). You should be able to just start your apache server afterward and navigate to the relevant URLs of your choice.  
+The file 'WSGI_Config.txt' contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming it's located at '/var/www/html/CodeTutorials'). You should be able to just start your apache server afterward and navigate to the relevant URLs of your choice.
+
+# ADDITIONAL INFORMATION
+
+Whenever a model changes, run './manage.py makemigrations' and then './manage.py migrate'.
+If necessary, remove the database with 'rm ./db.squlite3'.
+To create a super user to help manage the server and model contents, run './manage.py createsuperuser', and you will be allowed access to 'localhost:8000/admin/' (though the port will be different if you're running the built-in server (8000) or apache (80)).
