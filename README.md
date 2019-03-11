@@ -22,6 +22,21 @@ The following command can then be used to exit the virtual environment:
 
 deactivate
 
+# SETTING UP THE SERVER
+
+Run:
+
+cd /var/www/html/CodeTutorials/djangobox
+source ./bin/activate
+cd ./src
+./manage.py makemigrations
+./manage.py migrate
+./manage.py collectstatic <<<"yes"
+
+Then you can run:
+
+./manage.py runserver
+
 # INFORMATION ON APACHE AND PRODUCTION LEVEL USAGE
 
 The file 'WSGI_Config.txt' contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming it's located at '/var/www/html/CodeTutorials'). You should be able to just start your apache server afterward and navigate to the relevant URLs of your choice.
@@ -30,6 +45,5 @@ The file 'djangobox/src/CodeTutorials/urls.py' contains information about static
 
 # ADDITIONAL INFORMATION
 
-Whenever a model changes, run './manage.py makemigrations' and then './manage.py migrate'.
 If necessary, remove the database with 'rm ./db.squlite3'.
 To create a super user to help manage the server and model contents, run './manage.py createsuperuser', and you will be allowed access to 'localhost:8000/admin/' (though the port will be different if you're running the built-in server (8000) or apache (80)).
