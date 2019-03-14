@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		{% url 'requestSpike' as hereURL %}
+		<form action='{{ hereURL }}' method='POST'>{% csrf_token %}
+			POST: <input type='text' name='key' value=''/>
+			<input type='submit' value='save'/>
+		</form>
+		<form action='{{ hereURL }}' method='GET'>{% csrf_token %}
+			GET: <input type='text' name='key' value=''/>
+			<input type='submit' value='save'/>
+		</form>
+		<p>Method: {{ method }}</p>
+		<p>Value: {{ last }}</p>
+		
+		{% comment %}
+			Show all cookie values from last page request
+		{% endcomment %}
+		<p>Cookie: {{ cookie }} </p>
+		{% for key,value in cookies.items %}
+			<p>{{ key }}: {{ value }}</p>
+		{% endfor %}
+	</body>
+</html>
