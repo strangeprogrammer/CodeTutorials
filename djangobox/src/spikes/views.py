@@ -10,8 +10,10 @@ def requestSpike(request, *args, **kwargs):
 	context = { 'method': request.method or 'N/A', 'last': 'N/A', 'cookies': request.COOKIES }
 	
 	if request.method == 'POST':
+		print(request.POST)
 		context['last'] = request.POST.get('key', default=None) or 'N/A'
 	else:
+		print(request.GET)
 		context['last'] = request.GET.get('key', default=None) or 'N/A'
 	
 	return render(request, 'requestSpike.html', context)
