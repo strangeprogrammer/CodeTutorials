@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     
     'spikes',
     'editor',
+    'docker'
 ]
 
 MIDDLEWARE = [
