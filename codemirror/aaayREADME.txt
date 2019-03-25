@@ -1,4 +1,4 @@
-WHAT EVERYTHING I ADDED CURRENTLY DOES/DOESNT DO: (dir:compileBox and compileBox.js)
+WHAT EVERYTHING I ADDED CURRENTLY DOES/DOESNT DO: (dir:compileBox and compileBox.js, runit.sh)
 
 - When runIt.php us displayed on webpage
 
