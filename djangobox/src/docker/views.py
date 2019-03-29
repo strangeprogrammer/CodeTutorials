@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from django.http import HttpResponse
 from docker.models import SessionNum
+import subprocess
 import os
 import shutil
 
@@ -12,6 +13,7 @@ def writeOut(string, path):
 
 # TODO: Implement me
 def runContainer(path):
+	# subprocess.call()
 	pass
 
 def readIn(path):
@@ -44,22 +46,25 @@ def runPOST(request, *args, **kwargs):
 		STDIN = request.POST.get('STDIN', default = None)
 		
 		if code and STDIN:
-			with SessionWrapper() as UUID: # Automatically handle the UUID's creation and deletion
-				path = UUID.__str__()
-				try:
-					os.mkdir(path)
-					
+			try:
+				with SessionWrapper() as UUID: # Automatically handle the UUID's creation and deletion
+					path = os.path.join(os.path.abspath("."), "docker_wrapper", UUID.__str__())
 					try:
-						writeOut(code, os.path.join(path, 'code'))
-						writeOut(STDIN, os.path.join(path, 'STDIN'))
-						runContainer(path)
-						response = readIn(os.path.join(path,'STDOUT'))
+						os.mkdir(path)
+						
+						try:
+							writeOut(code, os.path.join(path, 'code'))
+							writeOut(STDIN, os.path.join(path, 'STDIN'))
+							runContainer(path)
+							response = readIn(os.path.join(path,'STDOUT'))
+						except Exception:
+							pass
+						
+						shutil.rmtree(path)
 					except Exception:
+						# It's possible to have a dangling directory if 'shutil.rmtree' fails, though the correct output will still be displayed on the screen
 						pass
-					
-					shutil.rmtree(path)
-				except Exception:
-					# It's possible to have a dangling directory if 'shutil.rmtree' fails, though the correct output will still be displayed on the screen
-					pass
+			except Exception:
+				pass
 	
 	return HttpResponse(response, content_type = 'text/plain')

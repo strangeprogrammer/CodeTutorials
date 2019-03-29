@@ -20,6 +20,7 @@ from spikes.views import (
 	uptest,
 	editorPush,
 	requestSpike,
+	pathSpike,
 )
 
 urlpatterns = [
@@ -27,6 +28,7 @@ urlpatterns = [
 	path('spikes/uptest/', uptest, name='Django is up and running!'),
 	path('spikes/editorPush/', editorPush),
 	path('spikes/requestSpike/', requestSpike, name='requestSpike'),
+	path('spikes/pathSpike/', pathSpike, name='pathSpike'),
 ]
 
 # When not putting the project into production, leave the following 3 lines uncommented (more information at the URL given afterward)
