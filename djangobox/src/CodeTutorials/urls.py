@@ -14,7 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from django.views.generic.base import TemplateView
+# for developement
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from spikes.views import (
 	uptest,
@@ -22,11 +25,20 @@ from spikes.views import (
 	requestSpike,
 )
 
+from pages.views import (
+	index,
+	codecorral,
+)
+
 urlpatterns = [
+	path('', include('pages.urls')),
 	path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 	path('spikes/uptest/', uptest, name='Django is up and running!'),
 	path('spikes/editorPush/', editorPush),
 	path('spikes/requestSpike/', requestSpike, name='requestSpike'),
+	# path(''),
 ]
 
 # When not putting the project into production, leave the following 3 lines uncommented (more information at the URL given afterward)
@@ -34,6 +46,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/#serving-static-files-during-development
-
+urlpatterns += staticfiles_urlpatterns()
 # When putting the project into production, modify apache's configuration file to allow for static access to 'djangobox/src/static' using the information provided at the following URL (note, the relevant modifications are provided in <project_root>/WSGI_Config.txt):
 # https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/modwsgi/#serving-files

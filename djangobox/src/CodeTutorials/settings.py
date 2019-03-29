@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'accounts.apps.AccountsConfig',
     # Project specific
-    
+    'bootstrap3',
+    'pages',
     'spikes',
     'editor',
     'docker'
@@ -127,6 +128,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    # os.path.join(BASE_DIR, '../pages/style.css'),
+    os.path.join(BASE_DIR, "static"),
+]
+
 # The following is where 'collectstatic' puts files for the server to serve
 
 STATIC_ROOT = '/var/www/html/CodeTutorials/djangobox/src/static'
+
+LOGIN_REDIRECT_URL = 'codecorral'
+LOGOUT_REDIRECT_URL = 'index'
