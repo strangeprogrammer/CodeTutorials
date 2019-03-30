@@ -1,5 +1,6 @@
 #!/bin/bash
 
-IMAGENAME="testcomp"
+FOLDER=$1
+IMAGENAME=$2
 
-exit $(docker run --rm -v $1:/home/guest $IMAGENAME)
+docker run --rm -v $FOLDER:/home/guest $IMAGENAME

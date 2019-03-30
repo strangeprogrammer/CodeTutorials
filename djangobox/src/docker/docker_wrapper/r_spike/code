@@ -1,0 +1,3 @@
+print("Input a line of text: ")
+input <- readLines(n = 1)
+print(paste("You input: ", input))

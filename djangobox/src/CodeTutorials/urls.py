@@ -21,14 +21,25 @@ from spikes.views import (
 	editorPush,
 	requestSpike,
 	pathSpike,
+	formPush,
+	codePush,
+)
+
+from docker.views import (
+	runPOST,
 )
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
-	path('spikes/uptest/', uptest, name='Django is up and running!'),
+	path('spikes/uptest/', uptest, name = 'Django is up and running!'),
 	path('spikes/editorPush/', editorPush),
-	path('spikes/requestSpike/', requestSpike, name='requestSpike'),
-	path('spikes/pathSpike/', pathSpike, name='pathSpike'),
+	path('spikes/requestSpike/', requestSpike, name = 'requestSpike'),
+	path('spikes/pathSpike/', pathSpike, name = 'pathSpike'),
+	path('tools/formPush/', formPush, name = 'formPush'),
+	
+	# These next 2 are used so far to test that the website can perform remote action
+	path('tools/codePush/', codePush, name = 'codePush'),
+	path('docker/runPOST/', runPOST, name = 'runPOST'),
 ]
 
 # When not putting the project into production, leave the following 3 lines uncommented (more information at the URL given afterward)

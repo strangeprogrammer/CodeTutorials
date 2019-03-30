@@ -22,4 +22,10 @@ def requestSpike(request, *args, **kwargs):
 
 def pathSpike(request, *args, **kwargs):
 	print(os.path.abspath("."))
-	return HttpResponse("<h1>Check the console!</h1>", content_type = 'text/plain')
+	return HttpResponse("Check the console!", content_type = 'text/plain')
+
+def formPush(request, *args, **kwargs):
+	return render(request, "formPush.html", {})
+
+def codePush(request, *args, **kwargs):
+	return render(request, "codePush.html", {})
