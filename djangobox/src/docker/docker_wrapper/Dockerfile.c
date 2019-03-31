@@ -1,8 +1,8 @@
 FROM gcc:8.3.0
-RUN mkdir /home/guest
-RUN useradd -d /home/guest guest
-RUN chown -R guest:guest /home/guest
-USER guest
+ARG uid
+ARG gid
+RUN addgroup --disabled-password --gid $gid guest && adduser --disabled-password --home /home/guest --gecos "" --gid $gid --uid $uid guest
 WORKDIR /home/guest
 VOLUME /home/guest
+USER guest:guest
 CMD gcc -std=c99 -Wpedantic -Wall -o ./program -x c ./code && ./program <./STDIN >./STDOUT

@@ -51,9 +51,11 @@ def runPOST(request, *args, **kwargs):
 	if request.method == 'POST':
 		code = request.POST.get('code', default = None)
 		STDIN = request.POST.get('STDIN', default = None)
+		if STDIN == None:
+			STDIN = ""
 		mode = request.POST.get('mode', default = None)
 		
-		if code and STDIN:
+		if code and STDIN and mode:
 			try:
 				with SessionWrapper() as UUID: # Automatically handle the UUID's creation and deletion
 					path = os.path.join(BASE_DIR, "docker", "docker_wrapper", UUID.__str__())

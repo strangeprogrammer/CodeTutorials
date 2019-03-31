@@ -3,4 +3,7 @@
 FOLDER=$1
 IMAGENAME=$2
 
-docker run --rm -v $FOLDER:/home/guest $IMAGENAME
+#Log container information
+#echo $FOLDER $IMAGENAME >>./containerLog.txt
+
+docker run --rm -u guest:guest -v $FOLDER:/home/guest:rw $IMAGENAME

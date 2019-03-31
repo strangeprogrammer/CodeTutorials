@@ -1,8 +1,9 @@
 FROM r-base:3.5.3
-RUN mkdir /home/guest
-RUN useradd -d /home/guest guest
-RUN chown -R guest:guest /home/guest
-USER guest
+ARG uid
+ARG gid
+RUN deluser --remove-all-files docker
+RUN addgroup --disabled-password --gid $gid guest && adduser --disabled-password --home /home/guest --gecos "" --gid $gid --uid $uid guest
 WORKDIR /home/guest
 VOLUME /home/guest
-CMD R --vanilla -f ./code <./STDIN >./STDOUT
+USER guest:guest
+CMD R --vanilla --slave -f ./code <./STDIN >./STDOUT

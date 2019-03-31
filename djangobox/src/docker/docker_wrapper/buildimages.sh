@@ -1,13 +1,9 @@
 #!/bin/bash
 
 buildimages() {
-	docker build -t gccbox -f ./Dockerfile.c .
-	docker build -t rbox -f ./Dockerfile.R .
-	docker build -t pythonbox -f ./Dockerfile.py .
+	docker build --build-arg uid=$1 --build-arg gid=$2 -t gccbox -f ./Dockerfile.c .
+	docker build --build-arg uid=$1 --build-arg gid=$2 -t rbox -f ./Dockerfile.R .
+	docker build --build-arg uid=$1 --build-arg gid=$2 -t pythonbox -f ./Dockerfile.py .
 }
 
-#Silent version
-buildimages &>/dev/null
-
-#Non-silent version (for debugging if required)
-#buildimages
+buildimages $1 $2
