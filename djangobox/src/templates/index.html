@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+
+
+
+{% block content %}
+{% if user.is_authenticated %}
+
+<h1 class="title">Code Tutorials</h1>
+{% else %}
+  <p style="color:white">You are not logged in  <a href="{% url 'login' %}">login</a></p>
+   
+{% endif %}
+{% endblock %}

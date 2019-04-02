@@ -1,0 +1,23 @@
+{% load static %}
+
+<nav class="safe navbar navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header col-sm-8">
+			<img style="width: 50px; height: 50px; "alt="logo" src="{% static 'img/Western_Michigan_University_seal.png' %}"/>
+		</div>
+	<ul class="nav navbar-nav col-sm-4">
+	    <li class="header-text"><a>Sign in:</a></li>
+	    {% if user.is_authenticated %}
+	    <li><a href="{% url 'logout' %}">logout</a></li>
+	    		<!-- <li><a href="/home/" class="header-link">Home</a></li> -->
+		<li><a href="/index/" class="header-link">Index</a></li>
+		<li><a href="/main/" class="header-link">Main</a></li>
+		<li><a href="/codecorral/" class="header-link">Learn</a></li>
+	    {% else %}
+	    <li><a href="/accounts/login/" class="header-link">WMU login</a></li>
+		{% endif %}
+
+
+	</ul>
+	</div>
+</nav>

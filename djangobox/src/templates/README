@@ -1,0 +1,11 @@
+base.html - Standard page layout for webiste
+
+navbar.html - Navbar layout for page(s)
+
+index.html/home.html - landing page
+
+main.html - landing page that will have options on language and assignments
+
+codecorral.html(codetutorial) - Page that will house editor
+
+registration/ - templates for logging in and resetting password

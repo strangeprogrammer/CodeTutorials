@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+
+<h1 class="title">Main Page</h1>
+<p>Test line</p>
+
+
+{% else %}
+  <p style="color:white">You are not logged in  <a href="{% url 'login' %}">login</a></p>
+{% endif %}
+{% endblock %}

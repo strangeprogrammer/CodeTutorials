@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!      
+  <p>Let the fun begin!</p>
+  <p><a href="{% url 'logout' %}">logout</a></p>
+  <p><a href="{% url 'password_reset' %}">reset password</a></p>
+	
+	{% block editor %}
+		text
+	{% endblock %}
+	{% block resuts %}
+		text
+	{% endblock %}
+
+
+{% else %}
+  <p style="color:white">You are not logged in  <a href="{% url 'login' %}">login</a></p>
+{% endif %}
+{% endblock %}

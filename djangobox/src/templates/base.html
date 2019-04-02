@@ -1,0 +1,71 @@
+{% load static %}
+<!-- {# Load the tag library #} -->
+{% load bootstrap3 %}
+
+<!-- {# Load CSS and JavaScript #} -->
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!-- {# Display django.contrib.messages as Bootstrap alerts #} -->
+{% bootstrap_messages %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Code Corral</title>
+	<link rel="shortcut icon" href="{% static 'img/Western_Michigan_University_seal.png' %}">
+</head>
+
+
+ <style>
+.bg{
+  background: url('{% static 'img/s25.png' %}') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: black;
+
+}
+
+.title {
+  margin: 0;
+  color: #935f35;
+  text-shadow: 1px 1px 2px white;
+  font-size: 500%;
+  text-align: center;
+  opacity: 1;
+}
+
+.transBG{
+  margin: 5% 35% 2% 35%;
+  padding: 2%;
+  background-color: #ffffff;
+  border: 1% solid black;
+  opacity: 0.9;
+}
+
+.title-page{
+
+}
+
+</style>
+
+
+
+<body class="bg">
+	<!-- <h1>Navbar here</h1> -->
+	{% include 'navbar.html' %}	
+
+	{% block content %}
+		text
+	{% endblock %}
+
+	{% block editor %}
+		text
+	{% endblock %}
+	{% block resuts %}
+		text
+	{% endblock %}
+</body>
+</html>
