@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
 
-{% block title %}Sign Up{% endblock %}
-
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
+  <h2 class="title">Sign up</h2>
+  <form class="content transBG" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Sign up</button>
+    <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4 text-center"> 
+    <button type="submit" class="btn btn-primary">Sign up</button>
+	</div>
+	<div class="col-md-4"></div>
+	</div>
+
+	<p style="text-align: center;">Already have an account?<a href="/accounts/login/">Login</a></p>
+
+
   </form>
 {% endblock %}

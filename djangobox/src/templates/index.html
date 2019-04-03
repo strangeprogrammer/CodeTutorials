@@ -6,8 +6,9 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+<h3 class="title">New Page Template</h3>
+<div class="transBG" style="text-align: center;">Content goes here</div>
 
-<h1 class="title">Code Tutorials</h1>
 {% else %}
   <p style="color:white">You are not logged in  <a href="{% url 'login' %}">login</a></p>
    

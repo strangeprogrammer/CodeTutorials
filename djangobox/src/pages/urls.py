@@ -11,5 +11,5 @@ urlpatterns = [
 	path('main/', views.main, name='main'),
 	path('index/', views.index, name='index'),
 	path('codecorral/',views.codecorral, name='codecorral'),
-
+	path('signup/', views.signup, name='signup'),
 ]

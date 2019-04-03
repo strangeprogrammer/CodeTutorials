@@ -13,3 +13,6 @@ def home(request, *args, **kwargs):
 
 def main(request, *args, **kwargs):
 	return render(request, 'main.html', {})
+
+def signup(request, *args, **kwargs):
+	return render(request, 'signup.html', {})

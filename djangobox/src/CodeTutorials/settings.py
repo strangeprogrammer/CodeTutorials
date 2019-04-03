@@ -137,5 +137,5 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = '/var/www/html/CodeTutorials/djangobox/src/static'
 
-LOGIN_REDIRECT_URL = 'codecorral'
-LOGOUT_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'main'
+LOGOUT_REDIRECT_URL = '/accounts/login/'

@@ -1,3 +1,7 @@
+added signup path to pages/static/views
+added signup render to pages/static/views
+added page styling to templates/registration *.html
+
 base.html - Standard page layout for webiste
 
 navbar.html - Navbar layout for page(s)

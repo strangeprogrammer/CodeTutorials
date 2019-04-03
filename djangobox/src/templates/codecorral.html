@@ -3,20 +3,25 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!      
-  <p>Let the fun begin!</p>
-  <p><a href="{% url 'logout' %}">logout</a></p>
-  <p><a href="{% url 'password_reset' %}">reset password</a></p>
+<h1 class="title">Code Tutorials</h1>
+
+<div class="transBG">
 	
+	<div class="codemirror">
+		<p>Code Mirror Goes Here</p>
+	</div>
 	{% block editor %}
-		text
+		<!-- text -->
 	{% endblock %}
 	{% block resuts %}
-		text
+		<!-- text -->
 	{% endblock %}
 
 
 {% else %}
   <p style="color:white">You are not logged in  <a href="{% url 'login' %}">login</a></p>
 {% endif %}
+
+</div>
+
 {% endblock %}
