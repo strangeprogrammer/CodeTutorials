@@ -22,7 +22,10 @@ from spikes.views import (
 	requestSpike,
 	pathSpike,
 	formPush,
-	codePush,
+	codeDialog,
+	
+	#Deprecated
+	#codePush,
 )
 
 from docker.views import (
@@ -35,11 +38,12 @@ urlpatterns = [
 	path('spikes/editorPush/', editorPush),
 	path('spikes/requestSpike/', requestSpike, name = 'requestSpike'),
 	path('spikes/pathSpike/', pathSpike, name = 'pathSpike'),
-	path('tools/formPush/', formPush, name = 'formPush'),
-	
-	# These next 2 are used so far to test that the website can perform remote action
-	path('tools/codePush/', codePush, name = 'codePush'),
+	path('spikes/formPush/', formPush, name = 'formPush'),
+	path('spikes/codeDialog/', codeDialog, name = 'codeDialog'),
 	path('docker/runPOST/', runPOST, name = 'runPOST'),
+	
+	#Deprecated
+	#path('spikes/codePush/', codePush, name = 'codePush'),
 ]
 
 # When not putting the project into production, leave the following 3 lines uncommented (more information at the URL given afterward)

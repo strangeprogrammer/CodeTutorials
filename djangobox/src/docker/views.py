@@ -1,6 +1,5 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse
 from docker.models import SessionNum
 from CodeTutorials.settings import BASE_DIR
 import subprocess
@@ -24,10 +23,13 @@ def runContainer(path, mode):
 	return subprocess.call([os.path.join(BASE_DIR, 'docker', 'docker_wrapper', 'runContainer.sh'), path, box])
 
 def readIn(path):
-	with open(path, 'r') as f:
-		retval = f.read() # Read everything
-		f.close()
-		return retval
+	try:
+		with open(path, 'r') as f:
+			retval = f.read() # Read everything
+			f.close()
+			return retval
+	except Exception:
+		return ''
 
 class SessionWrapper:
 	def __init__(self):
@@ -46,7 +48,9 @@ class SessionWrapper:
 		return self.subject.num.__str__()
 
 def runPOST(request, *args, **kwargs):
-	response = "Couldn't run code properly..."
+	STDOUT = ""
+	STDERR = "Couldn't run code properly..."
+	retval = "N/A"
 	
 	if request.method == 'POST':
 		code = request.POST.get('code', default = None)
@@ -59,22 +63,18 @@ def runPOST(request, *args, **kwargs):
 			try:
 				with SessionWrapper() as UUID: # Automatically handle the UUID's creation and deletion
 					path = os.path.join(BASE_DIR, "docker", "docker_wrapper", UUID.__str__())
-					try:
-						os.mkdir(path)
-						
-						try:
-							writeOut(code, os.path.join(path, 'code'))
-							writeOut(STDIN, os.path.join(path, 'STDIN'))
-							runContainer(path, mode) # This function checks 'mode' on its own
-							response = readIn(os.path.join(path,'STDOUT'))
-						except Exception:
-							pass
-						
-						shutil.rmtree(path)
-					except Exception:
-						# It's possible to have a dangling directory if 'shutil.rmtree' fails, though the correct output will still be displayed on the screen
-						pass
-			except Exception:
+					
+					os.mkdir(path)
+					
+					writeOut(code, os.path.join(path, 'code'))
+					writeOut(STDIN, os.path.join(path, 'STDIN'))
+					retval = runContainer(path, mode) # This function checks 'mode' on its own
+					STDOUT = readIn(os.path.join(path,'STDOUT'))
+					STDERR = readIn(os.path.join(path,'STDERR'))
+			except Exception as e:
+				print(e)
 				pass
+			finally:
+				shutil.rmtree(path) # It's possible to have a dangling directory if 'shutil.rmtree' fails, though the correct output will still be displayed on the screen
 	
-	return HttpResponse(response, content_type = 'text/plain')
+	return render(request, 'runPOST.html', {"STDOUT":STDOUT, "STDERR":STDERR, "retval":retval})
