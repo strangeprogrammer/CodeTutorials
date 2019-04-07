@@ -6,4 +6,4 @@ RUN addgroup --disabled-password --gid $gid guest && adduser --disabled-password
 WORKDIR /home/guest
 VOLUME /home/guest
 USER guest:guest
-CMD R --vanilla --slave -f ./code <./STDIN >./STDOUT
+CMD R --vanilla --slave -f ./code 0<./STDIN 1>./STDOUT 2>./STDERR; echo -n $? 1>./retval

@@ -5,4 +5,4 @@ RUN addgroup --disabled-password --gid $gid guest && adduser --disabled-password
 WORKDIR /home/guest
 VOLUME /home/guest
 USER guest:guest
-CMD gcc -std=c99 -Wpedantic -Wall -o ./program -x c ./code && ./program <./STDIN >./STDOUT
+CMD gcc -std=c99 -Wpedantic -Wall -o ./program -x c ./code && ./program 0<./STDIN 1>./STDOUT 2>./STDERR; echo -n $? 1>./retval

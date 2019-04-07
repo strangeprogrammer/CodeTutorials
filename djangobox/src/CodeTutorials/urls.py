@@ -22,10 +22,11 @@ from spikes.views import (
 	requestSpike,
 	pathSpike,
 	formPush,
-	codeDialog,
+	JSONDialog
 	
 	#Deprecated
 	#codePush,
+	#codeDialog,
 )
 
 from docker.views import (
@@ -39,11 +40,12 @@ urlpatterns = [
 	path('spikes/requestSpike/', requestSpike, name = 'requestSpike'),
 	path('spikes/pathSpike/', pathSpike, name = 'pathSpike'),
 	path('spikes/formPush/', formPush, name = 'formPush'),
-	path('spikes/codeDialog/', codeDialog, name = 'codeDialog'),
+	path('spikes/JSONDialog/', JSONDialog, name = 'JSONDialog'),
 	path('docker/runPOST/', runPOST, name = 'runPOST'),
 	
 	#Deprecated
 	#path('spikes/codePush/', codePush, name = 'codePush'),
+	#path('spikes/codeDialog/', codeDialog, name = 'codeDialog'),
 ]
 
 # When not putting the project into production, leave the following 3 lines uncommented (more information at the URL given afterward)

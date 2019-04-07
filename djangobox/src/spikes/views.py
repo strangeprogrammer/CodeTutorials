@@ -27,11 +27,14 @@ def pathSpike(request, *args, **kwargs):
 def formPush(request, *args, **kwargs):
 	return render(request, "formPush.html", {})
 
+def JSONDialog(request, *args, **kwargs):
+	return render(request, "JSONDialog.html", {})
+
 #Deprecated
 """
 def codePush(request, *args, **kwargs):
 	return render(request, "codePush.html", {})
-"""
 
 def codeDialog(request, *args, **kwargs):
 	return render(request, "codeDialog.html", {})
+"""

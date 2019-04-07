@@ -7,3 +7,5 @@ IMAGENAME=$2
 #echo $FOLDER $IMAGENAME >>./containerLog.txt
 
 docker run --rm -u guest:guest -v $FOLDER:/home/guest:rw $IMAGENAME
+
+exit $?
