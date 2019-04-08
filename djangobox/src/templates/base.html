@@ -1,4 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+
 {% load static %}
+
 <!-- {# Load the tag library #} -->
 {% load bootstrap3 %}
 
@@ -9,11 +14,22 @@
 <!-- {# Display django.contrib.messages as Bootstrap alerts #} -->
 {% bootstrap_messages %}
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Code Corral</title>
+	<title>CodeTutorials</title>
 	<link rel="shortcut icon" href="{% static 'img/Western_Michigan_University_seal.png' %}">
+<!--   <link rel="stylesheet" type="text/css" href="{% static 'codemirror/lib/codemirror.css' %}">
+  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/summernote.min.css' %}">
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"> -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/codemirror.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/codemirror.min.css" />
+
 </head>
 
 
@@ -45,6 +61,12 @@
   opacity: 0.9;
 }
 
+.transBG2{
+  margin-top: 5%;
+  padding: 2%;
+  background-color: #ffffff;
+  border: 1% solid black;
+}
 .title-page{
 
 }
@@ -54,8 +76,24 @@
 }
 
 .codemirror{
-  text-align: center;
+  /*text-align: center;*/
   flex-direction: column;
+  border-top: 1px solid black; 
+  border-bottom: 1px solid black;
+}
+
+.shadow-textarea textarea.form-control::placeholder {
+    font-weight: 300;
+}
+.shadow-textarea textarea.form-control {
+    padding: 0.8rem;
+}
+
+
+
+textarea{
+  /*width: 30em;*/
+  resize: none;
 }
 
 </style>
@@ -76,5 +114,44 @@
 	{% block resuts %}
 		<!-- text -->
 	{% endblock %}
+
+
+
+
+
+
+<!--     <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'src/codemirror.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/default.js' %}"></script> -->
+    <!-- <script src="{% static 'jquery.js' %}"></script> -->
+<!--     <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/summernote.js' %}"></script>
+ -->
+ <!-- <script src="{% static 'app.js' %}"></script>
+<script src="{% static 'js/jquery-1.11.1.js' %}"></script>
+<script src="{% static 'js/rango-jquery.js' %}"></script> -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/addon/comment/comment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/addon/fold/foldgutter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/codemirror.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#description').summernote({
+          height: 300,
+          codemirror:{
+            theme: 'monokai'
+          }
+        });
+      });
+
+    </script>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+            lineNumbers: true,
+            mode:  "xml"
+        });
+    </script>
 </body>
 </html>

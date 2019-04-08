@@ -1,3 +1,7 @@
+To install bootstrap3: pip install django-bootstrap3
+To install summernote for editor: pip install django-summernote
+
+
 added signup path to pages/static/views
 added signup render to pages/static/views
 added page styling to templates/registration *.html
