@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     # Project specific
-    'bootstrap3',
-    'pages',
+    
     'spikes',
     'editor',
-    'docker'
+    'docker',
+    #TJ added
+    'bootstrap3',
+    'pages',
 ]
 
 MIDDLEWARE = [
@@ -128,14 +130,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    # os.path.join(BASE_DIR, '../pages/style.css'),
-    os.path.join(BASE_DIR, "static"),
-]
-
 # The following is where 'collectstatic' puts files for the server to serve
 
-STATIC_ROOT = '/var/www/html/CodeTutorials/djangobox/src/static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGIN_REDIRECT_URL = 'main'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+

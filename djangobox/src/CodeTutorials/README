@@ -1,0 +1,20 @@
+Added:
+	LOGIN_REDIRECT_URL = 'main'
+	LOGOUT_REDIRECT_URL = '/accounts/login/'
+to settings.py lines 134,135
+
+Added:
+	'pages',
+to settings.py line 43
+
+Added:
+	base.html
+	home.html
+	main.html
+	README
+	signup.html
+	codecorral.html
+	index.html
+	navbar.html
+	registration/
+to src/templates
