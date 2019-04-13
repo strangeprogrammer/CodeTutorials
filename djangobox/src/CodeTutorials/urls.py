@@ -14,38 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
-from spikes.views import (
-	uptest,
-	editorPush,
-	requestSpike,
-	pathSpike,
-	formPush,
-	JSONDialog
-	
-	#Deprecated
-	#codePush,
-	#codeDialog,
-)
-
-from docker.views import (
-	runPOST,
-)
+from django.urls import include, path
 
 urlpatterns = [
-	path('admin/', admin.site.urls),
-	path('spikes/uptest/', uptest, name = 'Django is up and running!'),
-	path('spikes/editorPush/', editorPush),
-	path('spikes/requestSpike/', requestSpike, name = 'requestSpike'),
-	path('spikes/pathSpike/', pathSpike, name = 'pathSpike'),
-	path('spikes/formPush/', formPush, name = 'formPush'),
-	path('spikes/JSONDialog/', JSONDialog, name = 'JSONDialog'),
-	path('docker/runPOST/', runPOST, name = 'runPOST'),
-	
-	#Deprecated
-	#path('spikes/codePush/', codePush, name = 'codePush'),
-	#path('spikes/codeDialog/', codeDialog, name = 'codeDialog'),
+	path('admin/',	admin.site.urls),
+	path('spikes/',	include('spikes.urls')),
+	path('docker/',	include('docker.urls')),
 ]
 
 # When not putting the project into production, leave the following 3 lines uncommented (more information at the URL given afterward)

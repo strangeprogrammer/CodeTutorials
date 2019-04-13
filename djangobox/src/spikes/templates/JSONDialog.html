@@ -1,48 +1,13 @@
 <!DOCTYPE html>
 
+{% load static %}
+
 <html>
 	<head>
+		<script src='{% static "docker/codeClient.js" %}' type='text/javascript'></script>
 		<script>
-			function makeForm(){
-				var code = document.querySelector('#code');
-				var STDIN = document.querySelector('#STDIN');
-				var mode = document.querySelector('#mode');
-				var form = new FormData();
-				
-				form.append('code', code.value);
-				form.append('STDIN', STDIN.value);
-				form.append('mode', mode.value);
-				return form;
-			}
-			
-			function sendForm(form, callback){
-				var xml = new XMLHttpRequest();
-				xml.open('POST', '{% url "runPOST" %}', true);
-				
-				var csrf = document.querySelector('[name=csrfmiddlewaretoken]');
-				xml.setRequestHeader('X-CSRFToken', csrf.value);
-				
-				xml.onreadystatechange = function(){
-					if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
-						callback(JSON.parse(xml.responseText));
-					}
-				}
-				
-				xml.send(form);
-			}
-			
-			function registerFormSend(){
-				document.querySelector('#submit').addEventListener('click', function(){
-					sendForm(makeForm(), function(output){
-						document.querySelector("#STDOUT").value = output.STDOUT;
-						document.querySelector("#STDERR").value = output.STDERR;
-						document.querySelector("#retval").value = output.retval;
-					});
-				});
-			}
-			
 			window.onload = function(){
-				registerFormSend();
+				registerFormSend('{% url "docker:runPOST" %}');
 			}
 		</script>
 	</head>
@@ -51,7 +16,7 @@
 		code:	<textarea id='code'></textarea>			<br/>
 		STDIN:	<textarea id='STDIN'></textarea>		<br/>
 		mode:	<input id='mode' type='text' value='python'/>	<br/>
-		<button id='submit'>submit</button>			<br/>
+		<button id='submitcode'>submit</button>			<br/>
 									<br/>
 		STDOUT:	<textarea id='STDOUT'></textarea>		<br/>
 		STDERR:	<textarea id='STDERR'></textarea>		<br/>
