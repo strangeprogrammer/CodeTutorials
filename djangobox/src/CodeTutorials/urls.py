@@ -19,10 +19,17 @@ from django.views.generic.base import TemplateView
 # for developement
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from django.conf.urls import include, url   #DMD
+from django.views.generic.base import TemplateView
+
+
 from spikes.views import (
 	uptest,
 	editorPush,
 	requestSpike,
+	editor,
+	BasicSampleFormView,
+	spike1
 )
 
 from pages.views import (
@@ -37,8 +44,19 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 	path('spikes/uptest/', uptest, name='Django is up and running!'),
 	path('spikes/editorPush/', editorPush),
+    #path('spikes/editor/', editor),
 	path('spikes/requestSpike/', requestSpike, name='requestSpike'),
-	# path(''),
+	path('spikes/spike1/', spike1, name='spike1'),
+
+    url(r'^spikes/editor/$', TemplateView.as_view(
+        template_name="editor.html"
+    ), name='editor'),
+
+	url(r'^spikes/form/$', BasicSampleFormView.as_view(
+        template_name="form.html"
+    ), name='codemirror-form'),
+
+
 ]
 
 # When not putting the project into production, leave the following 3 lines uncommented (more information at the URL given afterward)

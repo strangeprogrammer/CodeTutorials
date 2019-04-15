@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from djangocodemirror.settings import *			#djangocodemirror widget
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,7 +45,8 @@ INSTALLED_APPS = [
     'pages',
     'spikes',
     'editor',
-    'docker'
+    'docker',
+	'djangocodemirror'
 ]
 
 MIDDLEWARE = [
@@ -135,7 +138,7 @@ STATICFILES_DIRS = [
 
 # The following is where 'collectstatic' puts files for the server to serve
 
-STATIC_ROOT = '/var/www/html/CodeTutorials/djangobox/src/static'
+STATIC_ROOT = '/var/www/html/CodeTutorials/djangobox/src/static'	#DMD added editor
 
 LOGIN_REDIRECT_URL = 'main'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
