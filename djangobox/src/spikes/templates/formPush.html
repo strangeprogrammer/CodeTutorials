@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+{% url 'formPush' as hereURL %}
+
+<html>
+	<head>
+		<script>
+			function registerSetURL(URL, P, G){
+				URL.addEventListener("change", function(){
+					P.action = URL.value;
+					G.action = URL.value;
+				});
+			}
+			
+			window.onload = function(){
+				var URL = document.getElementById("URL");
+				var P = document.getElementById("P");
+				var G = document.getElementById("G");
+				registerSetURL(URL, P, G);
+			}
+		</script>
+	</head>
+	<body>
+		URL: <input id='URL' type='text' name='url' value='{{ hereURL }}'>
+		<form id='P' action='{{ hereURL }}' method='POST'>{% csrf_token %}
+			POST: <input type='text' name='key' value=''/>
+			<input type='submit' value='submit'/>
+		</form>
+		<form id='G' action='{{ hereURL }}' method='GET'>
+			GET: <input type='text' name='key' value=''/>
+			<input type='submit' value='submit'/>
+		</form>
+	</body>
+</html>

@@ -1,3 +1,4 @@
 from django.test import TestCase
 
-# All of the important tests are in the more appropriately named 'test_*.py' files.
+# Useful video on the patching process for unit tests:
+# https://www.youtube.com/watch?v=ww1UsGZV8fQ

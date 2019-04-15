@@ -38,12 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
+    
     # Project specific
     
     'spikes',
     'editor',
     'docker',
-    #TJ added
     'bootstrap3',
     'pages',
 ]
@@ -132,8 +132,10 @@ STATIC_URL = '/static/'
 
 # The following is where 'collectstatic' puts files for the server to serve
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-LOGIN_REDIRECT_URL = 'main'
+
+# Default login/logout URL's
+
+LOGIN_REDIRECT_URL = '/main/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
-

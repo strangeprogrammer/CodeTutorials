@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+{% url 'runPOST' as thereURL %}
+
+<html>
+	<head>
+		<script>
+			function registerSetURL(){
+				var URL = document.getElementById('URL');
+				var P = document.getElementById('P');
+				URL.addEventListener('change', function(){
+					thereURL = URL.value;
+					P.action = URL.value;
+				});
+			}
+			
+			function makeForm(){
+				var code = document.querySelector('#code');
+				var STDIN = document.querySelector('#STDIN');
+				var mode = document.querySelector('#mode');
+				var form = new FormData();
+				
+				form.append('code', code.value);
+				form.append('STDIN', STDIN.value);
+				form.append('mode', mode.value);
+				return form;
+			}
+			
+			function sendForm(form){
+				var xml = new XMLHttpRequest();
+				xml.open('POST', thereURL, true);
+				
+				var csrf = document.querySelector('[name=csrfmiddlewaretoken]');
+				xml.setRequestHeader("X-CSRFToken", csrf.value);
+				
+				xml.onreadystatechange = function(){
+					if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
+						console.log(xml.responseText);
+					}
+				}
+				
+				xml.send(form);
+			}
+			
+			function registerFormSend(){
+				document.querySelector('#submit').addEventListener('click', function(){
+					sendForm(makeForm());
+				});
+			}
+			
+			window.onload = function(){
+				thereURL = '{{thereURL}}';
+				registerSetURL();
+				registerFormSend();
+			}
+		</script>
+	</head>
+	<body>
+		URL: <input id='URL' type='text' name='url' value='{{thereURL}}'>
+		<form id='P' action='{{thereURL}}' method='POST'>{% csrf_token %}
+			code: <textarea id='code' name='code' form='P'></textarea>
+			STDIN: <textarea id='STDIN' name='STDIN' form='P'></textarea>
+			mode: <input id='mode' type='text' name='mode' value='python'/>
+		</form>
+		<button id='submit'>submit</button>
+	</body>
+</html>

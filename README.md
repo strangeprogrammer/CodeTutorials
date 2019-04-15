@@ -16,7 +16,7 @@ The following commands are what you should always use to anoint your command pro
 
 The correct version of 'Django' can then be installed in the virtual environment:
 
-	pip install Django==2.1.7
+	pip3 install Django==2.1.7
 
 The following command can then be used to exit the virtual environment:
 
@@ -24,7 +24,7 @@ The following command can then be used to exit the virtual environment:
 
 ## SETTING UP THE SERVER
 
-Run:
+To set up the database and statically hosted files, run:
 
 	cd /var/www/html/CodeTutorials/djangobox
 	source ./bin/activate
@@ -33,17 +33,30 @@ Run:
 	./manage.py migrate
 	./manage.py collectstatic <<<"yes"
 
-Then you can run the following for development:
+Next, refer to the invocation of **buildimages.sh** in **/var/www/html/CodeTutorials/djangobox/src/docker/docker_wrapper/README.md** for information on setting up the Docker containers.
+
+Once all the above instructions have been completed, you can run the following for development:
 
 	./manage.py runserver
 
 ## INFORMATION ON APACHE AND PRODUCTION LEVEL USAGE
 
-The file 'WSGI_Config.txt' contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming it's located at '/var/www/html/CodeTutorials'). You should be able to just start your apache server afterward and navigate to the relevant URLs of your choice.
+The file **WSGI_Config.txt** contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming the project is located at **/var/www/html/CodeTutorials**). You should be able to just start your apache server afterward and navigate to the relevant URLs of your choice.
 
-The file 'djangobox/src/CodeTutorials/urls.py' contains information about static URLs that MUST be heeded if putting the server into a production environment. If you're just developing, however, that shouldn't be a problem. Note that the command 'collectstatic', which is used to copy static files to the appropriate location before usage, will only work on apps listed under 'INSTALLED_APPS' in 'djangobox/src/CodeTutorials/settings.py'.
+The file **djangobox/src/CodeTutorials/urls.py** contains information about static URLs that MUST be heeded if putting the server into a production environment. If you're just developing, however, that shouldn't be a problem. Note that the following command (which is used to copy static files to the appropriate location before usage) will only work on apps listed under the **INSTALLED_APPS** variable in **djangobox/src/CodeTutorials/settings.py**.
+
+	./manage.py collectstatic
+
+Finally, the value of **SECRET_KEY** in the file **djangobox/src/CodeTutorials/settings.py** must be changed before putting the project into production.
 
 ## ADDITIONAL INFORMATION
 
-If necessary, remove the database with 'rm ./db.squlite3'.
-To create a super user to help manage the server and model contents, run './manage.py createsuperuser', and you will be allowed access to 'localhost:8000/admin/' (though the port will be different if you're running the built-in server (8000) or apache (80)).
+If necessary, remove the database with
+
+	rm ./db.squlite3
+
+To create a super user to help manage the server and model contents, run
+
+	./manage.py createsuperuser
+
+This will allow you to access **localhost:8000/admin/** (though the port will be different if you're running the development server (8000) versus apache (80)).
