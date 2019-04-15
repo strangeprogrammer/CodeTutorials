@@ -1,6 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-import os
 
 from django.views.generic.edit import FormView
 from django.urls import reverse
@@ -30,13 +28,27 @@ def spike1(request, *args, **kwargs):		#DMD
 	print(request.POST)
 	context['last'] = request.POST.get('key', default=None) or 'N/A'
 	writeOut(context['last'], 'spikes/temp/tempdoc.txt')
+
 	return render(request, 'spike1.html', context)
+
+def pathSpike(request, *args, **kwargs):
+	print(os.path.abspath("."))
+	return HttpResponse("Check the console!", content_type = 'text/plain')
+
+def formPush(request, *args, **kwargs):
+	return render(request, "formPush.html", {})
+
+def JSONDialog(request, *args, **kwargs):
+	return render(request, "JSONDialog.html", {})
+
+
 
 class BasicSampleFormView(FormView):
     template_name = 'form.html'
     form_class = SampleForm
     def get_success_url(self):
-    return reverse('codemirror-form')
+
+    	return reverse('codemirror-form')
 
 
 def editorPush(request, *args, **kwargs):
@@ -54,22 +66,3 @@ def requestSpike(request, *args, **kwargs):
 		context['last'] = request.GET.get('key', default=None) or 'N/A'
 
 	return render(request, 'requestSpike.html', context)
-
-def pathSpike(request, *args, **kwargs):
-	print(os.path.abspath("."))
-	return HttpResponse("Check the console!", content_type = 'text/plain')
-
-def formPush(request, *args, **kwargs):
-	return render(request, "formPush.html", {})
-
-def JSONDialog(request, *args, **kwargs):
-	return render(request, "JSONDialog.html", {})
-
-#Deprecated
-"""
-def codePush(request, *args, **kwargs):
-	return render(request, "codePush.html", {})
-
-def codeDialog(request, *args, **kwargs):
-	return render(request, "codeDialog.html", {})
-"""

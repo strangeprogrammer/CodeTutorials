@@ -1,12 +1,11 @@
 from django.urls import path
-
 from .views import (
 	uptest,
 	editorPush,
 	requestSpike,
-	pathSpike,
-	formPush,
-	JSONDialog
+    pathSpike,
+    formPush,
+    JSONDialog
 	
 	#Deprecated
 	#codePush,

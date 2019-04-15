@@ -40,18 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-    
+
     # Project specific
-    
+
     'spikes',
     'editor',
     'docker',
-<<<<<<< HEAD
-	'djangocodemirror'
-=======
+	'djangocodemirror',
     'bootstrap3',
     'pages',
->>>>>>> 6b64dfa53f0f027a24dddf4cc327b04d6c5d2322
+	'django_summernote',
 ]
 
 MIDDLEWARE = [
@@ -138,16 +136,13 @@ STATIC_URL = '/static/'
 
 # The following is where 'collectstatic' puts files for the server to serve
 
-<<<<<<< HEAD
 STATIC_ROOT = '/var/www/html/CodeTutorials/djangobox/src/static'	#DMD added editor
 
 LOGIN_REDIRECT_URL = 'main'
-=======
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
 # Default login/logout URL's
 
 LOGIN_REDIRECT_URL = '/main/'
->>>>>>> 6b64dfa53f0f027a24dddf4cc327b04d6c5d2322
 LOGOUT_REDIRECT_URL = '/accounts/login/'
