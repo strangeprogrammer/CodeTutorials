@@ -1,6 +1,6 @@
-from django.contrib import admin
 from django.urls import path, include
 from . import views
+<<<<<<< HEAD
 from pages.views import index	#DMD
 
 
@@ -14,3 +14,16 @@ urlpatterns = [
 	path('codecorral/',views.codecorral, name='codecorral'),
 	path('signup/', views.signup, name='signup'),
 ]
+=======
+
+urlpatterns = [
+	path('main/',		views.main,		name='main'),
+	path('index/',		views.index,		name='index'),
+	path('codecorral/',	views.codecorral,	name='codecorral'),
+	path('',		views.redirect_view),
+	path('summernote/',	include('django_summernote.urls')),
+]
+
+#If settings.DEBUG:
+    #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+>>>>>>> 6b64dfa53f0f027a24dddf4cc327b04d6c5d2322

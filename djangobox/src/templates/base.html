@@ -1,4 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+
 {% load static %}
+
 <!-- {# Load the tag library #} -->
 {% load bootstrap3 %}
 
@@ -9,11 +14,20 @@
 <!-- {# Display django.contrib.messages as Bootstrap alerts #} -->
 {% bootstrap_messages %}
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Code Corral</title>
-	<link rel="shortcut icon" href="{% static 'img/Western_Michigan_University_seal.png' %}">
+<title>CodeTutorials</title>
+<link rel="shortcut icon" href="{% static 'img/Western_Michigan_University_seal.png' %}">
+
+
+
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/theme/monokai.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/codemirror.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/codemirror.min.css" />
+
 </head>
 
 
@@ -31,7 +45,7 @@
 .title {
   margin: 0;
   color: #935f35;
-  text-shadow: 1px 1px 2px white;
+  text-shadow: 3px 3px 2px white;
   font-size: 500%;
   text-align: center;
   opacity: 1;
@@ -45,6 +59,12 @@
   opacity: 0.9;
 }
 
+.transBG2{
+  margin-top: 5%;
+  padding: 2%;
+  background-color: #ffffff;
+  border: 1% solid black;
+}
 .title-page{
 
 }
@@ -54,8 +74,38 @@
 }
 
 .codemirror{
-  text-align: center;
+  /*text-align: center;*/
   flex-direction: column;
+  border-top: 1px solid black; 
+  border-bottom: 1px solid black;
+}
+
+.shadow-textarea textarea.form-control::placeholder {
+    font-weight: 300;
+}
+.shadow-textarea textarea.form-control {
+    padding: 0.8rem;
+}
+
+.runBtn{
+    /*margin: 2%;*/
+    text-align: center;
+}
+
+#learnTitle{
+  /*font-family: "Allerta Stencil", Sans-serif;*/
+  text-align: center;
+}
+
+.w3-allerta {
+  font-family: "Allerta Stencil", Sans-serif;
+  margin-bottom: 3%;
+  text-shadow:3px 3px 0 #935f35;
+}
+
+textarea{
+  /*width: 30em;*/
+  resize: none;
 }
 
 </style>
@@ -76,5 +126,46 @@
 	{% block resuts %}
 		<!-- text -->
 	{% endblock %}
+
+
+
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/addon/edit/matchbrackets.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/addon/comment/comment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/addon/fold/foldgutter.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.45.0/codemirror.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $('#description').summernote({
+          height: 300,
+          codemirror:{
+            theme: 'monokai'
+          }
+        });
+      });
+
+    </script>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+            mode: "JavaScript",
+            theme: "monokai",
+            autoMatchParens: true,
+            lineNumbers: true
+        });
+
+
+        function submit_html()
+        {
+            editor.save();
+            var code = document.getElementById("editor").value;
+            var data_url = "data:text/html;charset=utf-8;base64," + $.base64.encode(code);
+            document.getElementById("result").src = data_url;
+        }
+
+    </script>
 </body>
 </html>

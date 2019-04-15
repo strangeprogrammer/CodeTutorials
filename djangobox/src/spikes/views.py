@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+import os
 
 from django.views.generic.edit import FormView
 from django.urls import reverse
@@ -52,3 +54,22 @@ def requestSpike(request, *args, **kwargs):
 		context['last'] = request.GET.get('key', default=None) or 'N/A'
 
 	return render(request, 'requestSpike.html', context)
+
+def pathSpike(request, *args, **kwargs):
+	print(os.path.abspath("."))
+	return HttpResponse("Check the console!", content_type = 'text/plain')
+
+def formPush(request, *args, **kwargs):
+	return render(request, "formPush.html", {})
+
+def JSONDialog(request, *args, **kwargs):
+	return render(request, "JSONDialog.html", {})
+
+#Deprecated
+"""
+def codePush(request, *args, **kwargs):
+	return render(request, "codePush.html", {})
+
+def codeDialog(request, *args, **kwargs):
+	return render(request, "codeDialog.html", {})
+"""

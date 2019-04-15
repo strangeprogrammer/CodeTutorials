@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+<<<<<<< HEAD
 from django.views.generic.base import TemplateView
 # for developement
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -57,13 +58,24 @@ urlpatterns = [
     ), name='codemirror-form'),
 
 
+=======
+
+urlpatterns = [
+	path('admin/',		admin.site.urls),
+	path('accounts/',	include('accounts.urls')),
+	path('accounts/',	include('django.contrib.auth.urls')),
+	path('spikes/',		include('spikes.urls')),
+	path('docker/',		include('docker.urls')),
+	path('',		include('pages.urls')),
+>>>>>>> 6b64dfa53f0f027a24dddf4cc327b04d6c5d2322
 ]
 
-# When not putting the project into production, leave the following 3 lines uncommented (more information at the URL given afterward)
-from django.conf import settings
-from django.conf.urls.static import static
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# When putting the project into production, comment the following 4 lines (more information at the URL given afterward)
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from CodeTutorials.settings import DEBUG
+if DEBUG == True:
+	urlpatterns += staticfiles_urlpatterns()
 # https://docs.djangoproject.com/en/2.1/howto/static-files/#serving-static-files-during-development
-urlpatterns += staticfiles_urlpatterns()
-# When putting the project into production, modify apache's configuration file to allow for static access to 'djangobox/src/static' using the information provided at the following URL (note, the relevant modifications are provided in <project_root>/WSGI_Config.txt):
+
+# When putting the project into production, modify apache's configuration file to allow for static access to 'djangobox/src/static' using the information provided at the following URL (note, the relevant modifications are provided in '<project_root>/WSGI_Config.txt'):
 # https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/modwsgi/#serving-files

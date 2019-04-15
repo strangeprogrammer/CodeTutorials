@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+{% url 'runPOST' as thereURL %}
+
+<html>
+	<head>
+		<script>
+			function registerSetURL(URL, P){
+				URL.addEventListener("change", function(){
+					P.action = URL.value;
+				});
+			}
+			
+			window.onload = function(){
+				var URL = document.getElementById("URL");
+				var P = document.getElementById("P");
+				registerSetURL(URL, P);
+			}
+		</script>
+	</head>
+	<body>
+		URL: <input id='URL' type='text' name='url' value='{{ thereURL }}'>
+		<form id='P' action='{{ thereURL }}' method='POST'>{% csrf_token %}
+			CODE: <textarea name='code' form='P'></textarea>
+			STDIN: <textarea name='STDIN' form='P'></textarea>
+			MODE: <input type='text' name='mode' value='python'/>
+			<input type='submit' value='submit'/>
+		</form>
+	</body>
+</html>

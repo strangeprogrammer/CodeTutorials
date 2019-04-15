@@ -1,0 +1,3 @@
+writeLines("Input a line of text: ")
+input <- readLines(con = file("stdin"), n = 1)
+writeLines(paste0("You input: ", input))

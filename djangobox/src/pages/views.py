@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 def index(request, *args, **kwargs):
@@ -16,3 +16,7 @@ def main(request, *args, **kwargs):
 
 def signup(request, *args, **kwargs):
 	return render(request, 'signup.html', {})
+
+def redirect_view(request):
+	response = redirect('/accounts/login/')
+	return response
