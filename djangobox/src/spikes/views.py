@@ -25,13 +25,13 @@ def uptest(request, *args, **kwargs):
 def editor(request, *args, **kwargs):		#DMD
 	return render(request, 'editor.html', {})
 
-def spike1(request, *args, **kwargs):		#DMD
+def editorRequest(request, *args, **kwargs):		#DMD
 	context = { 'method': request.method or 'N/A', 'last': 'N/A', 'cookies': request.COOKIES }
 	print(request.POST)
 	context['last'] = request.POST.get('key', default=None) or 'N/A'
 	writeOut(context['last'], 'spikes/temp/tempdoc.txt')
 
-	return render(request, 'spike1.html', context)
+	return render(request, 'editorRequest.html', context)
 
 def pathSpike(request, *args, **kwargs):
 	print(os.path.abspath("."))

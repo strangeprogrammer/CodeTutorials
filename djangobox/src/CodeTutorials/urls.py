@@ -29,7 +29,7 @@ from spikes.views import (
 	requestSpike,
 	editor,
 	BasicSampleFormView,
-	spike1
+	editorRequest
 )
 
 from pages.views import (
@@ -46,7 +46,7 @@ urlpatterns = [
 	path('spikes/editorPush/', editorPush),
     #path('spikes/editor/', editor),
 	path('spikes/requestSpike/', requestSpike, name='requestSpike'),
-	path('spikes/spike1/', spike1, name='spike1'),
+	path('spikes/editorRequest/', editorRequest, name='spike1'),
     path('spikes/',        include('spikes.urls')),
     path('docker/',        include('docker.urls')),
     path('',        include('pages.urls')),
