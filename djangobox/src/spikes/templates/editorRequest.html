@@ -1,56 +1,59 @@
 <!doctype HTML>
 {% load static %}
-<html>
-<head>
-	<title>WMU: Coding Tutorial</title>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="{% static "codemirror/doc/docs.css" %}">
-	<link rel="stylesheet" href="{% static "codemirror/lib/codemirror.css" %}">
-	<script src="{% static "codemirror/lib/codemirror.js" %}"></script>
-	<script src="{% static "codemirror/mode/clike/clike.js" %}"></script>
-	<style>
-	.CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
-	</style>
-</head>
-<body>
-	<div id="nav">
-		<a href="https://codemirror.net"><h1>Coding Tutorials</h1><img id="logo" src="{% static "images/wsmall.jpg" %}"></a>
-		<ul>
-			<li><a href="{% static "codemirror/index.html" %}">Home</a>
-			</li><li><a href="{static "codemirror/doc/manual.html" %}">Manual</a>
-			</li><li><a href="https://github.com/codemirror/codemirror">Code</a>
-			</li></ul>
-			<ul>
-				<li><a class="active" href="#">CS4910</a>
-				</li></ul>
-			</div>
-			<article>
-				<h2>Tutorial Title</h2>
-				<p>Insert the neccesary code to print "hello world"</p>
-					<div type='text' id="code"></div>
-					<form action='{{ hereURL }}' method='POST'>{% csrf_token %}
-						POST: <input id='key' type='hidden' name='key' value=''/>
-						<input type='submit' value='save' onclick= 'setCode()'/>
-					</form>
-					<p>Method: {{ method }}</p>
-					<p>Value: {{ last }}</p>
-				</article>
-			</body>
-			</html>
 
-			<script>
-			window.onload = function() {
-				editor = CodeMirror(document.getElementById("code"), {
-					mode: "clike",
-					extraKeys: {"Ctrl-Space": "autocomplete"},
-					value: "#include <stdio.h> \n\nint main(int argc, char * argv[]) { \n\n\n\tprintf(\"Hello World!\");\n\n\n}"
-				});
-			};
-			function showCode(){
-				var text = editor.getValue();
-				alert(text);
-			}
-			function setCode(){
-				document.getElementById('key').value = editor.getValue();
-			}
-			</script>
+{% url 'spikes:editorRequest' as hereURL %}
+
+<html>
+	<head>
+		<title>WMU: Coding Tutorial</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="{% static 'codemirror/doc/docs.css' %}">
+		<link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}">
+		<script src="{% static 'codemirror/lib/codemirror.js' %}"></script>
+		<script src="{% static 'codemirror/mode/clike/clike.js' %}"></script>
+		<style>
+		.CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
+		</style>
+		
+		<script>
+		window.onload = function() {
+			editor = CodeMirror(document.getElementById("code"), {
+				mode: "clike",
+				extraKeys: {"Ctrl-Space": "autocomplete"},
+				value: "#include <stdio.h> \n\nvoid main(int argc, char * argv[]) { \n\n\n\tprintf(\"Hello World!\");\n\n\n}"
+			});
+		};
+		function showCode(){
+			var text = editor.getValue();
+			alert(text);
+		}
+		function setCode(){
+			document.getElementById('key').value = editor.getValue();
+		}
+		</script>
+	</head>
+	<body>
+		<div id="nav">
+		<a href="https://codemirror.net"><h1>Coding Tutorials</h1><img id="logo" src="{% static 'images/wsmall.jpg' %}"></a>
+			<ul>
+				<li><a href="{% static 'codemirror/index.html' %}">Home</a></li>
+				<li><a href="{% static 'codemirror/doc/manual.html' %}">Manual</a></li>
+				<li><a href="https://github.com/codemirror/codemirror">Code</a></li>
+			</ul>
+			<ul>
+				<li><a class="active" href="#">CS4910</a></li>
+			</ul>
+		</div>
+		<article>
+			<h2>Tutorial Title</h2>
+			<p>Insert the neccesary code to print "hello world"</p>
+			<div type='text' id="code"></div>
+			<form action='{{ hereURL }}' method='POST'>{% csrf_token %}
+				POST: <input id='key' type='hidden' name='key' value=''/>
+				<input type='submit' value='save' onclick= 'setCode()'/>
+			</form>
+			<p>Method: {{ method }}</p>
+			<p>Value: {{ last }}</p>
+		</article>
+	</body>
+</html>

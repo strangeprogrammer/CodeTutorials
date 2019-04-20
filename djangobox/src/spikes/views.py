@@ -14,7 +14,7 @@ from docker.views import (
 	runContainer,
 	readIn,
 	SessionWrapper,
-	runPOST
+	runPOST,
 )
 
 
@@ -49,7 +49,6 @@ class BasicSampleFormView(FormView):
     template_name = 'form.html'
     form_class = SampleForm
     def get_success_url(self):
-
     	return reverse('codemirror-form')
 
 

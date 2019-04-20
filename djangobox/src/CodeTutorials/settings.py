@@ -136,9 +136,6 @@ STATIC_URL = '/static/'
 
 # The following is where 'collectstatic' puts files for the server to serve
 
-STATIC_ROOT = '/var/www/html/CodeTutorials/djangobox/src/static'	#DMD added editor
-
-LOGIN_REDIRECT_URL = 'main'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 

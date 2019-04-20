@@ -9,6 +9,6 @@
 {% codemirror_field_js_assets form.foo %}
 <script>
 	var foo_codemirror = CodeMirror.fromTextArea(
-  	document.getElementById("id_foo"),{{ form.foo|codemirror_parameters }});
+	document.getElementById("id_foo"),{{ form.foo|codemirror_parameters }});
 	alert('hi')
 </script>
