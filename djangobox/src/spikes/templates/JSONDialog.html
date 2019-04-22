@@ -4,22 +4,25 @@
 
 <html>
 	<head>
-		<script src='{% static "docker/codeClient.js" %}' type='text/javascript'></script>
+		<script src="{% static 'docker/codeClient.js' %}" type='text/javascript'></script>
 		<script>
 			window.onload = function(){
-				registerFormSend('{% url "docker:runPOST" %}');
+				var basicform = new CodeRunner("{% url 'docker:runPOST' %}", "#testregion");
+				basicform.registerFormSend();
 			}
 		</script>
 	</head>
 	<body>
-		{% csrf_token %}
-		code:	<textarea id='code'></textarea>			<br/>
-		STDIN:	<textarea id='STDIN'></textarea>		<br/>
-		mode:	<input id='mode' type='text' value='python'/>	<br/>
-		<button id='submitcode'>submit</button>			<br/>
-									<br/>
-		STDOUT:	<textarea id='STDOUT'></textarea>		<br/>
-		STDERR:	<textarea id='STDERR'></textarea>		<br/>
-		retval:	<input id='retval' type='number'/>		<br/>
+		<div id='testregion'>
+			{% csrf_token %}
+			code:	<textarea class='code'></textarea>		<br/>
+			STDIN:	<textarea class='STDIN'></textarea>		<br/>
+			mode:	<input class='language' type='text' value='python'/><br/>
+			<button class='submitcode'>submit</button>		<br/>
+										<br/>
+			STDOUT:	<textarea class='STDOUT'></textarea>		<br/>
+			STDERR:	<textarea class='STDERR'></textarea>		<br/>
+			retval:	<input class='retval' type='number'/>		<br/>
+		</div>
 	</body>
 </html>
