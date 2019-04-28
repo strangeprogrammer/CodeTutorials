@@ -1,6 +1,6 @@
 # CodeTutorials
 
-##SETTING UP THE VIRTUAL ENVIRONMENT AND DJANGO
+## SETTING UP THE VIRTUAL ENVIRONMENT AND DJANGO
 
 In order to be able to use this project, you will have to set up a python virtual environment (basically just allows you to keep a separate version of python and python packages on the system). This can be done with the following commands on Linux (which should all be done in the context of a system using 'python3'):
 
