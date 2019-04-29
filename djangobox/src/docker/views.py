@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
 
-from docker.models import SessionNum
+from .models import SessionNum
 from CodeTutorials.settings import BASE_DIR
 import subprocess
 import os
@@ -13,7 +13,8 @@ def writeOut(string, path):
 		f.write(string)
 		f.close()
 
-def runContainer(path, mode):
+# Makes sure the value of 'mode' is valid and runs the program provided by the client
+def runContainer(path, mode, contname):
 	if mode == 'C':
 		box = 'gccbox'
 	elif mode == 'R':
@@ -22,7 +23,7 @@ def runContainer(path, mode):
 		box = 'pythonbox'
 	else:
 		raise Exception()
-	return subprocess.call([os.path.join(BASE_DIR, 'docker', 'docker_wrapper', 'runContainer.sh'), path, box])
+	return subprocess.call([os.path.join(BASE_DIR, 'docker', 'docker_wrapper', 'runContainer.sh'), path, box, contname])
 
 def readIn(path):
 	try:
@@ -49,10 +50,28 @@ class SessionWrapper:
 	def __str__(self):
 		return self.subject.num.__str__()
 
+#Best way I've seen around skip-ahead goto's in a high-level language so far:
+#https://stackoverflow.com/a/23665658
+class fragile:
+	class Break(Exception):
+		"""Break out of the with statement"""
+	
+	def __init__(self, value):
+		self.value = value
+	
+	def __enter__(self):
+		return self.value.__enter__()
+	
+	def __exit__(self, etype, value, traceback):
+		error = self.value.__exit__(etype, value, traceback)
+		if etype == self.Break:
+			return True
+		return error
+
 def runPOST(request, *args, **kwargs):
 	STDOUT = ''
 	STDERR = 'Couldn\'t run code properly...'
-	retval = '-1'
+	retval = ''
 	
 	if request.method == 'POST':
 		code = request.POST.get('code', default = None)
@@ -61,14 +80,18 @@ def runPOST(request, *args, **kwargs):
 		
 		if code and mode:
 			try:
-				with SessionWrapper() as UUID: # Automatically handle the UUID's creation and deletion
+				with fragile(SessionWrapper()) as UUID: # Automatically handle the UUID's creation and deletion
 					path = os.path.join(BASE_DIR, 'docker', 'docker_wrapper', UUID.__str__())
 					
 					os.mkdir(path)
 					
 					writeOut(code, os.path.join(path, 'code'))
 					writeOut(STDIN, os.path.join(path, 'STDIN'))
-					dockerRetval = runContainer(path, mode) # This function checks 'mode' on its own
+					
+					if runContainer(path, mode, UUID.__str__()) != 0:
+						STDERR = 'An unexpected error occured...'
+						raise fragile.Break
+					
 					retval = readIn(os.path.join(path,'retval'))
 					STDOUT = readIn(os.path.join(path,'STDOUT'))
 					STDERR = readIn(os.path.join(path,'STDERR'))
