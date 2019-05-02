@@ -1,18 +1,40 @@
-function makeForm(){
-	var code = document.querySelector('#code');
-	var STDIN = document.querySelector('#STDIN');
-	var mode = document.querySelector('#mode');
-	var form = new FormData();
+/* Class 'CodeRunner':
+ * url:		The URL to which code should be forwarded to
+ * region:	A CSS selector that should contain elements from which data is read/written by AJAX
+ * 
+ * Note: The 'region' selector's corresponding HTML element should have children HTML elements with the following classes:
+ * 'code':		From where program code is taken
+ * 'STDIN':		From where standard input for the program is taken
+ * 'language':		From where the language of the program code is taken
+ * 'submitcode':	An element that can act as a button (since the code will be run when it is pressed)
+ * 'STDOUT':		To where the standard output of the program is put
+ * 'STDERR':		To where the standard error of the program is put
+ * 'retval':		To where the return value of the program is put
+ */
+function CodeRunner(url, region){
+	this.url	= url;
+	this.region	= region;
 	
-	form.append('code', code.value);
-	form.append('STDIN', STDIN.value);
-	form.append('mode', mode.value);
-	return form;
-}
+	this.code	= document.querySelector(region + " .code");
+	this.STDIN	= document.querySelector(region + " .STDIN");
+	this.mode	= document.querySelector(region + " .language");
+	this.submit	= document.querySelector(region + " .submitcode");
+	this.STDOUT	= document.querySelector(region + " .STDOUT");
+	this.STDERR	= document.querySelector(region + " .STDERR");
+	this.retval	= document.querySelector(region + " .retval");
+};
 
-function sendForm(url, form, success, failure, timeout){
+CodeRunner.prototype.makeForm = function(){
+	var form = new FormData();
+	form.append('code', this.code.value);
+	form.append('STDIN', this.STDIN.value);
+	form.append('mode', this.mode.value);
+	return form;
+};
+
+CodeRunner.prototype.sendForm = function(form, success, failure, timeout){
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', url, true);
+	xhr.open('POST', this.url, true);
 	
 	//Get csrf token when submitting form
 	var csrf = document.querySelector('[name=csrfmiddlewaretoken]');
@@ -24,34 +46,37 @@ function sendForm(url, form, success, failure, timeout){
 	xhr.onload = function(){
 		//Good Response
 		if(this.status === 200){
-			success.call(JSON.parse(this.responseText));
+			success(JSON.parse(this.responseText));
 		//Bad response
 		}else{
-			failure.call(this);
+			failure();
 		}
 	};
 	
 	xhr.ontimeout = function(){
-		timeout.call(this);
+		timeout();
 	};
 	
 	xhr.send(form);
-}
+};
 
-function registerFormSend(url){
-	document.querySelector('#submitcode').addEventListener('click', function(){
-		sendForm(url, makeForm(), function(){
-			document.querySelector('#STDOUT').value = this.STDOUT;
-			document.querySelector('#STDERR').value = this.STDERR;
-			document.querySelector('#retval').value = this.retval;
+CodeRunner.prototype.registerFormSend = function(){
+	//JavaScript quirk work-around
+	var self = this;
+	
+	this.submit.addEventListener('click', function(){
+		self.sendForm(self.makeForm(), function(kwargs){
+			self.STDOUT.value = kwargs.STDOUT;
+			self.STDERR.value = kwargs.STDERR;
+			self.retval.value = kwargs.retval;
 		}, function(){
-			document.querySelector('#STDOUT').value = '';
-			document.querySelector('#STDERR').value = 'Server encountered an error...';
-			document.querySelector('#retval').value = '';
+			self.STDOUT.value = '';
+			self.STDERR.value = 'Server encountered an error...';
+			self.retval.value = '';
 		}, function(){
-			document.querySelector('#STDOUT').value = '';
-			document.querySelector('#STDERR').value = 'Server timed out...';
-			document.querySelector('#retval').value = '';
+			self.STDOUT.value = '';
+			self.STDERR.value = 'Server timed out...';
+			self.retval.value = '';
 		});
 	});
-}
+};
