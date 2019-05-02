@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-<<<<<<< HEAD
 from django.views.generic.base import TemplateView
 # for developement
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -57,16 +56,6 @@ urlpatterns = [
 	url(r'^spikes/form/$', BasicSampleFormView.as_view(
         template_name="form.html"
     ), name='codemirror-form'),
-=======
-
-urlpatterns = [
-	path('admin/',		admin.site.urls),
-	path('accounts/',	include('accounts.urls')),
-	path('accounts/',	include('django.contrib.auth.urls')),
-	path('spikes/',		include('spikes.urls')),
-	path('docker/',		include('docker.urls')),
-	path('',		include('pages.urls')),
->>>>>>> master
 ]
 
 # When putting the project into production, comment the following 4 lines (more information at the URL given afterward)

@@ -46,17 +46,18 @@
 
 <script>
 window.onload = function() {
-	registerFormSend('{% url "docker:runPOST" %}');
+
 	editor = CodeMirror(document.getElementById("codeMirror"), {
 		mode: "clike",
 		extraKeys: {"Ctrl-Space": "autocomplete"},
 		value: "#include <stdio.h> \n\nint main(int argc, char * argv[]) { \n\n\n\tprintf(\"Hello World!\");\n\n\n}"
 	});
+	registerFormSend('{% url "docker:runPOST" %}');
 };
 function setCode(){		//Setting values
 	document.getElementById('codeInput').value = editor.getValue();
 	document.getElementById('code').value = editor.getValue();
-	//alert(document.getElementById('code').value);
+	alert(document.getElementById('code').value + "\n CODE SAVED!");
 }
 function formRegistering(){		//Depracated?
 	alert('formRegistering');

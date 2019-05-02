@@ -49,10 +49,7 @@ def JSONDialog(request, *args, **kwargs):
 class BasicSampleFormView(FormView):
     template_name = 'form.html'
     form_class = SampleForm
-<<<<<<< HEAD
 
-=======
->>>>>>> master
     def get_success_url(self):
     	return reverse('codemirror-form')
 
