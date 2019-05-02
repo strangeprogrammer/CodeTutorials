@@ -20,7 +20,6 @@ CONTNAME=$3
 # Explicitly create the container
 function spawnCont(){
 	docker create --name $CONTNAME $IMAGENAME
-
 }
 
 # Copy the code and STDIN into the container

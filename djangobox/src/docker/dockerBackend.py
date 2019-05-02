@@ -1,8 +1,9 @@
+from CodeTutorials.settings import BASE_DIR
+
 import subprocess
 import os
 
-# Makes sure the value of 'mode' is valid and runs the program provided by the client
-def runContainer(path, mode, contname):
+def boxType(mode):
 	if mode == 'C':
 		box = 'gccbox'
 	elif mode == 'R':
@@ -11,4 +12,8 @@ def runContainer(path, mode, contname):
 		box = 'pythonbox'
 	else:
 		raise Exception()
-	return subprocess.call([os.path.join(BASE_DIR, 'docker', 'docker_wrapper', 'runContainer.sh'), path, box, contname])
+	return box
+
+# Makes sure the value of 'mode' is valid and runs the program provided by the client
+def runContainer(path, mode, contname):
+	return subprocess.call([os.path.join(BASE_DIR, 'docker', 'docker_wrapper', 'runContainer.sh'), path, boxType(mode), contname])
