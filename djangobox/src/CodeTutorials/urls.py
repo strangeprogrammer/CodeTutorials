@@ -19,7 +19,7 @@ from django.views.generic.base import TemplateView
 # for developement
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from django.conf.urls import include, url   #DMD
+from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 
 
@@ -29,8 +29,9 @@ from spikes.views import (
 	requestSpike,
 	editor,
 	BasicSampleFormView,
-	editorRequest
+	editorRequest,
 )
+
 
 from pages.views import (
 	index,
@@ -44,17 +45,14 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 	path('spikes/uptest/', uptest, name='Django is up and running!'),
 	path('spikes/editorPush/', editorPush),
-    #path('spikes/editor/', editor),
 	path('spikes/requestSpike/', requestSpike, name='requestSpike'),
-	path('spikes/editorRequest/', editorRequest, name='spike1'),
+	path('spikes/editorRequest/', editorRequest, name='editorRequest'),
     path('spikes/',        include('spikes.urls')),
     path('docker/',        include('docker.urls')),
     path('',        include('pages.urls')),
-
     url(r'^spikes/editor/$', TemplateView.as_view(
         template_name="editor.html"
     ), name='editor'),
-
 	url(r'^spikes/form/$', BasicSampleFormView.as_view(
         template_name="form.html"
     ), name='codemirror-form'),

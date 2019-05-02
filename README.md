@@ -18,6 +18,12 @@ The correct version of 'Django' can then be installed in the virtual environment
 
 	pip3 install Django==2.1.7
 
+Along with 'Django-codemirror' and other neccesary packages:
+
+      pip install djangocodemirror
+      pip install django-summernote
+      pip install django-bootstrap3
+
 The following command can then be used to exit the virtual environment:
 
 	deactivate

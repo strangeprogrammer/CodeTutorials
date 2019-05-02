@@ -6,15 +6,13 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="{% static "codemirror/doc/docs.css" %}">
 		<link rel="stylesheet" href="{% static "codemirror/lib/codemirror.css" %}">
-		<script src="{% static "codemirror/lib/codemirror.js" %}"></script>
-		<script src="{% static "codemirror/mode/clike/clike.js" %}"></script>
+		<script src='{% static "codemirror/lib/codemirror.js" %}'></script>
+		<script src='{% static "codemirror/mode/clike/clike.js" %}'></script>
 		<script src='{% static "docker/codeClient.js" %}' type='text/javascript'></script>
 		<style>
 			.CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
 		</style>
 	</head>
-
-
 	<body>
 		<div id="nav">
 			<a href="https://codemirror.net"><h1>Coding Tutorials</h1><img id="logo" src="{% static "images/wsmall.jpg" %}"></a>
@@ -25,36 +23,44 @@
 				</li></ul>
 			<ul>
 				<li><a class="active" href="#">CS4910</a>
-				</li></ul>
-		</div>
+				</li></ul></div>
+
 		<article>
 			<h2>Tutorial Title</h2>
 			<p>Insert the neccesary code to print "hello world"</p>
-			<div type='text' id="code"></div>
-			<form action='{{ hereURL }}' method='POST'>{% csrf_token %}
-				<input id='key' type='hidden' name='key' value=''/>
-				<input type='submit' value='save' onclick= 'setCode()'/>	
-			</form>
-			<p>Code via POST: {{ last }}</p>
-		</article>
+			<div type='text' id='codeMirror'></div>
+			<input id='codeInput' type='hidden' value=''/>
+			Mode:	<input id='mode' type='text' value='C'/>	<br/>
+			Stdin:	<input id='STDIN' type='text' value=''/>	<br/>
+			<textarea id='code' style="display:none;"></textarea>
+			<button id='savecode' onclick='setCode()'>savecode</button>
+			<button id='submitcode' >submitcode</button>			<br/><br/><br/>
+			STDOUT:	<textarea id='STDOUT'></textarea>		<br/>
+			STDERR:	<textarea id='STDERR'></textarea>		<br/>
+			Retval:	<input id='retval' type='number'/>		<br/>
+			<p></p>
+		</article>		<br/>
 	</body>
 </html>
 
 
 <script>
 window.onload = function() {
-	editor = CodeMirror(document.getElementById("code"), {
+	registerFormSend('{% url "docker:runPOST" %}');
+	editor = CodeMirror(document.getElementById("codeMirror"), {
 		mode: "clike",
 		extraKeys: {"Ctrl-Space": "autocomplete"},
 		value: "#include <stdio.h> \n\nint main(int argc, char * argv[]) { \n\n\n\tprintf(\"Hello World!\");\n\n\n}"
 	});
 };
-function showCode(){
-	var text = editor.getValue();
-	alert(text);
+function setCode(){		//Setting values
+	document.getElementById('codeInput').value = editor.getValue();
+	document.getElementById('code').value = editor.getValue();
+	//alert(document.getElementById('code').value);
 }
-function setCode(){
-	document.getElementById('key').value = editor.getValue();
+function formRegistering(){		//Depracated?
+	alert('formRegistering');
+	registerFormSend('{% url "docker:runPOST" %}');
+	alert('donezo');
 }
-
 </script>

@@ -5,9 +5,9 @@ from django.urls import reverse
 from .forms import SampleForm
 from django.http import HttpResponse
 import os
-
 import sys
 import docker
+
 
 from docker.views import (
 	writeOut,
@@ -18,20 +18,21 @@ from docker.views import (
 )
 
 
-
 def uptest(request, *args, **kwargs):
 	return render(request, 'uptest.html', {})
 
 def editor(request, *args, **kwargs):		#DMD
 	return render(request, 'editor.html', {})
 
-def editorRequest(request, *args, **kwargs):		#DMD
+def editorRequest(request, *args, **kwargs):		
 	context = { 'method': request.method or 'N/A', 'last': 'N/A', 'cookies': request.COOKIES }
 	print(request.POST)
 	context['last'] = request.POST.get('key', default=None) or 'N/A'
-	writeOut(context['last'], 'spikes/temp/tempdoc.txt')
 
 	return render(request, 'editorRequest.html', context)
+
+def editorJSON(request, *args, **kwargs):		#DMD
+	return render(request, "editorJSON.html", {})
 
 def pathSpike(request, *args, **kwargs):
 	print(os.path.abspath("."))
@@ -48,8 +49,8 @@ def JSONDialog(request, *args, **kwargs):
 class BasicSampleFormView(FormView):
     template_name = 'form.html'
     form_class = SampleForm
-    def get_success_url(self):
 
+    def get_success_url(self):
     	return reverse('codemirror-form')
 
 

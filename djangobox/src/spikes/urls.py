@@ -5,12 +5,15 @@ from .views import (
 	requestSpike,
     pathSpike,
     formPush,
-    JSONDialog
-	
+    JSONDialog,
+    editorJSON
+
 	#Deprecated
 	#codePush,
 	#codeDialog,
 )
+
+from docker.views import runPOST
 
 app_name = 'spikes'
 
@@ -21,7 +24,8 @@ urlpatterns = [
 	path('pathSpike/',	pathSpike,	name = 'pathSpike'),
 	path('formPush/',	formPush,	name = 'formPush'),
 	path('JSONDialog/',	JSONDialog,	name = 'JSONDialog'),
-	
+    path('editorJSON/', editorJSON, name = 'editorJSON'),
+
 	#Deprecated
 	#path('codePush/',	codePush,	name = 'codePush'),
 	#path('codeDialog/',	codeDialog,	name = 'codeDialog'),
