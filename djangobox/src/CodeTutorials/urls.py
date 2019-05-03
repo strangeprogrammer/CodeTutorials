@@ -15,47 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic.base import TemplateView
-# for developement
+
+# for developement only
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from django.conf.urls import include, url
-from django.views.generic.base import TemplateView
-
-
-from spikes.views import (
-	uptest,
-	editorPush,
-	requestSpike,
-	editor,
-	BasicSampleFormView,
-	editorRequest,
-)
-
-
-from pages.views import (
-	index,
-	codecorral,
-)
-
 urlpatterns = [
-	path('', include('pages.urls')),
-	path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
-	path('spikes/uptest/', uptest, name='Django is up and running!'),
-	path('spikes/editorPush/', editorPush),
-	path('spikes/requestSpike/', requestSpike, name='requestSpike'),
-	path('spikes/editorRequest/', editorRequest, name='editorRequest'),
-    path('spikes/',        include('spikes.urls')),
-    path('docker/',        include('docker.urls')),
-    path('',        include('pages.urls')),
-    url(r'^spikes/editor/$', TemplateView.as_view(
-        template_name="editor.html"
-    ), name='editor'),
-	url(r'^spikes/form/$', BasicSampleFormView.as_view(
-        template_name="form.html"
-    ), name='codemirror-form'),
+	path('admin/',		admin.site.urls),
+	path('accounts/',	include('accounts.urls')),
+	path('accounts/',	include('django.contrib.auth.urls')),
+	path('spikes/',		include('spikes.urls')),
+	path('docker/',		include('docker.urls')),
+	path('',		include('pages.urls')),
 ]
 
 # When putting the project into production, comment the following 4 lines (more information at the URL given afterward)

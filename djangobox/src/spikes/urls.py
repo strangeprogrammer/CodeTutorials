@@ -5,11 +5,11 @@ from .views import (
 	uptest,
 	editorPush,
 	requestSpike,
-    pathSpike,
-    formPush,
-    JSONDialog,
-    editorJSON,
-
+	pathSpike,
+	formPush,
+	JSONDialog,
+	editorJSON,
+	
 	#Deprecated
 	#codePush,
 	#codeDialog,
@@ -29,10 +29,10 @@ urlpatterns = [
 	path('pathSpike/',	pathSpike,	name = 'pathSpike'),
 	path('formPush/',	formPush,	name = 'formPush'),
 	path('JSONDialog/',	JSONDialog,	name = 'JSONDialog'),
-    path('editorJSON/', editorJSON, name = 'editorJSON'),
-    path('editorRequest/', editorRequest, name = 'editorRequest'),
-    path('editor/', TemplateView.as_view(template_name = "editor.html"), name = 'editor'),
-    path('form/', BasicSampleFormView.as_view(template_name = "form.html"), name = 'codemirror-form'),
+	path('editorJSON/',	editorJSON,	name = 'editorJSON'),
+	path('editorRequest/',	editorRequest,	name = 'editorRequest'),
+	path('editor/',		TemplateView.as_view(template_name = "editor.html"),		name = 'editor'),
+	path('form/',		BasicSampleFormView.as_view(template_name = "form.html"),	name = 'codemirror-form'),
 
 	#Deprecated
 	#path('codePush/',	codePush,	name = 'codePush'),
