@@ -12,4 +12,4 @@ buildimages() {
 	docker build --build-arg uid=$1 --build-arg gid=$2 -t pythonbox -f ./Dockerfile.py .
 }
 
-sudo buildimages $1 $2
+buildimages $1 $2
