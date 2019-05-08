@@ -20,7 +20,7 @@ Keep in mind that docker's bind-mount mechanism preserves UID and GID values thr
 
 The *most secure option* is to use the UID and GID of the server account during production, so as to give away as little user information as possible to the client, and so as to contain any maliciously uploaded code to affecting other server files instead of the whole system.
 
-*For development*, it may be simplest to use the UID and GID of your own user account (easily obtainable with ==$(id -u)== and ==$(id -g)==) (though ultimately you should know enough about your own machine to make a wiser decision if necessary).
+*For development*, it may be simplest to use the UID and GID of your own user account (easily obtainable with **$(id -u)** and **$(id -g)**) (though ultimately you should know enough about your own machine to make a wiser decision if necessary).
 
 #### ./runContainer.sh
 Runs the code in the given folder with the given image.

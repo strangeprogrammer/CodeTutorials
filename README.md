@@ -59,6 +59,10 @@ To set up the database and statically hosted files, run:
 
 Next, refer to the invocation of **buildimages.sh** in **/var/www/html/CodeTutorials/djangobox/src/docker/docker_wrapper/README.md** for information on setting up the Docker containers.
 
+Make sure that you start the **docker.service** and **docker.socket** services. For Ubuntu and other systems that use **systemd**, you can use the following command:
+
+	sudo systemctl start docker.service docker.socket
+
 Once all the above instructions have been completed, you can run the following for development:
 
 	./manage.py runserver
