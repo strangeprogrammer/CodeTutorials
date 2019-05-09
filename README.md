@@ -2,12 +2,14 @@
 
 ## MINIMUM SYSTEM REQUIREMENTS & PRE-INSTALLATION STEPS
 
-This is a list of software required in order to use the coded provided by this project:
+All commands referenced throughout this document should be run in the context of a system using **python3** via **BASH** or some similar shell running on **Linux**/**UNIX** (though **Ubuntu** is recommended since the commands listed here integrate easily with it).
 
-	docker
-	python3
-	pip3
-	virtualenv
+This is a list of software and their minimum versions required on the host in order to use the code provided by this project:
+
+	docker v.18.09
+	python3 v.3.5
+	pip3 v.19.0
+	virtualenv v.16.4
 
 Information to install docker can be found at the following URL:
 
@@ -19,14 +21,26 @@ You can find information specifically for Ubuntu installation here:
 
 Remember to install the **containerd.io**, **docker-ce-cli**, and **docker-ce** packages, in that order.
 
-All commands referenced throughout the rest of the document should be run in the context of a system using **python3** via **BASH** or some similar shell running on **Linux**/**UNIX**.
+Installation of 'python3' and 'pip3' can be easily done through your package manager:
+
+	# For Linux distributions that use 'APT'
+	sudo apt install python3
+	sudo apt install python3-pip
+
+Installation of 'virtualenv' is also easy once 'pip3' has been installed:
+
+	sudo pip3 install virtualenv
+
+There are some other packages that need to be installed within the virtual environment that are listed in the **setup** section of this document.
+
+In order for the server to be able to use docker, you must run the following command using the name of the owner of the project files (which is your own username for development purposes, and 'apache' for production purposes):
+
+	sudo usermod -aG docker <USER>
 
 ## SETTING UP THE VIRTUAL ENVIRONMENT AND DJANGO
 
 To set up the project, you will have to set up a python virtual environment (basically just allows you to keep a separate version of python and python packages on the system):
 
-	# At least this version of 'virtualenv' should be used
-	pip3 install virtualenv==16.4.1
 	cd /var/www/html/CodeTutorials
 	virtualenv -p python3 ./djangobox
 
@@ -59,8 +73,9 @@ To set up the database and statically hosted files, run:
 
 Next, refer to the invocation of **buildimages.sh** in **/var/www/html/CodeTutorials/djangobox/src/docker/docker_wrapper/README.md** for information on setting up the Docker containers.
 
-Make sure that you start the **docker.service** and **docker.socket** services. For Ubuntu and other systems that use **systemd**, you can use the following command:
+Make sure that you start the **docker.service** and **docker.socket** services:
 
+	# For Ubuntu and other systems that use 'systemd'
 	sudo systemctl start docker.service docker.socket
 
 Once all the above instructions have been completed, you can run the following for development:
@@ -81,7 +96,7 @@ Finally, the value of **SECRET_KEY** in the file **djangobox/src/CodeTutorials/s
 
 If necessary, remove the database with:
 
-	rm ./db.squlite3
+	rm ./db.sqlite3
 
 To create a super user to help manage the server and model contents, run:
 
