@@ -9,14 +9,9 @@ import os
 import sys
 import docker
 
-from docker.views import (
+from docker.tools import (
 	writeOut,
-	runContainer,
-	readIn,
-	SessionWrapper,
-	runPOST,
 )
-
 
 
 def uptest(request, *args, **kwargs):
@@ -30,7 +25,7 @@ def editorRequest(request, *args, **kwargs):		#DMD
 	print(request.POST)
 	context['last'] = request.POST.get('key', default=None) or 'N/A'
 	writeOut(context['last'], 'spikes/temp/tempdoc.txt')
-
+	
 	return render(request, 'editorRequest.html', context)
 
 def pathSpike(request, *args, **kwargs):

@@ -1,3 +1,5 @@
+from .models import SessionNum
+
 # Read in a whole file and return it
 def readIn(path):
 	try:
@@ -31,3 +33,19 @@ class fragile:
 		if etype == self.Break:
 			return True
 		return error
+
+class SessionWrapper:
+	def __init__(self):
+		self.subject = SessionNum.objects.create()
+	
+	def getSubject(self):
+		return self.subject
+	
+	def __enter__(self):
+		return self
+	
+	def __exit__(self, *args):
+		self.subject.delete()
+	
+	def __str__(self):
+		return self.subject.num.__str__()

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Comment all instances of '&>/dev/null' for debugging
+# Note: comment all instances of '&>/dev/null' for debugging
+
+### Setup
 
 # Die if things go unexpectedly wrong
 # https://stackoverflow.com/a/19469570
@@ -8,7 +10,7 @@ set -e
 set -E
 set -o pipefail
 
-
+# Get input arguments
 FOLDER=$1
 IMAGENAME=$2
 CONTNAME=$3
@@ -16,57 +18,72 @@ CONTNAME=$3
 # Optionally, log invocation information
 # echo $FOLDER $IMAGENAME $CONTNAME >>./containerLog.txt
 
+# Set to "true" or "false" as you desire
+DEBUG="false"
 
-# Explicitly create the container
-function spawnCont(){
+
+### Important subroutines
+
+function createCont(){ # Explicitly create the container
+	if $DEBUG; then echo "creating container"; fi
 	docker create --name $CONTNAME $IMAGENAME
 }
 
-# Copy the code and STDIN into the container
-function toCont(){
+function toCont(){ # Copy the code and STDIN into the container
+	if $DEBUG; then echo "copying files to container"; fi
 	docker cp $FOLDER/code $CONTNAME:/home/guest/code	&
 	docker cp $FOLDER/STDIN $CONTNAME:/home/guest/STDIN	&
 	wait
 }
 
-# Start the container AND WAIT FOR IT TO STOP (otherwise race conditions are formed when copying files out of the container)
-function runCont(){
+function runCont(){ # Start the container AND WAIT FOR IT TO STOP (otherwise race conditions are formed when copying files out of the container)
+	if $DEBUG; then echo "running container"; fi
 	docker start $CONTNAME
 	docker wait $CONTNAME
 }
 
-# Copy the STDOUT, STDERR, and return value out of the container
-function fromCont(){
+function fromCont(){ # Copy the STDOUT, STDERR, and return value out of the container
+	if $DEBUG; then echo "copying files from container"; fi
 	docker cp $CONTNAME:/home/guest/STDOUT $FOLDER/STDOUT	&
 	docker cp $CONTNAME:/home/guest/STDERR $FOLDER/STDERR	&
 	docker cp $CONTNAME:/home/guest/retval $FOLDER/retval	&
 	wait
 }
 
-# Remove the container since it's no longer needed
-function rmCont(){
-	docker rm -f $CONTNAME
+function rmCont(){ # Remove the container since it's no longer needed
+	if $DEBUG; then echo "removing container"; fi
+	docker rm -f $CONTNAME || true
 }
 
 
-# Register handler to remove container in case there's an unexpected error
+### Register handler to remove container in case there's an unexpected error
+
+# Make a backup STDERR
+exec 3>&2
+
 function errRmCont(){
 	wait
-	echo "AN UNEXPECTED ERROR OCCURED; Removing dangling container '$CONTNAME'"
-	rmCont # &>/dev/null
+	echo "AN UNEXPECTED ERROR OCCURED; Removing dangling container '$CONTNAME'" 1>&3
+	rmCont
 	exit -1
 }
 trap errRmCont ERR
 
 
+### Main
+
 function main(){
-	spawnCont
+	createCont
 	toCont
 	runCont
 	fromCont
 	rmCont
 }
 
-# 'main' is invoked in a subshell so that STDOUT and STDERR are redirected properly
 # START ZE PROGRAM!!!
-( main ) # &>/dev/null )
+if $DEBUG; then
+	main
+	echo "done with container management"
+else
+	main &>/dev/null
+fi
