@@ -4,5 +4,6 @@ int main(void){
 	int input;
 	scanf("%d", &input);
 	printf("You input: %d\n", input);
-	return 0;
+	fprintf(stderr,"Secret C text!\n");
+	return 28;
 }

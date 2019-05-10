@@ -1,0 +1,13 @@
+Daniel Darcy	daniel.m.darcy@wmich.edu
+Stephen Fedele	stephen.m.fedele@wmich.edu
+Tim Curry	timothy.d.curry@wmich.edu
+
+CS 4900 & CS 4910
+Coding Tutorials
+
+Title					Description
+Push code editor to browser		Server static files that push the code editor to the user's browser
+Get code request from browser		Receive code and STDIN from browser and pass it on to the right Docker container
+Run received code			Run the code in the Docker container
+Return result after code is run		Push the response to the client's browser
+Create/Update/Delete Tutorials		Allow interface for a layman to create, update, or delete a coding tutorial
