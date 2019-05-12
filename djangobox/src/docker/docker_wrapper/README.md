@@ -14,7 +14,7 @@ Contains the docker build image for R.
 Automatically builds docker images when run.
 Invocation:
 
-	sudo ./buildimages.sh <UID> <GID>
+	sudo ./buildimages.sh [UID] [GID]
 
 Keep in mind that docker's bind-mount mechanism preserves UID and GID values through the mount. This means that if the files within a client directory are created with UID and GID '1234' then, inside the container, whichever user has UID '1234' and whichever group has GID '1234' will have access to the files.
 
