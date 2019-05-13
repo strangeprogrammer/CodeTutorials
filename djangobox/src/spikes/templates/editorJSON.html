@@ -18,7 +18,7 @@
 			<a href="https://codemirror.net"><h1>Coding Tutorials</h1><img id="logo" src="{% static "images/wsmall.jpg" %}"></a>
 			<ul>
 				<li><a href="{% static "codemirror/index.html" %}">Home</a>
-				</li><li><a href="{static "codemirror/doc/manual.html" %}">Manual</a>
+				</li><li><a href="{% static "codemirror/doc/manual.html" %}">Manual</a>
 				</li><li><a href="https://github.com/codemirror/codemirror">Code</a>
 				</li></ul>
 			<ul>
@@ -34,7 +34,7 @@
 			Stdin:	<input id='STDIN' type='text' value=''/>	<br/>
 			<textarea id='code' style="display:none;"></textarea>
 			<button id='savecode' onclick='setCode()'>savecode</button>
-			<button id='submitcode' >submitcode</button>			<br/><br/><br/>
+			<button id='submit' >submit</button>			<br/><br/><br/>
 			STDOUT:	<textarea id='STDOUT'></textarea>		<br/>
 			STDERR:	<textarea id='STDERR'></textarea>		<br/>
 			Retval:	<input id='retval' type='number'/>		<br/>
@@ -55,13 +55,12 @@ window.onload = function() {
 	registerFormSend('{% url "docker:runPOST" %}');
 };
 function setCode(){		//Setting values
-	document.getElementById('codeInput').value = editor.getValue();
-	document.getElementById('code').value = editor.getValue();
+	document.getElementById('codeInput').value = editor.getValue();		//input
+	document.getElementById('code').value = editor.getValue();				//textarea
 	alert(document.getElementById('code').value + "\n CODE SAVED!");
 }
 function formRegistering(){		//Depracated?
-	alert('formRegistering');
 	registerFormSend('{% url "docker:runPOST" %}');
-	alert('donezo');
+	alert('Done form registering.');
 }
 </script>

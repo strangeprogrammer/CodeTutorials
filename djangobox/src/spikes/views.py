@@ -24,7 +24,7 @@ def uptest(request, *args, **kwargs):
 def editor(request, *args, **kwargs):		#DMD
 	return render(request, 'editor.html', {})
 
-def editorRequest(request, *args, **kwargs):		
+def editorRequest(request, *args, **kwargs):
 	context = { 'method': request.method or 'N/A', 'last': 'N/A', 'cookies': request.COOKIES }
 	print(request.POST)
 	context['last'] = request.POST.get('key', default=None) or 'N/A'
@@ -43,7 +43,6 @@ def formPush(request, *args, **kwargs):
 
 def JSONDialog(request, *args, **kwargs):
 	return render(request, "JSONDialog.html", {})
-
 
 
 class BasicSampleFormView(FormView):
