@@ -1,0 +1,22 @@
+Daniel Darcy	daniel.m.darcy@wmich.edu
+Stephen Fedele	stephen.m.fedele@wmich.edu
+Tim Curry	timothy.d.curry@wmich.edu
+
+CS 4900 & CS 4910
+Coding Tutorials
+
+Task						Time(est)	Author		Risk		%Done		Time Taken		Reviewed
+
+Code mirror editor spike			1 hr		Daniel		2 hrs		100		1.5 hrs			yes
+Transition to using Django			4 hrs		Stephen		2 hrs		100		8 hrs			yes
+Spike POST request and response			3 hrs		Stephen		1 hr		100 		3 hrs			yes
+Add '.gitignore' file				1 hr		Stephen		1 hr		100		30 mins			yes
+Add code pull and push from browser		5 hr		Stephen		2 hr		100		5 hrs			yes
+Make Docker build images			2 hrs		Stephen		1 hr		100		2 hrs			yes
+Make view to run code from POST			2 hrs		Stephen		1 hr		100		2 hrs			yes
+Make AJAX script to send code via POST		2 hrs		Stephen		1 hr		100		2 hrs			yes
+Make accounts system				1 hr		TJ		0 hrs		100		1 hr			no
+Integrate Codemirror with AJAX script		2 hrs		Daniel		1 hr		80		2 hrs			n/a
+Make tutorial upload mechaism			2 hrs		TJ		1 hr		0		2 hrs			n/a
+Make Docker swarm mechanism			3 hrs		Stephen		1 hr		20		4 hrs			n/a
+Clarify installation instructions		3 hrs		Stephen		2 hr		100		7 hrs			no
