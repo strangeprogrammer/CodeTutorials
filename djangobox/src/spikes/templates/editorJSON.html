@@ -17,50 +17,54 @@
 		<div id="nav">
 			<a href="https://codemirror.net"><h1>Coding Tutorials</h1><img id="logo" src="{% static "images/wsmall.jpg" %}"></a>
 			<ul>
-				<li><a href="{% static "codemirror/index.html" %}">Home</a>
-				</li><li><a href="{% static "codemirror/doc/manual.html" %}">Manual</a>
-				</li><li><a href="https://github.com/codemirror/codemirror">Code</a>
-				</li></ul>
+				<li><a href="{% static "codemirror/index.html" %}">Home</a></li>
+				<li><a href="{% static "codemirror/doc/manual.html" %}">Manual</a></li>
+				<li><a href="https://github.com/codemirror/codemirror">Code</a></li>
+			</ul>
 			<ul>
-				<li><a class="active" href="#">CS4910</a>
-				</li></ul></div>
-
-		<article>
+				<li><a class="active" href="#">CS4910</a></li>
+			</ul>
+		</div>
+		<article id='codecontainer'>
 			<h2>Tutorial Title</h2>
 			<p>Insert the neccesary code to print "hello world"</p>
-			<div type='text' id='codeMirror'></div>
-			<input id='codeInput' type='hidden' value=''/>
-			Mode:	<input id='mode' type='text' value='C'/>	<br/>
-			Stdin:	<input id='STDIN' type='text' value=''/>	<br/>
-			<textarea id='code' style="display:none;"></textarea>
-			<button id='savecode' onclick='setCode()'>savecode</button>
-			<button id='submit' >submit</button>			<br/><br/><br/>
-			STDOUT:	<textarea id='STDOUT'></textarea>		<br/>
-			STDERR:	<textarea id='STDERR'></textarea>		<br/>
-			Retval:	<input id='retval' type='number'/>		<br/>
-			<p></p>
-		</article>		<br/>
+			<textarea hidden="hidden" class="presetcode">
+				#include <stdio.h>
+				
+				int main(int argc, char * argv[]) {
+					int input;
+					scanf("%d", &input);
+					printf("Hello World!\n");
+					fprintf(stderr, "You input: %d\n", input);
+					return 123;
+				}
+			</textarea>
+			<textarea hidden="hidden" class="presetSTDIN">
+				98767
+			</textarea>
+			{% include 'CodeRunner.html' with defaultlang='C' %}
+		</article>
 	</body>
 </html>
 
 
 <script>
 window.onload = function() {
-
-	editor = CodeMirror(document.getElementById("codeMirror"), {
+	codecontainer = document.getElementById('codecontainer');
+	runner = new CodeRunner('{% url "docker:runPOST" %}', 'codecontainer');
+	
+	runner.registerReset();
+	runner.preset();
+	
+	editor = CodeMirror.fromTextArea(codecontainer.querySelector(".code"), {
 		mode: "clike",
 		extraKeys: {"Ctrl-Space": "autocomplete"},
-		value: "#include <stdio.h> \n\nint main(int argc, char * argv[]) { \n\n\n\tprintf(\"Hello World!\");\n\n\n}"
 	});
-	registerFormSend('{% url "docker:runPOST" %}');
+	
+	runner.registerFormSend(function(){
+		editor.save();
+		codecontainer.querySelector(".STDOUT").value = "Processing...";
+		return;
+	});
 };
-function setCode(){		//Setting values
-	document.getElementById('codeInput').value = editor.getValue();		//input
-	document.getElementById('code').value = editor.getValue();				//textarea
-	alert(document.getElementById('code').value + "\n CODE SAVED!");
-}
-function formRegistering(){		//Depracated?
-	registerFormSend('{% url "docker:runPOST" %}');
-	alert('Done form registering.');
-}
 </script>

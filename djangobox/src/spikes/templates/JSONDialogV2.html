@@ -7,13 +7,18 @@
 		<script src="{% static 'docker/codeClient.js' %}" type="text/javascript"></script>
 		<script>
 			window.onload = function(){
-				var basicform = new CodeRunner("{% url 'docker:runPOST' %}", "#testregion");
+				basicform = new CodeRunner("{% url 'docker:runPOST' %}", "testregion");
+				basicform.registerFormSend(function(){
+					document.querySelector("#testregion .STDOUT").value = "Processing...";
+					return;
+				});
+				basicform.registerReset();
+				basicform.preset();
 			}
 		</script>
 	</head>
 	<body>
 		<div id="testregion">
-			{% csrf_token %}
 			<textarea hidden="hidden" class="presetcode">
 				import sys
 				

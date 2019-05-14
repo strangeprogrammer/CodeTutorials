@@ -18,27 +18,27 @@
 function CodeRunner(url, region, timeout = 5000){//5 * 1000 milliseconds = 5 seconds
 	//Get global variables
 	this.url	= url;
-	this.region	= region;
+	this.region	= document.getElementById(region);
 	this.timeout	= timeout;
 	
 	//Get necessary HTML elements
-	this.code	= document.querySelector(region + ' .code');
-	this.STDIN	= document.querySelector(region + ' .STDIN');
-	this.mode	= document.querySelector(region + ' .codelang');
-	this.submit	= document.querySelector(region + ' .submitcode');
-	this.reset	= document.querySelector(region + ' .resetcode');
-	this.STDOUT	= document.querySelector(region + ' .STDOUT');
-	this.STDERR	= document.querySelector(region + ' .STDERR');
-	this.retval	= document.querySelector(region + ' .retval');
+	this.code	= this.region.querySelector('.code');
+	this.STDIN	= this.region.querySelector('.STDIN');
+	this.mode	= this.region.querySelector('.codelang');
+	this.STDOUT	= this.region.querySelector('.STDOUT');
+	this.STDERR	= this.region.querySelector('.STDERR');
+	this.retval	= this.region.querySelector('.retval');
+	this.submit	= this.region.querySelector('.submitcode');
+	this.reset	= this.region.querySelector('.resetcode');
 	
 	//Get optional HTML elements
-	var x = document.querySelector(region + ' .presetcode');
+	var x = this.region.querySelector('.presetcode');
 	this.pcode = "";
 	if(x !== null){
 		this.pcode = x.value;
 		x.hidden = 'hidden';
 	}
-	var y = document.querySelector(region + ' .presetSTDIN');
+	var y = this.region.querySelector('.presetSTDIN');
 	this.pSTDIN = "";
 	if(y !== null){
 		this.pSTDIN = y.value;
@@ -46,12 +46,7 @@ function CodeRunner(url, region, timeout = 5000){//5 * 1000 milliseconds = 5 sec
 	}
 	
 	//Get csrf token for form submission
-	this.csrf	= document.querySelector(region + ' [name=csrfmiddlewaretoken]').value;
-	
-	//Perform setup
-	this.registerFormSend();
-	this.registerReset();
-	this.preset();
+	this.csrf	= this.region.querySelector('[name=csrfmiddlewaretoken]').value;
 };
 
 CodeRunner.prototype.makeForm = function(){
@@ -86,22 +81,35 @@ CodeRunner.prototype.sendForm = function(form, success, failure, timeout){
 	xhr.send(form);
 };
 
-CodeRunner.prototype.registerFormSend = function(){
+/* Arguments:
+ * presubmit:	A callback that is called before the AJAX form is created
+ * success:	A callback that is called after the AJAX request returns successfully
+ * failure:	A callback that is called after the AJAX request returns unsuccessfully
+ * timemout:	A callback that is called after the AJAX request times out
+ */
+CodeRunner.prototype.registerFormSend = function(presubmit = function(){return;},
+success = function(kwargs){return;},
+failure = function(){return;},
+timeout = function(){return;}){
 	var self = this; //JavaScript quirk work-around
 	
 	this.submit.addEventListener('click', function(){
+		presubmit();
 		self.sendForm(self.makeForm(), function(kwargs){
 			self.STDOUT.value = kwargs.STDOUT;
 			self.STDERR.value = kwargs.STDERR;
 			self.retval.value = kwargs.retval;
+			success(kwargs);
 		}, function(){
 			self.STDOUT.value = '';
 			self.STDERR.value = 'Server encountered an error...';
 			self.retval.value = '';
+			failure();
 		}, function(){
 			self.STDOUT.value = '';
 			self.STDERR.value = 'Server timed out...';
 			self.retval.value = '';
+			timeout();
 		});
 	});
 };
