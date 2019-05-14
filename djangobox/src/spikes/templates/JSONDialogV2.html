@@ -4,7 +4,7 @@
 
 <html>
 	<head>
-		<script src="{% static 'docker/codeClient.js' %}" type='text/javascript'></script>
+		<script src="{% static 'docker/codeClient.js' %}" type="text/javascript"></script>
 		<script>
 			window.onload = function(){
 				var basicform = new CodeRunner("{% url 'docker:runPOST' %}", "#testregion");
@@ -12,33 +12,23 @@
 		</script>
 	</head>
 	<body>
-		<div id='testregion'>
+		<div id="testregion">
 			{% csrf_token %}
-			<textarea class='presetcode' hidden='hidden'>
-import sys
-
-def main():
-	s = input()
-	print("Hello, world!")
-	sys.stderr.write("You input: %s" % (s))
-	sys.exit(123)
-
-main()
+			<textarea hidden="hidden" class="presetcode">
+				import sys
+				
+				def main():
+					s = input()
+					print("Hello, world!")
+					sys.stderr.write("You input: %s" % (s))
+					sys.exit(123)
+				
+				main()
 			</textarea>
-			<textarea class='presetSTDIN' hidden='hidden'>
-kwue4hnvr5ktunhw4oieurj
+			<textarea hidden="hidden" class="presetSTDIN">
+				kwue4hnvr5ktunhw4oieurj
 			</textarea>
-			
-			code:	<textarea class='code'></textarea>			<br/>
-			STDIN:	<textarea class='STDIN'></textarea>			<br/>
-			mode:	<input class='codelang' type='text' value='python'/>	<br/>
-			
-			<button class='submitcode'>submit</button>			<br/>
-			<button class='resetcode'>reset</button>			<br/>
-											<br/>
-			STDOUT:	<textarea class='STDOUT'></textarea>			<br/>
-			STDERR:	<textarea class='STDERR'></textarea>			<br/>
-			retval:	<input class='retval' type='number'/>			<br/>
+			{% include 'CodeRunner.html' with defaultlang='python' %}
 		</div>
 	</body>
 </html>
