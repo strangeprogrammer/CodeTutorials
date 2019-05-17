@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+{% url 'spikes:CSRFSpike' as hereurl %}
+
+<html>
+	<body>
+		<form action="{{ hereurl }}" method="POST">
+			{% csrf_token %}
+			{% csrf_token %}
+			<input type="submit">Click me 1!</input>
+			{% csrf_token %}
+			{% csrf_token %}
+		</form>
+		<form action="{{ hereurl }}" method="POST">
+			{% csrf_token %}
+			{% csrf_token %}
+			<input type="submit">Click me 2!</input>
+			{% csrf_token %}
+			{% csrf_token %}
+		</form>
+	</body>
+</html>

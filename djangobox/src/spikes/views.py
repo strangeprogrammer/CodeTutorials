@@ -30,12 +30,11 @@ def pathSpike(request, *args, **kwargs):
 def formPush(request, *args, **kwargs):
 	return render(request, "formPush.html", {})
 
-# Deprecated
-# def JSONDialog(request, *args, **kwargs):
-#	return render(request, "JSONDialog.html", {})
-
 def JSONDialogV2(request, *args, **kwargs):
 	return render(request, "JSONDialogV2.html", {})
+
+def CSRFSpike(request, *args, **kwargs):
+	return render(request, "CSRFSpike.html", {})
 
 
 class BasicSampleFormView(FormView):
