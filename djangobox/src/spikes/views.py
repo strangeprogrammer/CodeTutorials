@@ -7,6 +7,11 @@ from django.http import HttpResponse
 
 import os
 
+from CodeTutorials.settings import (
+	CONT_GRACE,
+	CONT_TIMEOUT,
+)
+
 def uptest(request, *args, **kwargs):
 	return render(request, 'uptest.html', {})
 
@@ -31,7 +36,7 @@ def formPush(request, *args, **kwargs):
 	return render(request, "formPush.html", {})
 
 def JSONDialogV2(request, *args, **kwargs):
-	return render(request, "JSONDialogV2.html", {})
+	return render(request, "JSONDialogV2.html", {'timeout': (CONT_GRACE + CONT_TIMEOUT) * 1000})
 
 def CSRFSpike(request, *args, **kwargs):
 	return render(request, "CSRFSpike.html", {})

@@ -10,6 +10,12 @@ set -e
 set -E
 set -o pipefail
 
+# Environment Variables
+# CONT_RUNOPTS
+# CONT_GRACE
+# CONT_TIMEOUT
+
+
 # Get input arguments
 FOLDER=$1
 IMAGENAME=$2
@@ -21,29 +27,38 @@ CONTNAME=$3
 # Set to "true" or "false" as you desire
 DEBUG="false"
 
+MYNAME="$(basename $0):$$:"
+
 
 ### Important subroutines
 
 function createCont(){ # Explicitly create the container
-	if $DEBUG; then echo "creating container"; fi
-	docker create --name $CONTNAME $IMAGENAME
+	if $DEBUG; then echo "$MYNAME Creating container"; fi
+	docker create $CONT_RUNOPTS --name $CONTNAME $IMAGENAME
 }
 
 function toCont(){ # Copy the code and STDIN into the container
-	if $DEBUG; then echo "copying files to container"; fi
+	if $DEBUG; then echo "$MYNAME Copying files to container"; fi
 	docker cp $FOLDER/code $CONTNAME:/home/guest/code	&
 	docker cp $FOLDER/STDIN $CONTNAME:/home/guest/STDIN	&
 	wait
 }
 
 function runCont(){ # Start the container AND WAIT FOR IT TO STOP (otherwise race conditions are formed when copying files out of the container)
-	if $DEBUG; then echo "running container"; fi
+	if $DEBUG; then echo "$MYNAME Running container"; fi
 	docker start $CONTNAME
-	docker wait $CONTNAME
+	{	sleep $CONT_GRACE
+		docker stop -t $CONT_TIMEOUT $CONTNAME
+	} &
+	
+	{	( return $(docker wait $CONTNAME) ) && kill -SIGTERM $! && wait
+	} || {	echo "$MYNAME Container timed out"
+		false
+	}
 }
 
 function fromCont(){ # Copy the STDOUT, STDERR, and return value out of the container
-	if $DEBUG; then echo "copying files from container"; fi
+	if $DEBUG; then echo "$MYNAME Copying files from container"; fi
 	docker cp $CONTNAME:/home/guest/STDOUT $FOLDER/STDOUT	&
 	docker cp $CONTNAME:/home/guest/STDERR $FOLDER/STDERR	&
 	docker cp $CONTNAME:/home/guest/retval $FOLDER/retval	&
@@ -51,7 +66,7 @@ function fromCont(){ # Copy the STDOUT, STDERR, and return value out of the cont
 }
 
 function rmCont(){ # Remove the container since it's no longer needed
-	if $DEBUG; then echo "removing container"; fi
+	if $DEBUG; then echo "$MYNAME Removing container"; fi
 	docker rm -f $CONTNAME || true
 }
 
@@ -63,7 +78,7 @@ exec 3>&2
 
 function errRmCont(){
 	wait
-	echo "AN UNEXPECTED ERROR OCCURED; Removing dangling container '$CONTNAME'" 1>&3
+	echo "$MYNAME AN UNEXPECTED ERROR OCCURED; Removing dangling container '$CONTNAME'" 1>&3
 	rmCont
 	exit -1
 }
@@ -82,8 +97,9 @@ function main(){
 
 # START ZE PROGRAM!!!
 if $DEBUG; then
+	echo "$MYNAME Invocation options: $CONT_RUNOPTS"
 	main
-	echo "done with container management"
+	echo "$MYNAME Done with container management"
 else
 	main &>/dev/null
 fi
