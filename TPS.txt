@@ -22,5 +22,5 @@ Make Docker swarm mechanism			3 hrs		Stephen			1 hr		20		4 hrs			n/a
 Clarify installation instructions		3 hrs		Stephen			2 hr		100		7 hrs			no
 Step through installation instructions		1.5 hrs		Daniel			1 hr		50		1 hr			no
   and provide feedback.
-Create a tutorial for users to create		3 hrs		Daniel			2 hr		50		1.5 hrs			no
-  quizzes (multiple choice + editor)
+Create a tutorial for users to create		3 hrs		Daniel			2 hr		90		4.5 hrs			no
+  quizzes (multiple choice)
