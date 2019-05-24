@@ -24,3 +24,5 @@ Step through installation instructions		1.5 hrs		Daniel			1 hr		50		1 hr			no
   and provide feedback.
 Create a tutorial for users to create		3 hrs		Daniel			2 hr		90		4.5 hrs			no
   quizzes (multiple choice)
+Fix support for Apache				3 hrs		N/A			1 hr		0		0 hrs			n/a
+Spike python unit testing frameworks		5 hrs		N/A			2 hrs		0		0 hrs			n/a
