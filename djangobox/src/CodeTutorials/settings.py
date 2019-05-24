@@ -154,6 +154,10 @@ CONT_OPTS = {
 	'--pids-limit=':	32,		# None
 }
 
+# Change these to '-1' to allow unlimited write and read size to/from the input/output files
+CONT_MAXWRITE	= 4 * 2 ** 10
+CONT_MAXREAD	= 4 * 2 ** 10
+
 CONT_RUNOPTS	= ' '.join(map(lambda opt: opt + str(CONT_OPTS[opt]), CONT_OPTS))
 CONT_GRACE	= 10
 CONT_TIMEOUT	= 0
