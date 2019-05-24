@@ -8,13 +8,11 @@ from .views import (
 	pathSpike,
 	formPush,
 	JSONDialogV2,
+	CSRFSpike,
 	editorJSON,
 	editorRequest,
 	editor,
 	BasicSampleFormView,
-	
-	# Deprecated
-	# JSONDialog,
 )
 
 app_name = 'spikes'
@@ -26,11 +24,9 @@ urlpatterns = [
 	path('pathSpike/',	pathSpike,	name = 'pathSpike'),
 	path('formPush/',	formPush,	name = 'formPush'),
 	path('JSONDialogV2/',	JSONDialogV2,	name = 'JSONDialogV2'),
+	path('CSRFSpike/',	CSRFSpike,	name = 'CSRFSpike'),
 	path('editorJSON/',	editorJSON,	name = 'editorJSON'),
 	path('editorRequest/',	editorRequest,	name = 'editorRequest'),
 	path('editor/',		TemplateView.as_view(template_name = "editor.html"),		name = 'editor'),
 	path('form/',		BasicSampleFormView.as_view(template_name = "form.html"),	name = 'codemirror-form'),
-	
-	# Deprecated
-	# path('JSONDialog/',	JSONDialog,	name = 'JSONDialog'),
 ]

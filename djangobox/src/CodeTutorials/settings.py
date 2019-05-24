@@ -143,3 +143,25 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 LOGIN_REDIRECT_URL = '/main/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+
+# Docker container creation & runtime options
+
+CONT_OPTS = {
+	# Argument		Value		Unit
+	'--cpus ':		1,		# None
+	'--memory=':		64 * 2 ** 20,	# Bytes
+	'--pids-limit=':	32,		# None
+}
+
+# Change these to '-1' to allow unlimited write and read size to/from the input/output files
+CONT_MAXWRITE	= 4 * 2 ** 10
+CONT_MAXREAD	= 4 * 2 ** 10
+
+CONT_RUNOPTS	= ' '.join(map(lambda opt: opt + str(CONT_OPTS[opt]), CONT_OPTS))
+CONT_GRACE	= 10
+CONT_TIMEOUT	= 0
+
+os.environ['CONT_RUNOPTS']	= CONT_RUNOPTS
+os.environ['CONT_GRACE']	= str(CONT_GRACE)
+os.environ['CONT_TIMEOUT']	= str(CONT_TIMEOUT)

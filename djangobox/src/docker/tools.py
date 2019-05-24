@@ -1,20 +1,23 @@
 from .models import SessionNum
+from CodeTutorials.settings import (
+	CONT_MAXWRITE,
+	CONT_MAXREAD,
+)
+from contextlib import closing
 
 # Read in a whole file and return it
 def readIn(path):
 	try:
-		with open(path, 'r') as f:
-			retval = f.read() # Read everything
-			f.close()
+		with closing(open(path, 'r')) as f:
+			retval = f.read(CONT_MAXREAD) # Read everything
 			return retval
 	except Exception:
 		return ''
 
 # Write out a whole string to a file
 def writeOut(string, path):
-	with open(path, 'w') as f:
-		f.write(string)
-		f.close()
+	with closing(open(path, 'w')) as f:
+		f.write(string[0:CONT_MAXWRITE])
 
 #Best way I've seen around skip-ahead goto's in a high-level language so far:
 #https://stackoverflow.com/a/23665658

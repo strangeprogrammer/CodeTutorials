@@ -1,3 +1,4 @@
+{% comment 'Since the CSRF token is rendered here, it needn't be rendered in the including file (though it wouldn't cause anything bad to happen if it did).' %}{% endcomment %}
 {% csrf_token %}
 Code:	<textarea class="code"></textarea>				<br/>
 STDIN:	<textarea class="STDIN"></textarea>				<br/>
@@ -5,5 +6,5 @@ Mode:	<input class="codelang" type="text" value="{{ defaultlang }}"/>	<br/>
 STDOUT:	<textarea class="STDOUT"></textarea>				<br/>
 STDERR:	<textarea class="STDERR"></textarea>				<br/>
 Retval:	<input class="retval" type="number"/>				<br/>
-<button class="submitcode">submit</button>				<br/>
+<button class="submitcode">run</button>				<br/>
 <button class="resetcode">reset</button>				<br/>
