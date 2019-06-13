@@ -1,0 +1,138 @@
+<!doctype HTML>
+{% load static %}
+
+{% url 'spikes:quizTutorial' as hereURL %}
+
+
+<html style="font-family:arial; background:powderblue">
+<h1 align="center" id="quizdevelopmenttutorial">Quiz Development Tutorial</h1>
+<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+<ul>
+	<p>This is a tutorial which shows users how to make quizzes with multiple choice questions and/or a text editor.
+	Common templates and important details will be provided. </br>
+	<font size="2">*In order for the Text editor portion of this tutorial to work correctly CodeTutorials/djangobox/src/docker/docker_wrapper/runContainer.sh installation <strong>must be complete</strong>.</font></p>
+</ul>
+<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+
+<h2 id="multiplechoicequestions" align="center" ><i>Multiple Choice Questions</i></h2>
+<ul style="">
+	<li>Multiple choice questions will consist of radio buttons.</li>
+	<li>All of the questions should be placed in a "form block" as shown below:</li>
+
+		<pre><code style="color:blue">&lt;form name="quiz"&gt;<pre><code style="color:blue">
+	... (question 1 block)
+	... (question 2 block)
+	... (question 3 block)
+	... (question n block)
+		</code></pre>&lt;/form&gt;
+	</code></pre></li>
+</ul>
+
+<h3 id="multiplechoicehtmltemplate">1. Multiple Choice Html Template</h3>
+
+<ul>
+	<p><li>Below is the reccomended HTML template for a quiz with one multiple choice question.</li>
+	<li>To add more questions all one would have to do is copy and paste everything inbetween the form tags.</li>
+	<li>Once that is complete the user should need to modify the question #, question, input name,  and answers (answers are located in "Required Javascript Template" portion of the tutorial).</li></p>
+
+		<pre><code style="color:blue">&lt;form name="quiz"&gt;
+   &lt;p&gt;
+   &lt;b&gt;Question 1.
+   &lt;br&gt;He -------------------- it.&lt;br&gt;&lt;/b&gt;
+		</code></pre></li>
+	</ul>
+
+	<pre><code style="color:blue">	-- Question Here-- </code></pre>
+
+	<pre><code style="color:blue">        &lt;blockquote&gt;
+	    &lt;input type="radio" name="q1" value="don't like"&gt;don't like&lt;br&gt;
+	    &lt;input type="radio" name="q1" value="doesn't like"&gt;doesn't like&lt;br&gt;
+	    &lt;input type="radio" name="q1" value="doesn't likes"&gt;doesn't likes&lt;br&gt;
+        &lt;/blockquote&gt;
+
+	    &lt;p&gt;&lt;b&gt;
+     &lt;/form&gt;
+	</code></pre>
+
+	<h3 id="requiredjavascripttemplate">2. Required Javascript Template</h3>
+
+	<ul>
+		<li>The reccomended Javascript template for a quiz with one multiple choice question is shown below.</li>
+
+		<li>It should be added under the html code but inside of the html tags.</li>
+
+		<li>When adding multiple choice questions to this template the following variables need to be modified
+			* numQues
+			* answers (array)
+			* the user would also need to add the new answer to the answers array for each question.
+			- In this example the following would be added after the line '  answers[0] = "doesn't like";  ' <br/><br/>
+			answers[1]= "your answer"; </br>
+			... </br>
+			answers[n]= "your last answer"; </br></p>
+<font size="2">* the getScore function should not need to be modified as long as the above "Required Javascript Template" directions are followed correctly.</font>
+
+<pre><code style="color:blue">&lt;script&gt;<pre><code style="color:blue">
+   var numQues = 1;
+   var numChoi = 3;
+   var answers = new Array(1);
+   answers[0] = "doesn't like";</code></pre></code></pre></li>
+		</ul>
+
+<pre><code style="color:blue">        -- Added Questions Answers Here --</code></pre>
+
+		<pre><code style="color:blue">        function getScore(form) {
+		</code></pre>
+<pre><code style="color:blue">        -- Score Calculation Function Is Shown Below --</code></pre><pre><code style="color:blue">
+	var score = 0;
+	var currElt;
+	var currSelection;
+
+	for (i=0; i&lt;numQues; i++) {
+		currElt = i*numChoi;
+		answered=false;
+
+		for (j=0; j&lt;numChoi; j++) {
+			currSelection = form.elements[currElt + j];
+
+			if (currSelection.checked) {
+				answered=true;
+
+				if (currSelection.value == answers[i]) {
+					score++;
+					break;
+				}
+			}
+		}
+
+		if (answered === false){
+		       alert("Do answer all the questions, Please") ;
+		       return false;
+		}
+        }
+	var scoreper = Math.round(score/numQues*100);
+	form.percentage.value = scoreper + "%";
+	form.mark.value=score;
+        }
+   &lt;/script&gt;
+	</code></pre>
+
+	<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+
+	<h2 align="center" id="convertingmarkdowntohtml">Converting Markdown to Html</h2>
+
+	<ul>
+		<p>Some people prefer markdown vs html. Since that is the case there is a way to write a markdown document and convert it to html within the virtual enviornment.</p>
+
+			<ol>
+				<li>Start up your virtual enviornment.</li>
+				<li>In the terminal 'cd' into the 'CodeTutorials' directory.</li>
+				<li>Paste the markdown file that needs to be converted into the CodeTutorials root directory.</li>
+				<li>Input the command below:     (The .md file must be the file you pasted into 'CodeTutorials directory)
+					python -m markdown yourMarkdownFile.md > yourNewHTMLFile.html</li></ol></li>
+	</ul>
+
+	<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+	<h2 align="center" id="addingquiztoserver">Adding Quiz to Server</h2>
+	<p>Go to http://127.0.0.1:8000/spikes/quizUpload/ and follow the onscreen instructions. </p>
+	<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+</html>

@@ -1,0 +1,57 @@
+<!doctype HTML>
+{% load static %}
+<html>
+	<head>
+		<title>WMU: Coding Tutorial</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="{% static "codemirror/doc/docs.css" %}">
+		<link rel="stylesheet" href="{% static "codemirror/lib/codemirror.css" %}">
+		<script src='{% static "codemirror/lib/codemirror.js" %}'></script>
+		<script src='{% static "codemirror/mode/html/html.js" %}'></script>
+		<style>
+			.CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
+		</style>
+	</head>
+	<body>
+		<div id="nav">
+			<a href="https://codemirror.net"><h1>Coding Tutorials</h1><img id="logo" src="{% static "images/wsmall.jpg" %}"></a>
+			<ul>
+				<li><a href="{% static "codemirror/index.html" %}">Home</a></li>
+
+			</ul>
+			<ul>
+				<li><a class="active" href="#">CS4910</a></li>
+			</ul>
+		</div>
+		<article id='codecontainer'>
+
+			<h2>Quiz Upload</h2>
+			<p>Insert the html code for the your page below.</p>
+				<form action='{{ hereURL }}' method='POST'> {% csrf_token %}
+					<div type='text' id='code'></div>
+					<input id='key' type='hidden' name='key' value=''/>
+					Page Name:	<textarea id='pageName' name='pageName'></textarea>				<br/>
+					<input type='submit' value='save' onclick= 'setCode()'/><br/>
+				</form>
+		</article>
+	</body>
+</html>
+
+
+<script>
+	window.onload = function() {
+		editor = CodeMirror(document.getElementById("code"), {
+			mode: "html",
+			extraKeys: {"Ctrl-Space": "autocomplete"},
+			value: "Paste html code here"
+		});
+	};
+	function showCode(){
+		var text = document.getElementById('pageName');
+		alert(text);
+	}
+	function setCode(){
+		document.getElementById('key').value = editor.getValue();
+
+	}
+</script>
