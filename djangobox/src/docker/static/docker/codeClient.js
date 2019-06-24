@@ -114,20 +114,20 @@ timeout = function(){return;}){
 	});
 };
 
-CodeRunner.prototype.registerReset = function(){
-	var self = this; //JavaScript quirk work-around
-	
-	this.reset.addEventListener('click', function(){
-		self.preset();
-	});
-};
-
 CodeRunner.prototype.preset = function(){
 	this.code.value		= CodeRunner.cleancode(this.pcode);
 	this.STDIN.value	= CodeRunner.cleancode(this.pSTDIN);
 	this.STDOUT.value	= '';
 	this.STDERR.value	= '';
 	this.retval.value	= '';
+};
+
+CodeRunner.prototype.registerReset = function(){
+	var self = this; //JavaScript quirk work-around
+	
+	this.reset.addEventListener('click', function(){
+		self.preset();
+	});
 };
 
 //Returns true if the line (string) contains only whitespace and false otherwise

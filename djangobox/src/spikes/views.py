@@ -74,13 +74,11 @@ def editorPush(request, *args, **kwargs):
 
 
 def requestSpike(request, *args, **kwargs):
-    context = { 'method': request.method or 'N/A', 'last': 'N/A', 'cookies': request.COOKIES }
+    context = { 'method': request.method, 'last': '', 'cookies': request.COOKIES }
 
     if request.method == 'POST':
-        print(request.POST)
-        context['last'] = request.POST.get('key', default=None) or 'N/A'
-    else:
-        print(request.GET)
-        context['last'] = request.GET.get('key', default=None) or 'N/A'
+        context['last'] = request.POST.get('key', default=None) or ''
+    elif request.method == 'GET':
+        context['last'] = request.GET.get('key', default=None) or ''
 
     return render(request, 'requestSpike.html', context)

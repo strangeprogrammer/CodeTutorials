@@ -2,23 +2,28 @@
 <html>
 	<body>
 		{% url 'requestSpike' as hereURL %}
-		<form action='{{ hereURL }}' method='POST'>{% csrf_token %}
+		
+		<form action='{{ hereURL }}' method='POST'>
+			{% csrf_token %}
 			POST: <input type='text' name='key' value=''/>
-			<input type='submit' value='save'/>
+			<input type='submit'/>
 		</form>
 		<form action='{{ hereURL }}' method='GET'>
 			GET: <input type='text' name='key' value=''/>
-			<input type='submit' value='save'/>
+			<input type='submit'/>
 		</form>
+		
 		<p>Method: {{ method }}</p>
-		<p>Value: {{ last }}</p>
+		<p>Last: {{ last }}</p>
 		
 		{% comment %}
 			Show all cookie values from last page request
 		{% endcomment %}
-		<p>Cookie: {{ cookie }} </p>
-		{% for key,value in cookies.items %}
-			<p>{{ key }}: {{ value }}</p>
-		{% endfor %}
+		<p>Cookies:</p>
+		<ul>
+			{% for key, value in cookies.items %}
+			<li>{{ key }}: {{ value }}</li>
+			{% endfor %}
+		</ul>
 	</body>
 </html>

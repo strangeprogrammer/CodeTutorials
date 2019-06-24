@@ -141,8 +141,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Default login/logout URL's
 
-LOGIN_REDIRECT_URL = '/main/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = os.path.join(BASE_DIR, 'main/')
+LOGOUT_REDIRECT_URL = os.path.join(BASE_DIR, 'accounts/login/')
 
 
 # Docker container creation & runtime options

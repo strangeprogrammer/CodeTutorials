@@ -17,7 +17,6 @@ Make view to run code from POST			2 hrs		Stephen			1 hr		100		2 hrs			yes
 Make AJAX script to send code via POST		2 hrs		Stephen			1 hr		100		2 hrs			yes
 Make accounts system				1 hr		TJ			0 hrs		100		1 hr			no
 Integrate Codemirror with AJAX script		2 hrs		Daniel & Stephen	1 hr		100		2 hrs			no
-Make Docker swarm mechanism			3 hrs		Stephen			1 hr		20		4 hrs			n/a
 Clarify installation instructions		3 hrs		Stephen			2 hr		100		7 hrs			no
 Step through installation instructions		1.5 hrs		Daniel			1 hr		50		1.5 hr			no
   and provide feedback.
@@ -25,5 +24,5 @@ Create a tutorial for users to create		3 hrs		Daniel			2 hr		90		4.5 hrs			no
   quizzes (multiple choice)
 Add page for teachers to add quizzes 		3 hrs		Daniel			2 hr		100		3 hrs			no
   to server
-Fix support for Apache				3 hrs		Stephen			1 hr		0		0 hrs			n/a
+Fix support for Apache				3 hrs		Stephen			1 hr		50		5 hrs			n/a
 Spike python unit testing frameworks		5 hrs		N/A			2 hrs		0		0 hrs			n/a

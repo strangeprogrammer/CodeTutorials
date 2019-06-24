@@ -1,6 +1,25 @@
 #!/bin/bash
 
-# Note: comment all instances of '&>/dev/null' for debugging
+### Environment Variables
+
+# CONT_RUNOPTS
+# CONT_GRACE
+# CONT_TIMEOUT
+
+
+### Admin configurables
+
+# NOTE: comment all instances of '&>/dev/null' for debugging
+
+# Set the next line to "true" or "false" as you desire
+DEBUG="false"
+
+PID=$$
+MYNAME="$(basename $0):$PID"
+
+# Comment out the next line if you don't want to use logging
+# LOGFILE="/var/www/html/CodeTutorials/djangobox/src/docker_requests.log"
+
 
 ### Setup
 
@@ -10,24 +29,54 @@ set -e
 set -E
 set -o pipefail
 
-# Environment Variables
-# CONT_RUNOPTS
-# CONT_GRACE
-# CONT_TIMEOUT
-
-
 # Get input arguments
 FOLDER=$1
 IMAGENAME=$2
 CONTNAME=$3
 
-# Optionally, log invocation information
-# echo $FOLDER $IMAGENAME $CONTNAME >>./containerLog.txt
 
-# Set to "true" or "false" as you desire
-DEBUG="false"
+### More boilerplate
 
-MYNAME="$(basename $0):$$:"
+# Don't log if there is no logfile
+if [ -n "$LOGFILE" ]
+then
+	function loginvoke(){
+		{	flock 1
+			echo "PID:            "$PID
+			echo "Folder:         "$FOLDER
+			echo "Image:          "$IMAGENAME
+			echo "Container Name: "$CONTNAME
+			if $DEBUG
+			then
+				echo "UID:            "$(id -ru)
+				echo "EUID:           "$(id -u)
+				echo "GID:            "$(id -rg)
+				echo "EGID:           "$(id -g)
+			fi
+			echo ""
+		} >>$LOGFILE
+		return 0
+	}
+	
+	function logstatus(){
+		{	flock 1
+			echo "PID:            "$PID
+			echo "STATUS:         "$1
+			echo ""
+		} >>$LOGFILE
+		return 0
+	}
+else
+	function loginvoke(){
+		return 0
+	}
+	
+	function logstatus(){
+		return 0
+	}
+fi
+
+loginvoke
 
 
 ### Important subroutines
@@ -47,12 +96,17 @@ function toCont(){ # Copy the code and STDIN into the container
 function runCont(){ # Start the container AND WAIT FOR IT TO STOP (otherwise race conditions are formed when copying files out of the container)
 	if $DEBUG; then echo "$MYNAME Running container"; fi
 	docker start $CONTNAME
-	{	sleep $CONT_GRACE
+	{	# Wait to kill the container at the designated time
+		sleep $CONT_GRACE
+		echo "$MYNAME: Container timed out" >&3
+		logstatus "timed out"
 		docker stop -t $CONT_TIMEOUT $CONTNAME
 	} &
 	
-	{	( return $(docker wait $CONTNAME) ) && kill -SIGTERM $! && wait
-	} || {	echo "$MYNAME Container timed out"
+	{	# If the container finishes successfully in time, kill the reaper
+		( return $(docker wait $CONTNAME) ) && kill -SIGKILL $! && wait && logstatus "success"
+	} || {	echo "$MYNAME: Container failed" >&3
+		logstatus "failure"
 		false
 	}
 }
