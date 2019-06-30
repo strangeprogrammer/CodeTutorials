@@ -20,7 +20,7 @@ Integrate Codemirror with AJAX script		2 hrs		Daniel & Stephen	1 hr		100		2 hrs	
 Clarify installation instructions		3 hrs		Stephen			2 hr		100		7 hrs			no
 Step through installation instructions		1.5 hrs		Daniel			1 hr		50		1.5 hr			no
   and provide feedback.
-Create a tutorial for users to create		3 hrs		Daniel			2 hr		90		4.5 hrs			no
+Create a tutorial for users to create		3 hrs		Daniel			2 hr		89		4.5 hrs			no
   quizzes (multiple choice)
 Add page for teachers to add quizzes 		3 hrs		Daniel			2 hr		100		3 hrs			no
   to server
