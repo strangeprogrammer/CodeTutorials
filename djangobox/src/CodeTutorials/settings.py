@@ -27,7 +27,10 @@ SECRET_KEY = 'ep0t%co@qqnmc@d&u1*95_=)9ou^3-@0#7wt45=*-w77mh2q-k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if DEBUG == True:
+	ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+else:
+	ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]'] # Change these hostnames for your production environment
 
 
 # Application definition
@@ -39,17 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',
 
     # Project specific
 
     'spikes',
     'editor',
     'docker',
-	'djangocodemirror',
-    'bootstrap3',
-    'pages',
-	'django_summernote',
+    'djangocodemirror',
 ]
 
 MIDDLEWARE = [
@@ -139,15 +138,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
-# Default login/logout URL's
-
-LOGIN_REDIRECT_URL = os.path.join(BASE_DIR, 'main/')
-LOGOUT_REDIRECT_URL = os.path.join(BASE_DIR, 'accounts/login/')
-
-
 # Docker container creation & runtime options
 
-CONT_OPTS = {
+CONT_OPTS = { # Command line arguments used with docker invocation
 	# Argument		Value		Unit
 	'--cpus ':		1,		# None
 	'--memory=':		64 * 2 ** 20,	# Bytes
@@ -158,7 +151,8 @@ CONT_OPTS = {
 CONT_MAXWRITE	= 4 * 2 ** 10
 CONT_MAXREAD	= 4 * 2 ** 10
 
-CONT_RUNOPTS	= ' '.join(map(lambda opt: opt + str(CONT_OPTS[opt]), CONT_OPTS))
+# Container timeout values
+CONT_RUNOPTS	= ' '.join(map(lambda opt: opt + str(CONT_OPTS[opt]), CONT_OPTS)) # Don't mess with this
 CONT_GRACE	= 10
 CONT_TIMEOUT	= 0
 

@@ -120,10 +120,13 @@ CodeRunner.prototype.preset = function(){
 	this.STDOUT.value	= '';
 	this.STDERR.value	= '';
 	this.retval.value	= '';
+	this.onreset();	//Call the callback on reset/preset
 };
 
-CodeRunner.prototype.registerReset = function(){
-	var self = this; //JavaScript quirk work-around
+//Takes a callback to be called on reset/preset
+CodeRunner.prototype.registerReset = function(onreset = function(){}){
+	this.onreset	= onreset;
+	var self	= this; //JavaScript quirk work-around
 	
 	this.reset.addEventListener('click', function(){
 		self.preset();

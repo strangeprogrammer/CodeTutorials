@@ -53,13 +53,15 @@ window.onload = function() {
 	codecontainer = document.getElementById('codecontainer');
 	runner = new CodeRunner('{% url "docker:runPOST" %}', 'codecontainer');
 	
-	runner.registerReset();
-	runner.preset();
-	
 	editor = CodeMirror.fromTextArea(codecontainer.querySelector(".code"), {
 		mode: "clike",
 		extraKeys: {"Ctrl-Space": "autocomplete"},
 	});
+	
+	runner.registerReset(function(){
+		editor.setValue(CodeRunner.cleancode(runner.pcode));
+	});
+	runner.preset();
 	
 	runner.registerFormSend(function(){
 		editor.save();

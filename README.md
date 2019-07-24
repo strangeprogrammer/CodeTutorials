@@ -151,7 +151,11 @@ The file **djangobox/src/CodeTutorials/urls.py** contains information about stat
 ./manage.py collectstatic
 ```
 
-Finally, the value of **SECRET_KEY** in the file **djangobox/src/CodeTutorials/settings.py** must be changed before putting the project into deployment.
+Some values in the file **djangobox/src/CodeTutorials/settings.py** must be changed before putting the project into deployment. You will need to change:
+
+- **DEBUG** to **False**
+- **SECRET_KEY** to something else
+- **ALLOWED_HOSTS** to include the hostnames that you will be serving from
 
 ## ADDITIONAL INFORMATION
 

@@ -16,22 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-# for developement only
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
 urlpatterns = [
 	path('admin/',		admin.site.urls),
-	path('accounts/',	include('accounts.urls')),
-	path('accounts/',	include('django.contrib.auth.urls')),
 	path('spikes/',		include('spikes.urls')),
 	path('docker/',		include('docker.urls')),
-	path('',		include('pages.urls')),
 ]
 
 # When putting the project into production, comment the following 4 lines (more information at the URL given afterward)
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from CodeTutorials.settings import DEBUG
 if DEBUG == True:
+	from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 	urlpatterns += staticfiles_urlpatterns()
 # https://docs.djangoproject.com/en/2.1/howto/static-files/#serving-static-files-during-development
 
