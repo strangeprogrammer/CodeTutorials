@@ -143,13 +143,15 @@ Once all the above instructions have been completed, you can run the following f
 
 ## INFORMATION ON APACHE AND DEPLOYMENT USAGE
 
-The file **WSGI_Config.txt** contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming the project is located at **/var/www/html/CodeTutorials**). You should be able to just start your apache server afterward and navigate to the relevant URLs of your choice.
+The file **WSGI_Config.txt** contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming the project is located at **/var/www/html/CodeTutorials**). You must read some notes at the beginning of said file about proper filesystem paths if you are not using the default ones.  Otherwise, you should be able to just start your apache server and navigate to the relevant URLs of your choice.
 
 The file **djangobox/src/CodeTutorials/urls.py** contains information about static URLs that MUST be heeded if putting the server into a deployment environment. If you're just developing, however, that shouldn't be a problem. Note that the following command (which is used to copy static files to the appropriate location before usage) will only work on apps listed under the **INSTALLED_APPS** variable in **djangobox/src/CodeTutorials/settings.py**:
 
 ```bash
 ./manage.py collectstatic
 ```
+
+If you plan to deploy static files on the same server as Django, then, by default, the static files collected should be copied into (or their containing directory symlinked to) **/var/www/html/static/**.
 
 Some values in the file **djangobox/src/CodeTutorials/settings.py** must be changed before putting the project into deployment. You will need to change:
 

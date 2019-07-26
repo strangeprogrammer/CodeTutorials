@@ -1,21 +1,33 @@
-	# Note: When using this project, change '/var/www/html/CodeTutorials' to wherever you've actually placed the project
+	# Notes:
+	# You may need to change all instances of:
+	# 	'/var/www/html/CodeTutorials' to wherever you've placed the main project directory
+	# 	'/var/www/html/static' to wherever the static files are being stored
+	# Some URL's are also configurable
 	
-	# Location of wsgi script in project
+	
+	# For serving Django
+	
+	# Alias WSGI script to (and thus put the project under) the URL '/CodeTutorials'
 	WSGIScriptAlias /CodeTutorials /var/www/html/CodeTutorials/djangobox/src/CodeTutorials/wsgi.py
+	
 	# Location of python virtual environment
 	WSGIPythonHome /var/www/html/CodeTutorials/djangobox
-	# Location of project
+	
+	# Where to look for python modules (from the project)
 	WSGIPythonPath /var/www/html/CodeTutorials/djangobox/src
 	
-	# Directory containing wsgi script
+	# Allow access to WSGI script
 	<Directory /var/www/html/CodeTutorials/djangobox/src/CodeTutorials>
 		<Files wsgi.py>
 			Require all granted
 		</Files>
 	</Directory>
 	
+	
 	# For serving static files
-	Alias /static /var/www/html/CodeTutorials/djangobox/src/static
-	<Directory /var/www/html/CodeTutorials/djangobox/src/static>
+	
+	# Serve static files from '/var/www/html/static' at URL '/static'
+	Alias /static /var/www/html/static
+	<Directory /var/www/html/static>
 		Require all granted
 	</Directory>

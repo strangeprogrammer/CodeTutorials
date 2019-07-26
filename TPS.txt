@@ -25,5 +25,6 @@ Create a tutorial for users to create		3 hrs		Daniel			2 hr		89		4.5 hrs			no
 Add page for teachers to add quizzes 		3 hrs		Daniel			2 hr		100		3 hrs			no
   to server
 Fix support for Apache
-  and python non-Debug mode			3 hrs		Stephen			1 hr		80		10 hrs			n/a
+  and python non-Debug mode			3 hrs		Stephen			1 hr		100		12 hrs			no
 Spike python unit testing frameworks		5 hrs		N/A			2 hrs		0		0 hrs			n/a
+Remove accounts system (for now)		1 hr		Stephen			0 hrs		100		1 hr			no
