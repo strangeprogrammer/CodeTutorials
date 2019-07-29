@@ -1,0 +1,46 @@
+{% load static %}
+
+<!doctype HTML>
+<html>
+	<head>
+		<title>WMU: Coding Tutorial</title>
+		<meta charset="utf-8">
+		
+		<link rel="stylesheet" href="{% static 'codemirror/doc/docs.css' %}">
+		<link rel="stylesheet" href="{% static 'codemirror/lib/codemirror.css' %}">
+		<style>
+			.CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
+		</style>
+		
+		<script src="{% static 'codemirror/lib/codemirror.js' %}"></script>
+		<script src="{% static 'codemirror/mode/clike/clike.js' %}"></script>
+		<script src="{% static 'codemirror/mode/python/python.js' %}"></script>
+		<script src="{% static 'codemirror/mode/r/r.js' %}"></script>
+		
+		<script src="{% static 'docker/codeClient.js' %}" type='text/javascript'></script>
+		<script src="{% static 'docker/boxSetup.js' %}" type='text/javascript'></script>
+		<script>
+			window.onload = function(){
+				boxa = new cbox("{% url 'docker:runPOST' %}", 'boxa');
+				boxb = new pybox("{% url 'docker:runPOST' %}", 'boxb');
+				boxc = new rbox("{% url 'docker:runPOST' %}", 'boxc');
+			};
+		</script>
+	</head>
+	<body>
+		<div id="nav">
+			<a href="https://codemirror.net"><h1>Coding Tutorials</h1><img id="logo" src="{% static 'images/wsmall.jpg' %}"></a>
+			<ul>
+				<li><a href="{% static 'codemirror/index.html' %}">Home</a></li>
+				<li><a href="{% static 'codemirror/doc/manual.html' %}">Manual</a></li>
+				<li><a href="https://github.com/codemirror/codemirror">Code</a></li>
+			</ul>
+			<ul>
+				<li><a class="active" href="#">CS4910</a></li>
+			</ul>
+		</div>
+		{% include './boxa.html' with id='boxa' %}
+		{% include './boxb.html' with id='boxb' %}
+		{% include './boxc.html' with id='boxc' %}
+	</body>
+</html>

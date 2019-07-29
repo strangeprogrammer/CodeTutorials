@@ -15,7 +15,7 @@
  * 'STDERR':		To where the standard error of the program is put
  * 'retval':		To where the return value of the program is put
  */
-function CodeRunner(url, region, timeout = 5000){//5 * 1000 milliseconds = 5 seconds
+function CodeRunner(url, region, timeout = 10000){//10 * 1000 milliseconds = 10 seconds
 	//Get global variables
 	this.url	= url;
 	this.region	= document.getElementById(region);
@@ -35,7 +35,7 @@ function CodeRunner(url, region, timeout = 5000){//5 * 1000 milliseconds = 5 sec
 	var x = this.region.querySelector('.presetcode');
 	this.pcode = "";
 	if(x !== null){
-		this.pcode = x.value;
+		this.pcode = CodeRunner.cleancode(x.value);
 		x.hidden = 'hidden';
 	}
 	var y = this.region.querySelector('.presetSTDIN');
@@ -81,19 +81,22 @@ CodeRunner.prototype.sendForm = function(form, success, failure, timeout){
 	xhr.send(form);
 };
 
-/* Arguments:
+/* Keyword Arguments:
  * presubmit:	A callback that is called before the AJAX form is created
  * success:	A callback that is called after the AJAX request returns successfully
  * failure:	A callback that is called after the AJAX request returns unsuccessfully
  * timemout:	A callback that is called after the AJAX request times out
+ * 
+ * Notes:
+ * Invoking this function more than once using the same code runner will overwrite any previous event handlers
  */
-CodeRunner.prototype.registerFormSend = function(presubmit = function(){return;},
-success = function(kwargs){return;},
-failure = function(){return;},
-timeout = function(){return;}){
+CodeRunner.prototype.registerFormSend = function({presubmit = function(){},
+success = function(kwargs){},
+failure = function(){},
+timeout = function(){}} = {}){ // https://stackoverflow.com/a/894877
 	var self = this; //JavaScript quirk work-around
 	
-	this.submit.addEventListener('click', function(){
+	this.submit.onclick = function(){
 		presubmit();
 		self.sendForm(self.makeForm(), function(kwargs){
 			self.STDOUT.value = kwargs.STDOUT;
@@ -111,12 +114,12 @@ timeout = function(){return;}){
 			self.retval.value = '';
 			timeout();
 		});
-	});
+	};
 };
 
 CodeRunner.prototype.preset = function(){
-	this.code.value		= CodeRunner.cleancode(this.pcode);
-	this.STDIN.value	= CodeRunner.cleancode(this.pSTDIN);
+	this.code.value		= this.pcode;
+	this.STDIN.value	= this.pSTDIN;
 	this.STDOUT.value	= '';
 	this.STDERR.value	= '';
 	this.retval.value	= '';
@@ -128,9 +131,9 @@ CodeRunner.prototype.registerReset = function(onreset = function(){}){
 	this.onreset	= onreset;
 	var self	= this; //JavaScript quirk work-around
 	
-	this.reset.addEventListener('click', function(){
+	this.reset.onclick = function(){
 		self.preset();
-	});
+	};
 };
 
 //Returns true if the line (string) contains only whitespace and false otherwise

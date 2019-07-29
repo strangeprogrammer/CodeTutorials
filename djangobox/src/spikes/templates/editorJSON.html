@@ -63,7 +63,7 @@ window.onload = function() {
 	});
 	runner.preset();
 	
-	runner.registerFormSend(function(){
+	runner.registerFormSend(function(){ //This call must be adjusted to restore functionality
 		editor.save();
 		codecontainer.querySelector(".STDOUT").value = "Processing...";
 		return;

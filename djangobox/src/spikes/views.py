@@ -72,6 +72,9 @@ class BasicSampleFormView(FormView):
 def editorPush(request, *args, **kwargs):
     return render(request, 'editorpush.html', {})
 
+def editorTemplates(request, *args, **kwargs):
+    return render(request, 'editorTemplates/main.html', {})
+
 
 def requestSpike(request, *args, **kwargs):
     context = { 'method': request.method, 'last': '', 'cookies': request.COOKIES }

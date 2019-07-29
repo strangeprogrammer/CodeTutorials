@@ -1,0 +1,23 @@
+{% extends 'CodeBox.html' %}
+
+{% block preamble %}
+	<h2>This is Box A</h2>
+{% endblock %}
+
+{% block presetcode %}
+	#include <stdio.h>
+	
+	int main(void){
+		int input;
+		scanf("%d", &input);
+		printf("You input: %d\n", input);
+		fprintf(stderr,"Secret C text!\n");
+		return 28;
+	}
+{% endblock %}
+
+{% block presetSTDIN %}1029384756{% endblock %}
+
+{% block codelang %}
+	C
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'CodeBox.html' %}
+
+{% block preamble %}
+	<h2>This is Box B</h2>
+{% endblock %}
+
+{% block presetcode %}
+	import sys
+	
+	def main():
+		print("Input a line of text: ", end = '')
+		s = input()
+		print("\nYou input: %s" % (s))
+		sys.stderr.write("Secret python text!")
+		sys.exit(33)
+	
+	main()
+{% endblock %}
+
+{% block presetSTDIN %}python spike{% endblock %}
+
+{% block codelang %}
+	python
+{% endblock %}
