@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'spikes',
     'editor',
     'docker',
+    'client',
+    'resources',
     'djangocodemirror',
 ]
 

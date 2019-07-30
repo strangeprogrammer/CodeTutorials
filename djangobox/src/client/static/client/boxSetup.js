@@ -1,4 +1,4 @@
-//Depends upon static file 'docker/codeClient.js'
+//Depends upon static file 'client/codeClient.js'
 
 /* Arguments:
  * presubmit:	A callback that is called before the AJAX form is created

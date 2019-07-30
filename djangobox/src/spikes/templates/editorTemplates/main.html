@@ -17,8 +17,8 @@
 		<script src="{% static 'codemirror/mode/python/python.js' %}"></script>
 		<script src="{% static 'codemirror/mode/r/r.js' %}"></script>
 		
-		<script src="{% static 'docker/codeClient.js' %}" type='text/javascript'></script>
-		<script src="{% static 'docker/boxSetup.js' %}" type='text/javascript'></script>
+		<script src="{% static 'client/codeClient.js' %}" type='text/javascript'></script>
+		<script src="{% static 'client/boxSetup.js' %}" type='text/javascript'></script>
 		<script>
 			window.onload = function(){
 				boxa = new cbox("{% url 'docker:runPOST' %}", 'boxa');

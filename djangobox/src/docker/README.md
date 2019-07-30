@@ -13,12 +13,6 @@ This folder should remain here so that the contents of 'models.py' can be create
 #### ./models.py
 Contains the model for associating users with UUID's.
 
-#### ./static
-Contains 'docker/codeClient.js', which is the client-side code to interact with 'docker/runPOST'.
-
-#### ./templates
-Contains 'CodeRunner.html', which is an includable file for forms that utilize 'CodeMirror' and the 'runPOST' interface (takes 'defaultlang' as an argument).
-
 #### ./tools.py
 Contains some code used within 'dockerBackend.py' and 'views.py'.
 

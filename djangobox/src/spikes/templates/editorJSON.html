@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="{% static "codemirror/lib/codemirror.css" %}">
 		<script src='{% static "codemirror/lib/codemirror.js" %}'></script>
 		<script src='{% static "codemirror/mode/clike/clike.js" %}'></script>
-		<script src='{% static "docker/codeClient.js" %}' type='text/javascript'></script>
+		<script src='{% static "docker/codeClient.js" %}' type='text/javascript'></script> <!-- This file reference must be adjusted to restore functionality -->
 		<style>
 			.CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
 		</style>
@@ -42,7 +42,7 @@
 			<textarea hidden="hidden" class="presetSTDIN">
 				98767
 			</textarea>
-			{% include 'CodeRunner.html' with defaultlang='C' %}
+			{% include 'CodeRunner.html' with defaultlang='C' %} <!-- This file reference must be adjusted to restore functionality -->
 		</article>
 	</body>
 </html>
