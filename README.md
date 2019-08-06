@@ -141,6 +141,10 @@ Once all the above instructions have been completed, you can run the following f
 ./manage.py runserver
 ```
 
+## CREATING A TUTORIAL
+
+Refer to the file **djangobox/src/tutorials/HOWTO.md** to create a coding tutorial.
+
 ## INFORMATION ON APACHE AND DEPLOYMENT USAGE
 
 The file **WSGI_Config.txt** contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming the project is located at **/var/www/html/CodeTutorials**). You must read some notes at the beginning of said file about proper filesystem paths if you are not using the default ones.  Otherwise, you should be able to just start your apache server and navigate to the relevant URLs of your choice.

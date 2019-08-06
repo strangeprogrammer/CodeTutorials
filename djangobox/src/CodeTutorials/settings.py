@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'docker',
     'client',
     'resources',
+    'tutorials',
     'djangocodemirror',
 ]
 

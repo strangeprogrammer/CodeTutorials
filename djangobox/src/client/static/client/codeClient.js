@@ -1,9 +1,12 @@
-/* Class 'CodeRunner':
+/* Constructor 'CodeRunner':
+ * 
+ * Arguments:
  * url:		The URL to which code should be forwarded to
  * region:	A CSS selector that should contain elements from which data is read/written by AJAX
  * timeout:	How long the AJAX server request should wait before timing out
  * 
- * Note: The 'region' selector's corresponding HTML element should have children HTML elements with the following classes:
+ * Notes:
+ * The 'region' selector's corresponding HTML element should have children HTML elements with the following classes:
  * 'presetcode':	OPTIONAL: Should contain the preset code (and be hidden)
  * 'presetSTDIN':	OPTIONAL: Should contain the preset STDIN (and be hidden)
  * 'code':		From where program code is taken
@@ -14,9 +17,12 @@
  * 'STDOUT':		To where the standard output of the program is put
  * 'STDERR':		To where the standard error of the program is put
  * 'retval':		To where the return value of the program is put
+ * 
+ * Returns:
+ * A new 'CodeRunner' object
  */
 function CodeRunner(url, region, timeout = 10000){//10 * 1000 milliseconds = 10 seconds
-	//Get global variables
+	//Get relevant fields
 	this.url	= url;
 	this.region	= document.getElementById(region);
 	this.timeout	= timeout;
@@ -49,6 +55,7 @@ function CodeRunner(url, region, timeout = 10000){//10 * 1000 milliseconds = 10 
 	this.csrf	= this.region.querySelector('[name=csrfmiddlewaretoken]').value;
 };
 
+//Returns a POST form object using the relevant HTML elements
 CodeRunner.prototype.makeForm = function(){
 	var form = new FormData();
 	form.append('code', this.code.value);
@@ -57,6 +64,19 @@ CodeRunner.prototype.makeForm = function(){
 	return form;
 };
 
+/* Function 'CodeRunner.prototype.sendForm':
+ * 
+ * Arguments:
+ * form:	A form object to submit to the internal URL
+ * success:	A callback that takes the JSON object from the server
+ * failure:	A callback called when the form can't be submitted
+ * timeout:	A callback for when the wait time's been exceeded
+ * 
+ * Notes:
+ * Sends the given form and takes callbacks for some different end status conditions
+ * 
+ * No Return Value
+ */
 CodeRunner.prototype.sendForm = function(form, success, failure, timeout){
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', this.url, true);
@@ -81,14 +101,19 @@ CodeRunner.prototype.sendForm = function(form, success, failure, timeout){
 	xhr.send(form);
 };
 
-/* Keyword Arguments:
- * presubmit:	A callback that is called before the AJAX form is created
- * success:	A callback that is called after the AJAX request returns successfully
- * failure:	A callback that is called after the AJAX request returns unsuccessfully
- * timemout:	A callback that is called after the AJAX request times out
+/* Function 'CodeRunner.prototype.registerFormSend':
+ * 
+ * Arguments:
+ * obj:
+ * 	presubmit:	A callback that is called before the AJAX form is created
+ * 	success:	A callback that is called after the AJAX request returns successfully
+ * 	failure:	A callback that is called after the AJAX request returns unsuccessfully
+ * 	timemout:	A callback that is called after the AJAX request times out
  * 
  * Notes:
- * Invoking this function more than once using the same code runner will overwrite any previous event handlers
+ * Invoking this function more than once upon the same 'CodeRunner' object will overwrite any previous event handlers for the submit button
+ * 
+ * No Return Value
  */
 CodeRunner.prototype.registerFormSend = function({presubmit = function(){},
 success = function(kwargs){},
@@ -96,37 +121,48 @@ failure = function(){},
 timeout = function(){}} = {}){ // https://stackoverflow.com/a/894877
 	var self = this; //JavaScript quirk work-around
 	
+	//Set up 'onclick' event handler for the 'submit' button
 	this.submit.onclick = function(){
 		presubmit();
-		self.sendForm(self.makeForm(), function(kwargs){
+		self.sendForm(self.makeForm(), function(kwargs){ //On success, update the contents of the 'STDOUT', 'STDERR', and 'retval' elements
 			self.STDOUT.value = kwargs.STDOUT;
 			self.STDERR.value = kwargs.STDERR;
 			self.retval.value = kwargs.retval;
-			success(kwargs);
-		}, function(){
+			success(kwargs); //Use the response object, potentially
+		}, function(){ //On failure, clean up and notify the user
 			self.STDOUT.value = '';
-			self.STDERR.value = 'Server encountered an error...';
+			self.STDERR.value = 'Form couldn\'t be submitted properly...';
 			self.retval.value = '';
-			failure();
-		}, function(){
+			failure(); //Callback on failure, potentially
+		}, function(){ //On timeout, clean up and notify the user
 			self.STDOUT.value = '';
 			self.STDERR.value = 'Server timed out...';
 			self.retval.value = '';
-			timeout();
+			timeout(); //Callback on timeout, potentially
 		});
 	};
 };
 
+//Call this whenever 'this' object is ready to be used or reset
 CodeRunner.prototype.preset = function(){
 	this.code.value		= this.pcode;
 	this.STDIN.value	= this.pSTDIN;
 	this.STDOUT.value	= '';
 	this.STDERR.value	= '';
 	this.retval.value	= '';
-	this.onreset();	//Call the callback on reset/preset
+	this.onreset(); //Call the callback on reset/preset
 };
 
-//Takes a callback to be called on reset/preset
+/* Function 'CodeRunner.prototype.registerReset':
+ * 
+ * Arguments:
+ * onreset: a callback triggered whenever 'this' object is (p)reset
+ * 
+ * Notes:
+ * Invoking this function more than once upon the same 'CodeRunner' object will overwrite any previous event handlers for the reset button
+ * 
+ * No Return Value
+ */
 CodeRunner.prototype.registerReset = function(onreset = function(){}){
 	this.onreset	= onreset;
 	var self	= this; //JavaScript quirk work-around
@@ -144,7 +180,9 @@ CodeRunner.iswhite = function(line){
 	return false;
 };
 
-/* Argument:
+/* Function 'CodeRunner.cleancode':
+ * 
+ * Arguments:
  * code: A snippet of code
  * 
  * Description:
@@ -154,6 +192,9 @@ CodeRunner.iswhite = function(line){
  * Removes trailing whitespace and leading blank lines
  * Ignores blank lines when performing the computation of how much indentation to remove, but still removes all acceptable indentation from them
  * Please do not use mixed indenation (both spaces and tabs)
+ * 
+ * Returns:
+ * The code with excess whitespace removed
  */
 CodeRunner.cleancode = function(code){
 	//Remove all trailing whitespace and split up the result into individual lines

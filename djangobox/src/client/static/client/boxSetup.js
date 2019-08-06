@@ -1,14 +1,21 @@
 //Depends upon static file 'client/codeClient.js'
 
-/* Arguments:
- * presubmit:	A callback that is called before the AJAX form is created
- * success:	A callback that is called after the AJAX request returns successfully
- * failure:	A callback that is called after the AJAX request returns unsuccessfully
- * timemout:	A callback that is called after the AJAX request times out
+/* Constructor 'boxSetup':
+ * 
+ * Arguments:
+ * url:		The URL to send the request to
+ * id:		The HTML id of the box to utilize (similar to a POST form, uses POST request mecahnnism)
+ * obj:
+ * 	options:	Additional options to pass to the relevant codemirror object when it's created
+ * 	onreset:	A callback that is called when the reset button is pushed
+ * 	onformsend:	A callback that is called when the form is sent (when code is pushed to the server)
  * 
  * Notes:
  * This file contains code for the default setup of the codemirror/docker interface in JavaScript
  * This code may better serve example than practical use
+ * 
+ * Returns:
+ * A new 'boxSetup' object
  */
 function boxSetup(url, id,
 {options = {},
@@ -38,19 +45,19 @@ onformsend = function(){}} = {}){
 		onformsend();
 	}});
 	
-	//Clean up the code language value
+	//Clean up the code language value from HTML
 	var codelang = this.box.querySelector(".codelang");
 	codelang.value = codelang.value.trim();
 }
 
-//Use this as a constructor
+//Thin wrapper around 'boxSetup' for the 'C' language
 function cbox(url, id){
 	return boxSetup.apply(this, [url, id, {options:{
 		mode:"clike"
 	}}]);
 }
 
-//Use this as a constructor
+//Thin wrapper around 'boxSetup' for the 'python' language
 function pybox(url, id){
 	return boxSetup.apply(this, [url, id, {options:{
 		mode:"python",
@@ -59,7 +66,7 @@ function pybox(url, id){
 	}}]);
 }
 
-//Use this as a constructor
+//Thin wrapper around 'boxSetup' for the 'R' language
 function rbox(url, id){
 	return boxSetup.apply(this, [url, id, {options:{
 		mode:"r"
