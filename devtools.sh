@@ -13,7 +13,25 @@ undevtools &>/dev/null
 TOOLS_PROMPT="(devtools) "
 TOOLS_DIR=$(realpath -m $(dirname "$PWD/$0"))
 TOOLS_SETTINGS=$TOOLS_DIR"/devtools_settings.sh"
-MANAGE_PY=$TOOLS_DIR"/djangobox/src/manage.py"
+SRC_DIR=$TOOLS_DIR"/djangobox/src"
+MANAGE_PY=$SRC_DIR"/manage.py"
+
+# Useful aliases
+
+alias thruargs='
+if [ -n "$*" ]
+then
+	local INDEX
+	for INDEX in "$@"
+	do
+'
+
+alias unthruargs='
+	done
+else
+	echo "Error: Missing parameter."
+fi
+'
 
 # Initialize or load configuration file
 
@@ -75,14 +93,13 @@ PS1=$TOOLS_PROMPT$PS1
 ### Internal components - DO NOT TOUCH (please)
 
 function changeperms {
-	if [ -n "$2" ]
-	then
-		find $2 \( -type d -o -type f \) -execdir sudo chown $1 \{\} +
-		find $2 -type d -execdir sudo chmod u+rwx,g+rwx \{\} +
-		find $2 -type f -execdir sudo chmod u+rw,g+rw \{\} +
-	else
-		echo "Error: Missing parameter."
-	fi
+	local TO_WHOM=$1
+	shift
+	thruargs
+		find $INDEX \( -type d -o -type f \) -execdir sudo chown $TO_WHOM \{\} +
+		find $INDEX -type d -execdir sudo chmod u+rwx,g+rwx \{\} +
+		find $INDEX -type f -execdir sudo chmod u+rw,g+rw \{\} +
+	unthruargs
 }
 
 
@@ -91,8 +108,8 @@ function changeperms {
 function undevtools {
 	PS1=${PS1#$TOOLS_PROMPT}
 	
-	unset -v TOOLS_PROMPT TOOLS_DIR TOOLS_SETTINGS MANAGE_PY DEV_USER DEV_GROUP SERVER_USER SERVER_GROUP DEPSERVER_START DEPSERVER_STOP	&>/dev/null
-	unset -f undevtools changeperms developer devdeploy deployment openaccess closeaccess depserver killdepserver				&>/dev/null
+	unset -v TOOLS_PROMPT TOOLS_DIR TOOLS_SETTINGS SRC_DIR MANAGE_PY DEV_USER DEV_GROUP SERVER_USER SERVER_GROUP DEPSERVER_START DEPSERVER_STOP	1>/dev/null
+	unset -f undevtools changeperms developer devdeploy deployment openaccess openbox closeaccess closebox depserver killdepserver			1>/dev/null
 	
 	unalias collectstatic
 }
@@ -100,36 +117,39 @@ function undevtools {
 # Ownership tools
 
 function developer {
-	changeperms $DEV_USER:$DEV_GROUP $1
+	changeperms $DEV_USER:$DEV_GROUP "$@"
 }
 
 function devdeploy {
-	changeperms $DEV_USER:$SERVER_GROUP $1
+	changeperms $DEV_USER:$SERVER_GROUP "$@"
 }
 
 function deployment {
-	changeperms $SERVER_USER:$SERVER_GROUP $1
+	changeperms $SERVER_USER:$SERVER_GROUP "$@"
 }
 
 # Permission tools
 
 function openaccess {
-	if [ -n "$1" ]
-	then
-		find $1 -type d -execdir sudo chmod a+rx \{\} +
-		find $1 -type f -execdir sudo chmod a+r \{\} +
-	else
-		echo "Error: Missing parameter."
-	fi
+	thruargs
+		find $INDEX -type d -execdir sudo chmod a+rx,ug+w \{\} +
+		find $INDEX -type f -execdir sudo chmod a+r,ug+w \{\} +
+	unthruargs
+}
+
+function openbox {
+	openaccess $SRC_DIR/
+	sudo chmod ug+x $SRC_DIR"/docker/docker_wrapper/runContainer.sh"
 }
 
 function closeaccess {
-	if [ -n "$1" ]
-	then
-		find $1 -execdir sudo chmod go-rwx \{\} +
-	else
-		echo "Error: Missing parameter."
-	fi
+	thruargs
+		find $INDEX \( -type f -o -type d \) -execdir sudo chmod go-rwx \{\} +
+	unthruargs
+}
+
+function closebox {
+	closeaccess $SRC_DIR/
 }
 
 # Server tools
@@ -144,4 +164,9 @@ function killdepserver {
 }
 "
 
-alias collectstatic="$MANAGE_PY collectstatic <<<'yes' &>/dev/null"
+alias collectstatic="$MANAGE_PY collectstatic <<<'yes' 1>/dev/null"
+
+
+### Cleanup
+
+unalias thruargs unthruargs
