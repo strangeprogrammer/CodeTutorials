@@ -14,11 +14,11 @@ import json
 
 def runPOST(request, *args, **kwargs):
 	output = {	'STDOUT':'',
-			'STDERR':'Couldn\'t run code properly...',
+			'STDERR':'SERVER: Couldn\'t run code properly...',
 			'retval':'',
 	}
 	if request.method == 'POST':
-		code	= request.POST.get('code', default = None)
+		code	= request.POST.get('code', default = '')
 		STDIN	= request.POST.get('STDIN', default = '')
 		mode	= request.POST.get('mode', default = None)
 		

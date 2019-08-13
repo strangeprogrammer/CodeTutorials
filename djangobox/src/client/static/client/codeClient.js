@@ -87,15 +87,15 @@ CodeRunner.prototype.sendForm = function(form, success, failure, timeout){
 	xhr.onload = function(){
 		//Good Response
 		if(this.status === 200){
-			success(JSON.parse(this.responseText));
+			success.call(window, JSON.parse(this.responseText));
 		//Bad response
 		}else{
-			failure();
+			failure.call(window);
 		};
 	};
 	
 	xhr.ontimeout = function(){
-		timeout();
+		timeout.call(window);
 	};
 	
 	xhr.send(form);
@@ -115,32 +115,45 @@ CodeRunner.prototype.sendForm = function(form, success, failure, timeout){
  * 
  * No Return Value
  */
-CodeRunner.prototype.registerFormSend = function({presubmit = function(){},
-success = function(kwargs){},
-failure = function(){},
-timeout = function(){}} = {}){ // https://stackoverflow.com/a/894877
-	var self = this; //JavaScript quirk work-around
-	
+CodeRunner.prototype.registerFormSend = function({ //Default arguments via object destructuring
+	presubmit = ((form) => {
+		return form;
+	}),
+	success = ((kwargs) => { //On success, update the contents of the 'STDOUT', 'STDERR', and 'retval' elements
+		this.STDOUT.value = kwargs.STDOUT;
+		this.STDERR.value = kwargs.STDERR;
+		this.retval.value = kwargs.retval;
+	}),
+	failure = (() => { //On failure, clean up and notify the user
+		this.STDOUT.value = '';
+		this.STDERR.value = 'Form couldn\'t be submitted properly...';
+		this.retval.value = '';
+	}),
+	timeout = (() => { //On timeout, clean up and notify the user
+		this.STDOUT.value = '';
+		this.STDERR.value = 'Server timed out...';
+		this.retval.value = '';
+	}),
+} = {}){ //Function body
 	//Set up 'onclick' event handler for the 'submit' button
-	this.submit.onclick = function(){
-		presubmit();
-		self.sendForm(self.makeForm(), function(kwargs){ //On success, update the contents of the 'STDOUT', 'STDERR', and 'retval' elements
-			self.STDOUT.value = kwargs.STDOUT;
-			self.STDERR.value = kwargs.STDERR;
-			self.retval.value = kwargs.retval;
-			success(kwargs); //Use the response object, potentially
-		}, function(){ //On failure, clean up and notify the user
-			self.STDOUT.value = '';
-			self.STDERR.value = 'Form couldn\'t be submitted properly...';
-			self.retval.value = '';
-			failure(); //Callback on failure, potentially
-		}, function(){ //On timeout, clean up and notify the user
-			self.STDOUT.value = '';
-			self.STDERR.value = 'Server timed out...';
-			self.retval.value = '';
-			timeout(); //Callback on timeout, potentially
-		});
-	};
+	this.submit.onclick = (() => {
+		/*
+		var form = this.makeForm();
+		console.log("form:---------------------------------------------------------------");
+		for(key of form.keys()){
+			console.log("key: "+key);
+			console.log("value: "+form.get(key));
+		}
+		form = presubmit(form);
+		console.log("form:---------------------------------------------------------------");
+		for(key of form.keys()){
+			console.log("key: "+key);
+			console.log("value: "+form.get(key));
+		}
+		this.sendForm(form, success, failure, timeout);
+		*/
+		this.sendForm(presubmit(this.makeForm()), success, failure, timeout);
+	});
 };
 
 //Call this whenever 'this' object is ready to be used or reset
@@ -164,12 +177,8 @@ CodeRunner.prototype.preset = function(){
  * No Return Value
  */
 CodeRunner.prototype.registerReset = function(onreset = function(){}){
-	this.onreset	= onreset;
-	var self	= this; //JavaScript quirk work-around
-	
-	this.reset.onclick = function(){
-		self.preset();
-	};
+	this.onreset		= onreset;
+	this.reset.onclick	= this.preset;
 };
 
 //Returns true if the line (string) contains only whitespace and false otherwise

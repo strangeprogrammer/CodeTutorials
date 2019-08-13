@@ -40,7 +40,7 @@ def runContainer(code, STDIN, mode, UUIDstr, defaults):
 		
 		dockerPath = os.path.join(BASE_DIR, 'docker', 'docker_wrapper', 'runContainer.sh')
 		if subprocess.call([dockerPath, path, boxType(mode), UUIDstr]) != 0:
-			defaults['STDERR'] = 'An unexpected error occured...'
+			defaults['STDERR'] = 'SERVER: An unexpected error occured...'
 			raise fragile.Break
 		
 		defaults = readProg(path, defaults.copy())

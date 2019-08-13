@@ -29,20 +29,19 @@ onformsend = function(){}} = {}){
 	this.runner = new CodeRunner(url, id);
 	this.editor = CodeMirror.fromTextArea(this.box.querySelector(".code"), options);
 	
-	var self = this; //JavaScript quirk work-around
-	
 	//Set up code reset protocol and perform initial reset
-	this.runner.registerReset(function(){
-		self.editor.setValue(CodeRunner.cleancode(self.runner.pcode));
+	this.runner.registerReset(() => {
+		this.editor.setValue(CodeRunner.cleancode(this.runner.pcode));
 		onreset();
 	});
 	this.runner.preset();
 	
 	//Set up presubmit hook
-	this.runner.registerFormSend({presubmit:function(){
-		self.editor.save();
-		self.box.querySelector(".STDOUT").value = "Processing...";
+	this.runner.registerFormSend({presubmit: (form) => {
+		this.editor.save();
+		this.box.querySelector(".STDOUT").value = "Processing...";
 		onformsend();
+		return form;
 	}});
 	
 	//Clean up the code language value from HTML

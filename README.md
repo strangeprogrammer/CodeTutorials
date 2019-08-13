@@ -65,7 +65,6 @@ The correct version of 'Django' can then be installed in the virtual environment
 ```bash
 pip3 install Django==2.1.7
 pip3 install djangocodemirror
-pip3 install django-summernote
 pip3 install django-bootstrap3
 ```
 
@@ -113,7 +112,7 @@ cd /var/www/html/CodeTutorials/
 source ./unpermutils.sh
 ```
 
-## SETTING UP THE SERVER
+## SETUP
 
 To set up the database and statically hosted files, run:
 
@@ -128,6 +127,12 @@ cd ./src
 
 Next, refer to the invocation of **buildimages.sh** in **/var/www/html/CodeTutorials/djangobox/src/docker/docker_wrapper/README.md** for information on setting up the Docker containers.
 
+## CREATING A TUTORIAL
+
+Refer to the file **djangobox/src/tutorials/HOWTO.md** to create a coding tutorial.
+
+## STARTING THE SERVER
+
 Make sure that you start the **docker.service** and **docker.socket** services:
 
 ```bash
@@ -140,10 +145,6 @@ Once all the above instructions have been completed, you can run the following f
 ```bash
 ./manage.py runserver
 ```
-
-## CREATING A TUTORIAL
-
-Refer to the file **djangobox/src/tutorials/HOWTO.md** to create a coding tutorial.
 
 ## INFORMATION ON APACHE AND DEPLOYMENT USAGE
 

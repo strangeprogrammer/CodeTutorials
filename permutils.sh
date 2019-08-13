@@ -16,7 +16,7 @@ UTILS_SETTINGS=$UTILS_DIR"/permutils_settings.sh"
 function changeperms {
 	if [ -n "$2" ]
 	then
-		find $2 -type d -o -type f -execdir sudo chown $1 \{\} +
+		find $2 \( -type d -o -type f \) -execdir sudo chown $1 \{\} +
 		find $2 -type d -execdir sudo chmod u+rwx,g+rwx \{\} +
 		find $2 -type f -execdir sudo chmod u+rw,g+rw \{\} +
 	else
