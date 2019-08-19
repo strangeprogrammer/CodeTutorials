@@ -27,7 +27,10 @@ Add page for teachers to add quizzes 		3 hrs		Daniel			2 hr		100		3 hrs			no
 Fix support for Apache
   and python non-Debug mode			3 hrs		Stephen			1 hr		100		12 hrs			no
 Spike python unit testing frameworks		5 hrs		N/A			2 hrs		0		0 hrs			n/a
+Investigate JavaScript unit testing frameworks	3 hrs		Stephen			2 hrs		100		15 hrs			no
 Remove accounts system (for now)		1 hr		Stephen			0 hrs		100		1 hr			no
 Make guide for creating tutorials		2 hrs		Stephen			2 hrs		100		5 hrs			no
 Check/test/enforce ADA compliance		TBD		TBD			TBD		0		0 hrs			n/a
 Work on licensing & other legal matters		TBD		TBD			TBD		0		0 hrs			n/a
+Investigate HTTPS support			TBD		TBD			TBD		0		0 hrs			n/a
+Investigate 'ulimit' controls			TBD		TBD			TBD		0		0 hrs			n/a

@@ -1,0 +1,9 @@
+{% extends 'jsunit.html' %}
+
+{% load static %}
+
+{% block testfile %}{% static 'client/codeClient.js' %}{% endblock testfile %}
+
+{% block tests %}
+	console.log("Hello, world!");
+{% endblock tests %}

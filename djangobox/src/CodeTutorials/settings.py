@@ -28,8 +28,10 @@ SECRET_KEY = 'ep0t%co@qqnmc@d&u1*95_=)9ou^3-@0#7wt45=*-w77mh2q-k'
 DEBUG = True
 
 if DEBUG == True:
+	UNITTEST = True # Currently, 'UNITTEST' has the same value as 'DEBUG', but you can change it to False while debugging if you want
 	ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 else:
+	UNITTEST = False
 	ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]'] # Change these hostnames for your production environment
 
 

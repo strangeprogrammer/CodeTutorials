@@ -21,6 +21,7 @@ urlpatterns = [
 	path('spikes/',		include('spikes.urls')),
 	path('docker/',		include('docker.urls')),
 	path('tutorials/',	include('tutorials.urls')),
+	path('client/',		include('client.urls')),
 ]
 
 # When putting the project into production, comment the following 4 lines (more information at the URL given afterward)

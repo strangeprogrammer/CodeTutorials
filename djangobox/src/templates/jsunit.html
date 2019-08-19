@@ -1,0 +1,16 @@
+{% load static %}
+
+<!doctype HTML>
+<html>
+	<head>
+		<link rel="stylesheet" href="{% static 'QUnit/qunit-2.9.2.css' %}"></link>
+		<script src="{% static 'QUnit/qunit-2.9.2.js' %}"></script>
+		<script src="{% block testfile %}{% endblock testfile %}"></script>
+		<script>
+			{% block tests %}{% endblock tests %}
+		</script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+	</body>
+</html>
