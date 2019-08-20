@@ -96,7 +96,7 @@ function changeperms {
 	local TO_WHOM=$1
 	shift
 	thruargs
-		find $INDEX \( -type d -o -type f \) -execdir sudo chown $TO_WHOM \{\} +
+		find $INDEX \( -type d -o -type f \) -execdir sudo chown --no-dereference $TO_WHOM \{\} +
 		find $INDEX -type d -execdir sudo chmod u+rwx,g+rwx \{\} +
 		find $INDEX -type f -execdir sudo chmod u+rw,g+rw \{\} +
 	unthruargs

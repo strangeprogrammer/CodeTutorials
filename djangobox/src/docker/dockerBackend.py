@@ -1,4 +1,7 @@
-from CodeTutorials.settings import BASE_DIR
+from CodeTutorials.settings import (
+	BASE_DIR,
+	CONT_TMP_PATH,
+)
 
 from .tools import (
 	readIn,
@@ -34,8 +37,8 @@ def readProg(path, defaults):
 # Makes sure the value of 'mode' is valid and runs the program provided by the client
 def runContainer(code, STDIN, mode, UUIDstr, defaults):
 	try:
-		path = os.path.join(BASE_DIR, 'docker', 'docker_wrapper', UUIDstr)
-		os.mkdir(path)
+		path = os.path.join(CONT_TMP_PATH, UUIDstr)
+		os.makedirs(path)
 		writeProg(path, code, STDIN)
 		
 		dockerPath = os.path.join(BASE_DIR, 'docker', 'docker_wrapper', 'runContainer.sh')

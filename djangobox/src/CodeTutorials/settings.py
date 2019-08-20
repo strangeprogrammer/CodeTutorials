@@ -145,6 +145,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Docker container creation & runtime options
 
+CONT_TMP_PATH = os.path.join('/tmp', 'CodeTutorials') # Where the relevant files for a container are stored
 CONT_OPTS = { # Command line arguments used with docker invocation
 	# Argument		Value		Unit
 	'--cpus ':		1,		# None
