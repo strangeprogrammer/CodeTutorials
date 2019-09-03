@@ -26,21 +26,20 @@ You can find information specifically for Ubuntu installation here:
 
 Remember to install the **containerd.io**, **docker-ce-cli**, and **docker-ce** packages, in that order.
 
-Installation of 'python3' and 'pip3' can be easily done through your package manager:
+Installation of **python3** and **pip3** can be easily done through your package manager:
 
 ```bash
 # For Linux distributions that use 'APT'
-sudo apt install python3
-sudo apt install python3-pip
+sudo apt install python3 python3-pip
 ```
 
-Installation of 'virtualenv' is also easy once 'pip3' has been installed:
+Installation of **virtualenv** is also easy once **pip3** has been installed:
 
 ```bash
 sudo pip3 install virtualenv
 ```
 
-There are some other packages that need to be installed within the virtual environment that are listed in the **setup** section of this document.
+There are some other packages that need to be installed within the virtual environment that are listed in **SETTING UP THE VIRTUAL ENVIRONMENT AND DJANGO**.
 
 ## SETTING UP THE VIRTUAL ENVIRONMENT AND DJANGO
 
@@ -60,12 +59,10 @@ cd ./djangobox
 source ./bin/activate
 ```
 
-The correct version of 'Django' can then be installed in the virtual environment along with 'Django-codemirror' and other neccesary packages:
+The correct version of **Django** can then be installed in the virtual environment along with **Django-codemirror** and other neccesary packages:
 
 ```bash
-pip3 install Django==2.1.7
-pip3 install djangocodemirror
-pip3 install django-bootstrap3
+pip3 install Django==2.1.7 djangocodemirror django-bootstrap3
 ```
 
 The following command can then be used to exit the virtual environment:
@@ -76,7 +73,7 @@ deactivate
 
 ## PROPER PROJECT PERMISSIONING
 
-In order for the server to be able to use docker, you must run the following command using the name of the owner of the project files (which is your own username for development purposes and 'www-data' for apache-related deployment purposes; it should be run one time each with either option for deployment development):
+In order for the server to be able to use docker, you must run the following command using the name of the owner of the project files (which is your own username for development purposes and **www-data** for apache-related deployment purposes; it should be run one time each with either option for deployment development):
 
 ```bash
 sudo usermod -aG docker [USER]
@@ -84,14 +81,14 @@ sudo usermod -aG docker [USER]
 
 You must log-in again after running the previous command for the changes to take effect.
 
-A tool named 'permutils.sh' has been provided to allow you greater control over permissions related to this project. Run the file with:
+A tool named **devtools.sh** has been provided to allow you greater control over permissions related to this project. Run the file with:
 
 ```bash
 cd /var/www/html/CodeTutorials/
-source ./permutils.sh
+source ./devtools.sh
 ```
 
-It will then provide you with some prompts. Once you have filled those out, the following functions (which require 'sudo' capabilities) will be available for you to use at the command line:
+It will then provide you with some prompts. Once you have filled those out, the following functions (which require **sudo** capabilities) will be available for you to use at the command line:
 
 ```bash
 developer	[DIRECTORY]	# Changes all files under the given directory to the developer's owner and group
@@ -101,15 +98,14 @@ openaccess	[DIRECTORY]	# For all files under the given directory, grants file re
 closeaccess	[DIRECTORY]	# For all files under the given directory, revokes all permissions from everyone except the owner
 ```
 
-Depending on whether you are using the project solely for development, development of the deployment version, or deployment only, you should invoke the 'developer', 'devdeploy', or 'deployment' function (respectively). It only needs to be invoked upon the files that need to have their owner & group changed (this is almost exclusively 'CodeTutorials/djangobox/src' and files/directories within it, though you may have to run it every so often depending upon your 'umask' value).
+Depending on whether you are using the project solely for development, development of the deployment version, or deployment only, you should invoke the **developer**, **devdeploy**, or **deployment** function (respectively). It only needs to be invoked upon the files or that need to have their owner & group changed (this is almost exclusively **CodeTutorials/djangobox/src** and files/directories within it, though you may have to run it every so often depending upon your **umask** value).
 
-Finally, you will have to give executable permissions to both the owner and group of the file 'CodeTutorials/djangobox/src/docker/docker_wrapper/runContainer.sh'.
+Finally, you will have to give executable permissions to both the owner and group of **CodeTutorials/djangobox/src/docker/docker_wrapper/runContainer.sh**, and give execute permission to the owner of **CodeTutorials/djangobox/src/docker/docker_wrapper/buildimages.sh**.
 
-To perform shell-level cleanup, the file 'unpermutils.sh' can be run like so:
+To deactivate the developer tools, simply run the following:
 
 ```bash
-cd /var/www/html/CodeTutorials/
-source ./unpermutils.sh
+undevtools
 ```
 
 ## SETUP
@@ -125,7 +121,7 @@ cd ./src
 ./manage.py collectstatic <<<"yes"
 ```
 
-Next, refer to the invocation of **buildimages.sh** in **/var/www/html/CodeTutorials/djangobox/src/docker/docker_wrapper/README.md** for information on setting up the Docker containers.
+Next, refer to the invocation of **buildimages.sh** in **CodeTutorials/djangobox/src/docker/docker_wrapper/README.md** for information on setting up the Docker containers.
 
 ## CREATING A TUTORIAL
 
@@ -148,7 +144,9 @@ Once all the above instructions have been completed, you can run the following f
 
 ## INFORMATION ON APACHE AND DEPLOYMENT USAGE
 
-The file **WSGI_Config.txt** contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming the project is located at **/var/www/html/CodeTutorials**). You must read some notes at the beginning of said file about proper filesystem paths if you are not using the default ones.  Otherwise, you should be able to just start your apache server and navigate to the relevant URLs of your choice.
+In order to allow Apache to use the docker containers, refer to the 1st paragraph of **PROPER PROJECT PERMISSIONING**.
+
+The file **WSGI_Config.txt** contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming the project is located at **/var/www/html/CodeTutorials/**). You must read some notes at the beginning of said file about proper filesystem paths if you are not using the default ones.  Otherwise, you should be able to just start your apache server and navigate to the relevant URLs of your choice.
 
 The file **djangobox/src/CodeTutorials/urls.py** contains information about static URLs that MUST be heeded if putting the server into a deployment environment. If you're just developing, however, that shouldn't be a problem. Note that the following command (which is used to copy static files to the appropriate location before usage) will only work on apps listed under the **INSTALLED_APPS** variable in **djangobox/src/CodeTutorials/settings.py**:
 

@@ -36,13 +36,14 @@ onformsend = function(){}} = {}){
 	});
 	this.runner.preset();
 	
-	//Set up presubmit hook
-	this.runner.registerFormSend({presubmit: (form) => {
-		this.editor.save();
-		this.box.querySelector(".STDOUT").value = "Processing...";
-		onformsend();
-		return form;
-	}});
+	//Set up hooks form submission hooks
+	this.runner.registerFormSend({
+		presubmit: () => {
+			this.editor.save();
+			this.box.querySelector(".STDOUT").value = "Processing...";
+			onformsend();
+		}
+	});
 	
 	//Clean up the code language value from HTML
 	var codelang = this.box.querySelector(".codelang");

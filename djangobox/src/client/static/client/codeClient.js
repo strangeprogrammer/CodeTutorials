@@ -116,9 +116,7 @@ CodeRunner.prototype.sendForm = function(form, success, failure, timeout){
  * No Return Value
  */
 CodeRunner.prototype.registerFormSend = function({ //Default arguments via object destructuring
-	presubmit = ((form) => {
-		return form;
-	}),
+	presubmit = (() => {}),
 	success = ((kwargs) => { //On success, update the contents of the 'STDOUT', 'STDERR', and 'retval' elements
 		this.STDOUT.value = kwargs.STDOUT;
 		this.STDERR.value = kwargs.STDERR;
@@ -137,22 +135,8 @@ CodeRunner.prototype.registerFormSend = function({ //Default arguments via objec
 } = {}){ //Function body
 	//Set up 'onclick' event handler for the 'submit' button
 	this.submit.onclick = (() => {
-		/*
-		var form = this.makeForm();
-		console.log("form:---------------------------------------------------------------");
-		for(key of form.keys()){
-			console.log("key: "+key);
-			console.log("value: "+form.get(key));
-		}
-		form = presubmit(form);
-		console.log("form:---------------------------------------------------------------");
-		for(key of form.keys()){
-			console.log("key: "+key);
-			console.log("value: "+form.get(key));
-		}
-		this.sendForm(form, success, failure, timeout);
-		*/
-		this.sendForm(presubmit(this.makeForm()), success, failure, timeout);
+		presubmit();
+		this.sendForm(this.makeForm(), success, failure, timeout);
 	});
 };
 

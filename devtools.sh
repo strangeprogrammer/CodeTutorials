@@ -50,16 +50,18 @@ else
 	read SERVER_GROUP
 	
 	
-	DEPSERVER_START="sudo systemctl start apache2.service"
-	echo -n "Input deployment server startup command (defaults to '$DEPSERVER_START'): "
+	DEPSERVER_START="sudo systemctl start apache2.service docker.service docker.socket"
+	echo "Input deployment server startup command:"
+	echo -n "(default: '$DEPSERVER_START'): "
 	read
 	if [ -n "$REPLY" ]
 	then
 		DEPSERVER_START=$REPLY
 	fi
 	
-	DEPSERVER_STOP="sudo systemctl stop apache2.service"
-	echo -n "Input deployment server shutdown command (defaults to '$DEPSERVER_STOP'): "
+	DEPSERVER_STOP="sudo systemctl stop apache2.service docker.service docker.socket"
+	echo "Input deployment server shutdown command:"
+	echo -n "(default: '$DEPSERVER_STOP'):  "
 	read
 	if [ -n "$REPLY" ]
 	then

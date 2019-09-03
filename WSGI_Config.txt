@@ -1,3 +1,5 @@
+	### BEGIN CODETUTORIALS WSGI CONF
+	
 	# Notes:
 	# You may need to change all instances of:
 	# 	'/var/www/html/CodeTutorials' to wherever you've placed the main project directory
@@ -31,3 +33,5 @@
 	<Directory /var/www/html/static>
 		Require all granted
 	</Directory>
+	
+	### END CODETUTORIALS WSGI CONF
