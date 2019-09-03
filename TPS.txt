@@ -34,3 +34,4 @@ Check/test/enforce ADA compliance		TBD		TBD			TBD		0		0 hrs			n/a
 Work on licensing & other legal matters		TBD		TBD			TBD		0		0 hrs			n/a
 Investigate HTTPS support			TBD		TBD			TBD		0		0 hrs			n/a
 Investigate 'ulimit' controls			TBD		TBD			TBD		0		0 hrs			n/a
+Create installation script			10 hrs		Stephen			2 hrs		0		0 hrs			n/a
