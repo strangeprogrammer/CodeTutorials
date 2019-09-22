@@ -15,6 +15,9 @@ This is a list of software and their minimum versions required on the host in or
 	python3 v.3.5.3
 	pip3 v.9.0.1
 	virtualenv v.15.1.0
+	
+	# Misc
+	git (any version compatible with github, prefer latest)
 
 Information to install docker can be found at the following URL:
 
@@ -26,26 +29,33 @@ You can find information specifically for Ubuntu installation here:
 
 Remember to install the **containerd.io**, **docker-ce-cli**, and **docker-ce** packages, in that order.
 
-Installation of **python3** and **pip3** can be easily done through your package manager:
+Installation of **python3**, **pip3**, **virtualenv**, and **git** can be easily done through your package manager:
 
 ```bash
 # For Linux distributions that use 'APT'
-sudo apt install python3 python3-pip
-```
-
-Installation of **virtualenv** is also easy once **pip3** has been installed:
-
-```bash
-sudo pip3 install virtualenv
+sudo apt install python3 python3-pip virtualenv git
 ```
 
 There are some other packages that need to be installed within the virtual environment that are listed in **SETTING UP THE VIRTUAL ENVIRONMENT AND DJANGO**.
 
 ## SETTING UP THE VIRTUAL ENVIRONMENT AND DJANGO
 
-First, **git clone** the project repository into **/var/www/html/CodeTutorials/**. The following instructions assume that you (or the server user (apache)) will have been granted sufficient access to all of the rest of the files within the project.
+The following instructions assume that you (or the server user (apache)) will have been granted sufficient access to all of the rest of the files within the project. As a result, you may want to give your own user sufficient permissions as necessary to do what is required.
 
-You must also set up a python virtual environment (basically just allows you to keep a separate version of python and python packages on the system):
+First, if the directory **/var/www/html/** does not exist, you may create it now in order to clone the repository properly:
+
+```bash
+# '1777' is an example directory mode which comes in useful for development
+sudo mkdir -p -m 1777 /var/www/html/
+```
+
+Next, **git clone** the project repository into **/var/www/html/CodeTutorials/**:
+
+```bash
+git clone https://github.com/strangeprogrammer/CodeTutorials /var/www/html/CodeTutorials/
+```
+
+You must also set up a python virtual environment (used to get around python version conflicts easily):
 
 ```bash
 cd /var/www/html/CodeTutorials/
@@ -88,7 +98,7 @@ cd /var/www/html/CodeTutorials/
 source ./devtools.sh
 ```
 
-It will then provide you with some prompts. Once you have filled those out, the following functions (which require **sudo** capabilities) will be available for you to use at the command line:
+It will then provide you with some prompts to fill out, after which the following functions (which may require **sudo** capabilities) will be available for you to use at the command line:
 
 ```bash
 developer	[DIRECTORY]	# Changes all files under the given directory to the developer's owner and group
@@ -96,11 +106,13 @@ devdeploy	[DIRECTORY]	# Changes all files under the given directory to the devel
 deployment	[DIRECTORY]	# Changes all files under the given directory to the server's owner and group
 openaccess	[DIRECTORY]	# For all files under the given directory, grants file read and directory traversal permission to everyone
 closeaccess	[DIRECTORY]	# For all files under the given directory, revokes all permissions from everyone except the owner
+openproj				# Calls 'openaccess' upon 'CodeTutorials/djangobox/src/' and deals with a pesky file's permissions
+closeproj				# Calls 'closeaccess' upon 'CodeTutorials/djangobox/src/' and deals with a pesky file's permissions
 ```
 
-Depending on whether you are using the project solely for development, development of the deployment version, or deployment only, you should invoke the **developer**, **devdeploy**, or **deployment** function (respectively). It only needs to be invoked upon the files or that need to have their owner & group changed (this is almost exclusively **CodeTutorials/djangobox/src** and files/directories within it, though you may have to run it every so often depending upon your **umask** value).
+Depending on whether you are using the project solely for development, development of the deployment version, or deployment only, you should invoke the **developer**, **devdeploy**, or **deployment** function (respectively). It only needs to be invoked upon the files that need to have their owner & group changed (this is almost exclusively **CodeTutorials/djangobox/src** and files/directories within it, though you may have to run it every so often on a different directory depending upon your **umask** value).
 
-Finally, you will have to give executable permissions to both the owner and group of **CodeTutorials/djangobox/src/docker/docker_wrapper/runContainer.sh**, and give execute permission to the owner of **CodeTutorials/djangobox/src/docker/docker_wrapper/buildimages.sh**.
+Finally, As part of the installation process, you should run **openbox** at least once in order to change some permissions.
 
 To deactivate the developer tools, simply run the following:
 

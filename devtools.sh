@@ -12,26 +12,9 @@ undevtools &>/dev/null
 
 TOOLS_PROMPT="(devtools) "
 TOOLS_DIR=$(realpath -m $(dirname "$PWD/$0"))
-TOOLS_SETTINGS=$TOOLS_DIR"/devtools_settings.sh"
-SRC_DIR=$TOOLS_DIR"/djangobox/src"
-MANAGE_PY=$SRC_DIR"/manage.py"
-
-# Useful aliases
-
-alias thruargs='
-if [ -n "$*" ]
-then
-	local INDEX
-	for INDEX in "$@"
-	do
-'
-
-alias unthruargs='
-	done
-else
-	echo "Error: Missing parameter."
-fi
-'
+TOOLS_SETTINGS=$TOOLS_DIR/devtools_settings.sh
+SRC_DIR=$TOOLS_DIR/djangobox/src
+MANAGE_PY=$SRC_DIR/manage.py
 
 # Initialize or load configuration file
 
@@ -40,34 +23,54 @@ then
 	source $TOOLS_SETTINGS
 	echo "Settings loaded from file '$TOOLS_SETTINGS' (delete it to reset this dialog)."
 else
+	# Configure developer user and group
 	echo -n "Input developer username:  "
 	read DEV_USER
 	echo -n "Input developer groupname: "
 	read DEV_GROUP
-	echo -n "Input server username:     "
-	read SERVER_USER
-	echo -n "Input server groupname:    "
-	read SERVER_GROUP
 	
+	# Configure server user and group
+	SERVER_USER="nobody"
+	echo "Input server username:     "
+	echo -n "(default: '$SERVER_USER'):       "
+	read
+	if [ -n "$REPLY" ]
+	then
+		SERVER_USER=$REPLY
+	fi
 	
-	DEPSERVER_START="sudo systemctl start apache2.service docker.service docker.socket"
+	SERVER_GROUP="nogroup"
+	echo "Input server groupname:    "
+	echo -n "(default: '$SERVER_GROUP'):      "
+	read
+	if [ -n "$REPLY" ]
+	then
+		SERVER_GROUP=$REPLY
+	fi
+	
+	# Configure deployment server commands
+	DEPSERVER_START="true"
 	echo "Input deployment server startup command:"
-	echo -n "(default: '$DEPSERVER_START'): "
+	echo "(recommended: 'sudo systemctl start apache2.service containerd.service docker.service docker.socket'):"
+	echo -n "(default: '$DEPSERVER_START'):         "
 	read
 	if [ -n "$REPLY" ]
 	then
 		DEPSERVER_START=$REPLY
 	fi
 	
-	DEPSERVER_STOP="sudo systemctl stop apache2.service docker.service docker.socket"
+	DEPSERVER_STOP="true"
 	echo "Input deployment server shutdown command:"
-	echo -n "(default: '$DEPSERVER_STOP'):  "
+	echo "(recommended: 'sudo systemctl stop apache2.service containerd.service docker.service docker.socket'):"
+	echo -n "(default: '$DEPSERVER_STOP'):         "
 	read
 	if [ -n "$REPLY" ]
 	then
 		DEPSERVER_STOP=$REPLY
 	fi
 	
+	
+	# Possibly, save settings
 	echo -n "Would you like to save these settings? "
 	read YN
 	echo
@@ -97,78 +100,107 @@ PS1=$TOOLS_PROMPT$PS1
 function changeperms {
 	local TO_WHOM=$1
 	shift
-	thruargs
-		find $INDEX \( -type d -o -type f \) -execdir sudo chown --no-dereference $TO_WHOM \{\} +
-		find $INDEX -type d -execdir sudo chmod u+rwx,g+rwx \{\} +
-		find $INDEX -type f -execdir sudo chmod u+rw,g+rw \{\} +
-	unthruargs
+	if [ -n "$*" ]
+	then
+		local INDEX
+		for INDEX in "$@"
+		do
+			find $INDEX \( -type d -o -type f \) -execdir sudo chown --no-dereference $TO_WHOM \{\} +
+			find $INDEX -type d -execdir sudo chmod u+rwx,g+rwx \{\} +
+			find $INDEX -type f -execdir sudo chmod u+rw,g+rw \{\} +
+		done
+	else
+		echo "Error: Missing parameter."
+	fi
 }
 
 
 ### User-end functions
 
+# Removes any functionality of this script from your terminal
 function undevtools {
 	PS1=${PS1#$TOOLS_PROMPT}
 	
 	unset -v TOOLS_PROMPT TOOLS_DIR TOOLS_SETTINGS SRC_DIR MANAGE_PY DEV_USER DEV_GROUP SERVER_USER SERVER_GROUP DEPSERVER_START DEPSERVER_STOP	1>/dev/null
-	unset -f undevtools changeperms developer devdeploy deployment openaccess openbox closeaccess closebox depserver killdepserver			1>/dev/null
+	unset -f undevtools changeperms developer devdeploy deployment openaccess openproj closeaccess closeproj depserver killdepserver		1>/dev/null
 	
 	unalias collectstatic
 }
 
 # Ownership tools
 
+# Changes ownership and group of the given directories to the developer
 function developer {
 	changeperms $DEV_USER:$DEV_GROUP "$@"
 }
 
+# Changes ownership of the given directories to the developer and group to the server
 function devdeploy {
 	changeperms $DEV_USER:$SERVER_GROUP "$@"
 }
 
+# Changes ownership and group of the given directories to the server
 function deployment {
 	changeperms $SERVER_USER:$SERVER_GROUP "$@"
 }
 
 # Permission tools
 
+# Recursively adds reading permission for everyone upon the given directories
 function openaccess {
-	thruargs
-		find $INDEX -type d -execdir sudo chmod a+rx,ug+w \{\} +
-		find $INDEX -type f -execdir sudo chmod a+r,ug+w \{\} +
-	unthruargs
+	if [ -n "$*" ]
+	then
+		local INDEX
+		for INDEX in "$@"
+		do
+			find $INDEX -type d -execdir sudo chmod a+rx,ug+w \{\} +
+			find $INDEX -type f -execdir sudo chmod a+r,ug+w \{\} +
+		done
+	else
+		echo "Error: Missing parameter."
+	fi
 }
 
-function openbox {
-	openaccess $SRC_DIR/
-	sudo chmod ug+x $SRC_DIR"/docker/docker_wrapper/runContainer.sh"
-}
-
+# Recursively revokes all permissions for everyone except the owner upon the given directories
 function closeaccess {
-	thruargs
-		find $INDEX \( -type f -o -type d \) -execdir sudo chmod go-rwx \{\} +
-	unthruargs
+	if [ -n "$*" ]
+	then
+		local INDEX
+		for INDEX in "$@"
+		do
+			find $INDEX \( -type f -o -type d \) -execdir sudo chmod go-rwx \{\} +
+		done
+	else
+		echo "Error: Missing parameter."
+	fi
 }
 
-function closebox {
+# Makes the project's files accessible to everyone
+function openproj {
+	openaccess $SRC_DIR/
+	sudo chmod ug+x $SRC_DIR/docker/docker_wrapper/runContainer.sh
+	sudo chmod u+x $SRC_DIR/docker/docker_wrapper/buildimages.sh
+}
+
+# Makes the project's files inaccessible to everyone except the owner
+function closeproj {
+	sudo chmod g-x $SRC_DIR/docker/docker_wrapper/runContainer.sh
 	closeaccess $SRC_DIR/
 }
 
 # Server tools
 
 eval "
+# Starts the deployment server
 function depserver {
 	$DEPSERVER_START
 }
 
+# Stops the deployment server
 function killdepserver {
 	$DEPSERVER_STOP
 }
 "
 
+# Convenience for updating static files
 alias collectstatic="$MANAGE_PY collectstatic <<<'yes' 1>/dev/null"
-
-
-### Cleanup
-
-unalias thruargs unthruargs

@@ -46,7 +46,7 @@ then
 			echo "Folder:         "$FOLDER
 			echo "Image:          "$IMAGENAME
 			echo "Container Name: "$CONTNAME
-			if $DEBUG
+			if [ "$DEBUG" = "true" ]
 			then
 				echo "UID:            "$(id -ru)
 				echo "EUID:           "$(id -u)
@@ -82,19 +82,19 @@ loginvoke
 ### Important subroutines
 
 function createCont(){ # Explicitly create the container
-	if $DEBUG; then echo "$MYNAME Creating container"; fi
+	if [ "$DEBUG" = "true" ]; then echo "$MYNAME Creating container"; fi
 	docker create $CONT_RUNOPTS --name $CONTNAME $IMAGENAME
 }
 
 function toCont(){ # Copy the code and STDIN into the container
-	if $DEBUG; then echo "$MYNAME Copying files to container"; fi
+	if [ "$DEBUG" = "true" ]; then echo "$MYNAME Copying files to container"; fi
 	docker cp $FOLDER/code $CONTNAME:/home/guest/code	&
 	docker cp $FOLDER/STDIN $CONTNAME:/home/guest/STDIN	&
 	wait
 }
 
 function runCont(){ # Start the container AND WAIT FOR IT TO STOP (otherwise race conditions are formed when copying files out of the container)
-	if $DEBUG; then echo "$MYNAME Running container"; fi
+	if [ "$DEBUG" = "true" ]; then echo "$MYNAME Running container"; fi
 	docker start $CONTNAME
 	{	# Wait to kill the container at the designated time
 		sleep $CONT_GRACE
@@ -112,7 +112,7 @@ function runCont(){ # Start the container AND WAIT FOR IT TO STOP (otherwise rac
 }
 
 function fromCont(){ # Copy the STDOUT, STDERR, and return value out of the container
-	if $DEBUG; then echo "$MYNAME Copying files from container"; fi
+	if [ "$DEBUG" = "true" ]; then echo "$MYNAME Copying files from container"; fi
 	docker cp $CONTNAME:/home/guest/STDOUT $FOLDER/STDOUT	&
 	docker cp $CONTNAME:/home/guest/STDERR $FOLDER/STDERR	&
 	docker cp $CONTNAME:/home/guest/retval $FOLDER/retval	&
@@ -120,7 +120,7 @@ function fromCont(){ # Copy the STDOUT, STDERR, and return value out of the cont
 }
 
 function rmCont(){ # Remove the container since it's no longer needed
-	if $DEBUG; then echo "$MYNAME Removing container"; fi
+	if [ "$DEBUG" = "true" ]; then echo "$MYNAME Removing container"; fi
 	docker rm -f $CONTNAME || true
 }
 
@@ -150,10 +150,12 @@ function main(){
 }
 
 # START ZE PROGRAM!!!
-if $DEBUG; then
+if [ "$DEBUG" = "true" ]; then
 	echo "$MYNAME Invocation options: $CONT_RUNOPTS"
+	echo "$MYNAME Invocation options: $CONT_RUNOPTS" 1>&3
 	main
 	echo "$MYNAME Done with container management"
+	echo "$MYNAME Done with container management" 1>&3
 else
 	main &>/dev/null
 fi

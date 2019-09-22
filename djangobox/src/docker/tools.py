@@ -1,7 +1,7 @@
 from .models import SessionNum
 from CodeTutorials.settings import (
-	CONT_MAXWRITE,
-	CONT_MAXREAD,
+	CONT_MAXINPUT,
+	CONT_MAXOUTPUT,
 )
 from contextlib import closing
 
@@ -9,7 +9,7 @@ from contextlib import closing
 def readIn(path):
 	try:
 		with closing(open(path, 'r')) as f:
-			retval = f.read(CONT_MAXREAD) # Read everything
+			retval = f.read(CONT_MAXOUTPUT) # Read everything
 			return retval
 	except Exception:
 		return ''
@@ -17,7 +17,7 @@ def readIn(path):
 # Write out a whole string to a file
 def writeOut(string, path):
 	with closing(open(path, 'w')) as f:
-		f.write(string[0:CONT_MAXWRITE])
+		f.write(string[0:CONT_MAXINPUT])
 
 #Best way I've seen around skip-ahead goto's in a high-level language so far:
 #https://stackoverflow.com/a/23665658

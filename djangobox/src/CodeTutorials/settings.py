@@ -147,21 +147,27 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 CONT_TMP_PATH = os.path.join('/tmp', 'CodeTutorials') # Where the relevant files for a container are stored
 CONT_OPTS = { # Command line arguments used with docker invocation
-	# Argument		Value		Unit
-	'--cpus ':		1,		# None
-	'--memory=':		64 * 2 ** 20,	# Bytes
-	'--pids-limit=':	32,		# None
+	# Argument		Value			Unit
+	'--cpus=':		1,			# Percentage of CPU time (4 CPU's -> 400% = 4 total)
+	'--memory=':		64 * 2 ** 20,		# Bytes
+	'--kernel-memory=':	64 * 2 ** 20,		# Bytes
+	'--shm-size=':		64 * 2 ** 20,		# Bytes
+	'--pids-limit=':	32,			# PID's
+	'--network=':		'none',			# Enumeration
+	'--security-opt ':	'no-new-privileges',	# Enumeration
+	'--ipc=':		'private',		# Enumeration
 }
 
 # Change these to '-1' to allow unlimited write and read size to/from the input/output files
-CONT_MAXWRITE	= 4 * 2 ** 10
-CONT_MAXREAD	= 4 * 2 ** 10
+# Variable		Value		Unit
+CONT_MAXINPUT	=	4 * 2 ** 10	# Bytes
+CONT_MAXOUTPUT	=	4 * 2 ** 10	# Bytes
 
 # Container timeout values
-CONT_RUNOPTS	= ' '.join(map(lambda opt: opt + str(CONT_OPTS[opt]), CONT_OPTS)) # Don't mess with this
-CONT_GRACE	= 10
-CONT_TIMEOUT	= 0
+CONT_RUNOPTS	= ' '.join(map(lambda opt: str(opt) + str(CONT_OPTS[opt]), CONT_OPTS)) # Don't mess with this
+CONT_GRACE	= 10	# Time until container should be stopped
+CONT_TIMEOUT	= 0	# Time given after grace period
 
-os.environ['CONT_RUNOPTS']	= CONT_RUNOPTS
+os.environ['CONT_RUNOPTS']	= str(CONT_RUNOPTS)
 os.environ['CONT_GRACE']	= str(CONT_GRACE)
 os.environ['CONT_TIMEOUT']	= str(CONT_TIMEOUT)

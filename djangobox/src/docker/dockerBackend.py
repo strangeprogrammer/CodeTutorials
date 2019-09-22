@@ -52,6 +52,6 @@ def runContainer(code, STDIN, mode, UUIDstr, defaults):
 	except Exception as e:
 		print(e)
 	finally:
-		shutil.rmtree(path) # It's possible to have a dangling directory if 'shutil.rmtree' fails (unlikely), though the correct output will still be displayed on the screen
+		shutil.rmtree(path) # It's possible to have a dangling directory if 'shutil.rmtree' fails (unlikely), though the correct output may still be displayed on the screen
 	
 	return defaults
