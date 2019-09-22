@@ -14,13 +14,11 @@ Contains the docker build image for R.
 Automatically builds docker images when run.
 Invocation:
 
-	sudo ./buildimages.sh [UID] [GID]
+	sudo ./buildimages.sh
 
-Keep in mind that the command **docker cp** (which is used internally) preserves UID and GID values through the copying process. This means that if the files within a client directory are created with UID and GID **1234** then, inside the container, whichever user has UID **1234** and whichever group has GID '1234' will have access to the files.
-
-The *most secure option* is to use the UID and GID of the server account during production, so as to give away as little user information as possible to the client, and so as to contain any maliciously uploaded code to affecting other server files instead of the whole system.
-
-*For development*, it may be simplest to use the UID and GID of your own user account (easily obtainable with **$(id -u)** and **$(id -g)**) (though ultimately you should know enough about your own machine to make a wiser decision if necessary).
+Notes:
+The containers generated are called 'gccbox', 'pythonbox', and 'rbox'.
+The UID and GID of the user 'guest' within the generated containers will be '1001'.
 
 #### ./runContainer.sh
 Runs the code in the given folder with the given image.

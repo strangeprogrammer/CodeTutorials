@@ -1,7 +1,6 @@
 FROM r-base:3.5.3
 ARG uid
 ARG gid
-RUN deluser --remove-all-files docker
 RUN addgroup --disabled-password --gid $gid guest && adduser --disabled-password --home /home/guest --gecos "" --gid $gid --uid $uid guest
 WORKDIR /home/guest
 #CMD [ "bash", "-c", "

@@ -5,11 +5,13 @@
 set -e
 set -o pipefail
 
+BUILDUID=1001
+BUILDGID=1001
 
 buildimages() {
-	docker build --build-arg uid=$1 --build-arg gid=$2 -t gccbox -f ./Dockerfile.c .
-	docker build --build-arg uid=$1 --build-arg gid=$2 -t rbox -f ./Dockerfile.R .
-	docker build --build-arg uid=$1 --build-arg gid=$2 -t pythonbox -f ./Dockerfile.py .
+	sudo docker build --build-arg uid=$BUILDUID --build-arg gid=$BUILDGID -t gccbox -f ./Dockerfile.c .
+	sudo docker build --build-arg uid=$BUILDUID --build-arg gid=$BUILDGID -t rbox -f ./Dockerfile.R .
+	sudo docker build --build-arg uid=$BUILDUID --build-arg gid=$BUILDGID -t pythonbox -f ./Dockerfile.py .
 }
 
-buildimages $1 $2
+buildimages
