@@ -23,7 +23,7 @@ def writeOut(string, path):
 #https://stackoverflow.com/a/23665658
 class fragile:
 	class Break(Exception):
-		"""Break out of the with statement"""
+		"""Break out of the 'with' statement"""
 	
 	def __init__(self, value):
 		self.value = value

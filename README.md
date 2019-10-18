@@ -122,12 +122,19 @@ undevtools
 
 ## SETUP
 
-To set up the database and statically hosted files, run:
+To set up the database and statically hosted files, first activate the virtual environment and change directories:
 
 ```bash
 cd /var/www/html/CodeTutorials/djangobox
 source ./bin/activate
 cd ./src
+```
+
+**NOTE:** Remember the previous commands as they may be used implicitly within this document.
+
+Once you have done that, run the following:
+
+```bash
 ./manage.py makemigrations
 ./manage.py migrate
 ./manage.py collectstatic <<<"yes"
@@ -141,24 +148,36 @@ Refer to the file **djangobox/src/tutorials/HOWTO.md** to create a coding tutori
 
 ## STARTING THE SERVER
 
-Make sure that you start the **docker.service** and **docker.socket** services:
+If you are runnning the server in deployment mode, make sure that you start the **apache2.service**, **containerd.service**, **docker.service**, and **docker.socket** services:
 
 ```bash
 # For Ubuntu and other systems that use 'systemd'
-sudo systemctl start docker.service docker.socket
+sudo systemctl start apache2.service containerd.service docker.service docker.socket # Starts the server
+sudo systemctl stop apache2.service containerd.service docker.service docker.socket # Stops the server
 ```
 
-Once all the above instructions have been completed, you can run the following for development:
+If you are running the server in development-depoyment mode, there is a shortcut that you can use if you've sourced **devtools.sh**:
 
 ```bash
-./manage.py runserver
+# For Ubuntu and other systems that use 'systemd'
+depserver # Starts the server
+killdepserver # Stops the server
+```
+
+If you are running the server solely for development, you can run django's built-in server using the following:
+
+```bash
+./manage.py runserver # Starts the server
+# Ctrl + C stops the server
 ```
 
 ## INFORMATION ON APACHE AND DEPLOYMENT USAGE
 
 In order to allow Apache to use the docker containers, refer to the 1st paragraph of **PROPER PROJECT PERMISSIONING**.
 
-The file **WSGI_Config.txt** contains the relevant lines that you'll want to put in your apache settings in order to run the project on an apache server (assuming the project is located at **/var/www/html/CodeTutorials/**). You must read some notes at the beginning of said file about proper filesystem paths if you are not using the default ones.  Otherwise, you should be able to just start your apache server and navigate to the relevant URLs of your choice.
+The file **WSGI_Config.txt** contains the relevant lines that you'll want to copy into Apache's 'wsgi.conf' module file in order to run the project on an apache server (assuming the project is located at **/var/www/html/CodeTutorials/**). If you are unsure about Apache's default configuration path, you can find out by starting Apache and navigating to [localhost](localhost). As an example, the path would be **/etc/apache2/mods-enabled/wsgi.conf** on Ubuntu.
+
+You must read some notes at the beginning of said WSGI file about proper filesystem paths if you are not using the default ones.  Otherwise, you should be able to just start your apache server and navigate to the relevant URLs of your choice.
 
 The file **djangobox/src/CodeTutorials/urls.py** contains information about static URLs that MUST be heeded if putting the server into a deployment environment. If you're just developing, however, that shouldn't be a problem. Note that the following command (which is used to copy static files to the appropriate location before usage) will only work on apps listed under the **INSTALLED_APPS** variable in **djangobox/src/CodeTutorials/settings.py**:
 
