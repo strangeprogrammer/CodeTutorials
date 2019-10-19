@@ -10,84 +10,11 @@ undevtools &>/dev/null
 
 # Global and static variables
 
+source ./makesettings.sh
+
 TOOLS_PROMPT="(devtools) "
-TOOLS_DIR=$(realpath -m $(dirname "$PWD/$0"))
-TOOLS_SETTINGS=$TOOLS_DIR/devtools_settings.sh
-SRC_DIR=$TOOLS_DIR/djangobox/src
+SRC_DIR=$SETTINGS_DIR/djangobox/src
 MANAGE_PY=$SRC_DIR/manage.py
-
-# Initialize or load configuration file
-
-if [ -f $TOOLS_SETTINGS ]
-then
-	source $TOOLS_SETTINGS
-	echo "Settings loaded from file '$TOOLS_SETTINGS' (delete it to reset this dialog)."
-else
-	# Configure developer user and group
-	echo -n "Input developer username:  "
-	read DEV_USER
-	echo -n "Input developer groupname: "
-	read DEV_GROUP
-	
-	# Configure server user and group
-	SERVER_USER="nobody"
-	echo "Input server username:     "
-	echo -n "(default: '$SERVER_USER'):       "
-	read
-	if [ -n "$REPLY" ]
-	then
-		SERVER_USER=$REPLY
-	fi
-	
-	SERVER_GROUP="nogroup"
-	echo "Input server groupname:    "
-	echo -n "(default: '$SERVER_GROUP'):      "
-	read
-	if [ -n "$REPLY" ]
-	then
-		SERVER_GROUP=$REPLY
-	fi
-	
-	# Configure deployment server commands
-	DEPSERVER_START="true"
-	echo "Input deployment server startup command:"
-	echo "(recommended: 'sudo systemctl start apache2.service containerd.service docker.service docker.socket'):"
-	echo -n "(default: '$DEPSERVER_START'):         "
-	read
-	if [ -n "$REPLY" ]
-	then
-		DEPSERVER_START=$REPLY
-	fi
-	
-	DEPSERVER_STOP="true"
-	echo "Input deployment server shutdown command:"
-	echo "(recommended: 'sudo systemctl stop apache2.service containerd.service docker.service docker.socket'):"
-	echo -n "(default: '$DEPSERVER_STOP'):         "
-	read
-	if [ -n "$REPLY" ]
-	then
-		DEPSERVER_STOP=$REPLY
-	fi
-	
-	
-	# Possibly, save settings
-	echo -n "Would you like to save these settings? "
-	read YN
-	echo
-	if [[ "$YN" =~ ^[Yy]([Ee][Ss])?$ ]]
-	then
-		cat >$TOOLS_SETTINGS <<- EOF
-		#!/bin/false
-		DEV_USER="$DEV_USER"
-		DEV_GROUP="$DEV_GROUP"
-		SERVER_USER="$SERVER_USER"
-		SERVER_GROUP="$SERVER_GROUP"
-		DEPSERVER_START="$DEPSERVER_START"
-		DEPSERVER_STOP="$DEPSERVER_STOP"
-		EOF
-		echo "Settings saved to file '$TOOLS_SETTINGS' (delete it to reset this dialog)."
-	fi
-fi
 
 echo "Some commands in this suite invoke 'sudo'. Use them at your own risk!"
 echo "You can deactivate this suite at any time by running 'undevtools'."
@@ -121,10 +48,12 @@ function changeperms {
 function undevtools {
 	PS1=${PS1#$TOOLS_PROMPT}
 	
-	unset -v TOOLS_PROMPT TOOLS_DIR TOOLS_SETTINGS SRC_DIR MANAGE_PY DEV_USER DEV_GROUP SERVER_USER SERVER_GROUP DEPSERVER_START DEPSERVER_STOP	1>/dev/null
-	unset -f undevtools changeperms developer devdeploy deployment openaccess openproj closeaccess closeproj depserver killdepserver		1>/dev/null
+	unset -v TOOLS_PROMPT SRC_DIR MANAGE_PY 1>/dev/null
+	unset -f undevtools changeperms developer devdeploy deployment openaccess openproj closeaccess closeproj startserver stopserver 1>/dev/null
 	
 	unalias collectstatic
+	
+	unsettings
 }
 
 # Ownership tools
@@ -192,13 +121,13 @@ function closeproj {
 
 eval "
 # Starts the deployment server
-function depserver {
-	$DEPSERVER_START
+function startserver {
+	$SERVER_START
 }
 
 # Stops the deployment server
-function killdepserver {
-	$DEPSERVER_STOP
+function stopserver {
+	$SERVER_STOP
 }
 "
 
