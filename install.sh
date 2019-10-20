@@ -1,13 +1,19 @@
 #!/bin/bash
 
+echo "WARNING: THIS PROGRAM SHOULD ONLY BE RUN ON UBUNTU!!!"
+
 # NOTE: THE DEFAULT WORKING DIRECTORY FOR THE REST OF THIS PROGRAM IS THE DIRECTORY THAT THIS PROGRAM WAS INVOKED IN (YOU CAN GET AROUND THIS WITH 'pushd' and 'popd')
+
+if [ "$1" = "-v" ]
+then
+	exec 3>&1
+else
+	exec 3>/dev/null
+fi
 
 # Exit on errors
 set -e
 set -o pipefail
-
-# Install some prerequisite packages # FIXME
-# sudo apt install python3 python3-pip virtualenv git
 
 # Ask about project mode
 echo -n "Would you like to install the project for 1) development only, 2) development of the deployment version, or 3) deployment only? "
@@ -32,7 +38,7 @@ case "$REPLY" in
 esac
 
 # Set up project configuration
-echo
+echo 1>&3
 echo "Setting up project configuration..."
 set +e
 set +o pipefail
@@ -42,7 +48,7 @@ set -e
 set -o pipefail
 
 # Change project permissions as appropriate
-echo
+echo 1>&3
 echo "Updating project permissions..."
 openproj
 if $DEVELOPMENT && $DEPLOYMENT
@@ -57,20 +63,20 @@ then
 fi
 
 # Set up and activate virtual environment
-echo
+echo 1>&3
 echo "Creating virtual environment for python..."
-virtualenv -p python3 ./djangobox/
+virtualenv -p python3 ./djangobox/ 1>&3
 pushd ./djangobox/ &>/dev/null
-source ./bin/activate
+	source ./bin/activate
 popd &>/dev/null
 
 # Install python packages
-echo
+echo 1>&3
 echo "Installing Django and useful packages in virtual environment..."
-pip3 install Django==2.1.7 djangocodemirror==2.1.0 django-bootstrap3==11.1.0
+pip3 install Django==2.1.7 djangocodemirror==2.1.0 django-bootstrap3==11.1.0 1>&3
 
 # Add relevant users to group 'docker'
-echo
+echo 1>&3
 if $DEVELOPMENT
 then
 	echo "Adding '$DEV_USER' to group 'docker'..."
@@ -83,35 +89,44 @@ then
 fi
 
 # Set up database
-echo
+echo 1>&3
 echo "Setting up database..."
 pushd ./djangobox/src/ &>/dev/null
-./manage.py makemigrations
-./manage.py migrate
+	./manage.py makemigrations 1>&3
+	./manage.py migrate 1>&3
 popd &>/dev/null
 
 # Collect static files
-echo
+echo 1>&3
 echo "Collecting static files..."
 pushd ./djangobox/src/ &>/dev/null
-./manage.py collectstatic <<<"yes"
+	./manage.py collectstatic <<<"yes" 1>&3
 popd &>/dev/null
 
 # Build Docker images
-echo
+echo 1>&3
 echo "Building docker images..."
 pushd ./djangobox/src/docker/docker_wrapper/ &>/dev/null
-sudo systemctl start containerd.service docker.service docker.socket
-sudo ./buildimages.sh # This script uses 'sudo' on its own, but this simplifies things a bit
-sudo systemctl stop containerd.service docker.service docker.socket
+	sudo systemctl start containerd.service docker.service docker.socket
+	./buildimages.sh 1>&3 # This script uses 'sudo' on its own, but this simplifies things a bit
+	sudo systemctl stop containerd.service docker.service docker.socket
 popd &>/dev/null
 
 # Potentially, symlink the static directory for Apache
-echo
+echo 1>&3
 echo "Symlinking static files directory for Apache..."
 pushd /var/www/html/ &>/dev/null
-sudo ln -s -T $OLDPWD/djangobox/src/static/ ./static
+	sudo ln -s -T $OLDPWD/djangobox/src/static/ ./static
 popd &>/dev/null
+
+# Move the WSGI configuration file so that Apache can find it
+echo 1>&3
+echo "Copying WSGI configuration file..."
+if $DEPLOYMENT
+then
+	sudo cp ./wsgi/wsgi_codetutorials.conf /etc/apache2/mods-enabled/wsgi_codetutorials.conf
+	sudo cp ./wsgi/wsgi_codetutorials.load /etc/apache2/mods-enabled/wsgi_codetutorials.load
+fi
 
 # Cleanup
 undevtools
