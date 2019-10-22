@@ -127,8 +127,7 @@ if $DEPLOYMENT
 then
 	echo 1>&3
 	echo "Copying WSGI configuration file..."
-	sudo cp ./wsgi/wsgi_codetutorials.conf /etc/apache2/mods-enabled/wsgi_codetutorials.conf
-	sudo cp ./wsgi/wsgi_codetutorials.load /etc/apache2/mods-enabled/wsgi_codetutorials.load
+	cat ./mods-enabled/wsgi.conf | sudo tee -a /etc/apache2/mods-enabled/wsgi.conf &>/dev/null
 fi
 
 # Cleanup
