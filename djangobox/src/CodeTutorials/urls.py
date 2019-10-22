@@ -31,5 +31,5 @@ if DEBUG == True:
 	urlpatterns += staticfiles_urlpatterns()
 # https://docs.djangoproject.com/en/2.1/howto/static-files/#serving-static-files-during-development
 
-# When putting the project into production, modify apache's configuration file to allow for static access to 'djangobox/src/static' using the information provided at the following URL (note, the relevant modifications are provided in '<project_root>/WSGI_Config.txt'):
+# When putting the project into production, modify apache's configuration file to allow for access to Django's static files using the information provided at the following URL (note, the relevant modifications are provided in 'CodeTutorials/wsgi/wsgi_codetutorials.conf'):
 # https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/modwsgi/#serving-files

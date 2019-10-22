@@ -50,7 +50,7 @@ else
 	# Configure deployment server commands
 	SERVER_START="sudo systemctl start apache2.service containerd.service docker.service docker.socket"
 	echo	"Input deployment server startup command:"
-	echo 	"(if not applicable: 'true'):"
+	echo 	"(for development only: 'sudo systemctl start containerd.service docker.service docker.socket && $SETTINGS_DIR/djangobox/src/manage.py runserver'):"
 	echo -n	"(default: '$SERVER_START'): "
 	read
 	if [ -n "$REPLY" ]
@@ -60,7 +60,7 @@ else
 	
 	SERVER_STOP="sudo systemctl stop apache2.service containerd.service docker.service docker.socket"
 	echo	"Input deployment server shutdown command:"
-	echo 	"(if not applicable: 'true'):"
+	echo 	"(for development only: kill 'manage.py' first, then 'sudo systemctl stop containerd.service docker.service docker.socket'):"
 	echo -n	"(default: '$SERVER_STOP'): "
 	read
 	if [ -n "$REPLY" ]

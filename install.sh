@@ -2,7 +2,7 @@
 
 echo "WARNING: THIS PROGRAM SHOULD ONLY BE RUN ON UBUNTU!!!"
 
-# NOTE: THE DEFAULT WORKING DIRECTORY FOR THE REST OF THIS PROGRAM IS THE DIRECTORY THAT THIS PROGRAM WAS INVOKED IN (YOU CAN GET AROUND THIS WITH 'pushd' and 'popd')
+# NOTE: THE DEFAULT WORKING DIRECTORY FOR THE REST OF THIS PROGRAM IS THE DIRECTORY THAT THIS PROGRAM WAS INVOKED IN (usually, '/var/www/html/CodeTutorials/'; you can get around this with 'pushd' and 'popd')
 
 if [ "$1" = "-v" ]
 then
@@ -113,17 +113,20 @@ pushd ./djangobox/src/docker/docker_wrapper/ &>/dev/null
 popd &>/dev/null
 
 # Potentially, symlink the static directory for Apache
-echo 1>&3
-echo "Symlinking static files directory for Apache..."
-pushd /var/www/html/ &>/dev/null
-	sudo ln -s -T $OLDPWD/djangobox/src/static/ ./static
-popd &>/dev/null
-
-# Move the WSGI configuration file so that Apache can find it
-echo 1>&3
-echo "Copying WSGI configuration file..."
 if $DEPLOYMENT
 then
+	echo 1>&3
+	echo "Symlinking static files directory for Apache..."
+	pushd /var/www/html/ &>/dev/null
+		sudo ln -s -T $OLDPWD/djangobox/src/static/ ./static
+	popd &>/dev/null
+fi
+
+# Move the WSGI configuration file so that Apache can find it
+if $DEPLOYMENT
+then
+	echo 1>&3
+	echo "Copying WSGI configuration file..."
 	sudo cp ./wsgi/wsgi_codetutorials.conf /etc/apache2/mods-enabled/wsgi_codetutorials.conf
 	sudo cp ./wsgi/wsgi_codetutorials.load /etc/apache2/mods-enabled/wsgi_codetutorials.load
 fi

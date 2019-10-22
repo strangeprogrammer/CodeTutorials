@@ -1,104 +1,114 @@
 # CodeTutorials
 
-## MINIMUM SYSTEM REQUIREMENTS & PRE-INSTALLATION STEPS
+#### MINIMUM SYSTEM REQUIREMENTS
+---
 
-All commands referenced throughout this document should be run in the context of a system using **python3** via **BASH** or some similar shell running on **Linux**/**UNIX** (though **Ubuntu** is recommended since the commands listed here integrate easily with it).
+All commands referenced throughout this document should be run in the context of a system using **python3** via **BASH** or some similar shell running on **Ubuntu** (preferably, within a virtual machine).
 
 This is a list of software and their minimum versions required on the host in order to use the code provided by this project:
 
-	# Docker packages
-	containerd.io v.1.2.4
-	docker-ce-cli v.18.09.3
-	docker-ce v.18.09.3
-	
-	# Python packages
-	python3 v.3.5.3
-	pip3 v.9.0.1
-	virtualenv v.15.1.0
-	
-	# Misc
-	git (any version compatible with github, prefer latest)
+```
+# Docker packages
+containerd.io v.1.2.4
+docker-ce-cli v.18.09.3
+docker-ce v.18.09.3
 
-Information to install docker can be found at the following URL:
+# Python packages
+python3 v.3.5.3
+pip3 v.9.0.1
+virtualenv v.15.1.0
+
+# For development-deployment and deployment only installations
+apache2 v.2.4.29
+libapache2-mod-wsgi-py3 v.4.5.17
+
+# Misc
+git v.2.17.1
+```
+
+Information to install Docker can be found at the following URL:
 
 [Docker Installation](https://docs.docker.com/install/)
 
-You can find information specifically for Ubuntu installation here:
+You can find information specifically for an Ubuntu installation of Docker here:
 
 [Docker Installation Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce)
 
 Remember to install the **containerd.io**, **docker-ce-cli**, and **docker-ce** packages, in that order.
 
-Installation of **python3**, **pip3**, **virtualenv**, and **git** can be easily done through your package manager:
+Installation of **python3**, **pip3**, **virtualenv**, **apache2**, **libapache2-mod-wsgi-py3**, and **git** can be easily done through your package manager:
 
 ```bash
-# For Linux distributions that use 'APT'
-sudo apt install python3 python3-pip virtualenv git
+sudo apt install python3 python3-pip virtualenv apache2 libapache2-mod-wsgi-py3 git
 ```
 
-There are some other packages that need to be installed within the virtual environment that are listed in **SETTING UP THE VIRTUAL ENVIRONMENT AND DJANGO**.
+#### PRE-INSTALLATION
+---
 
-## SETTING UP THE VIRTUAL ENVIRONMENT AND DJANGO
-
-The following instructions assume that you (or the server user (apache)) will have been granted sufficient access to all of the rest of the files within the project. As a result, you may want to give your own user sufficient permissions as necessary to do what is required.
-
-First, if the directory **/var/www/html/** does not exist, you may create it now in order to clone the repository properly:
+First, if the directory **/var/www/html/** does not exist, you may create it now in order to clone the project properly:
 
 ```bash
-# '1777' is an example directory mode which comes in useful for development
-sudo mkdir -p -m 1777 /var/www/html/
+sudo mkdir -p /var/www/html/
+sudo chmod 1777 /var/www/html/ # '1777' is an example directory mode which comes in useful for the next step
+cd /var/www/html/
 ```
 
-Next, **git clone** the project repository into **/var/www/html/CodeTutorials/**:
+Next, `git clone` the project repository into **CodeTutorials/**:
 
 ```bash
-git clone https://github.com/strangeprogrammer/CodeTutorials /var/www/html/CodeTutorials/
+git clone https://github.com/strangeprogrammer/CodeTutorials ./CodeTutorials/
 ```
 
-You must also set up a python virtual environment (used to get around python version conflicts easily):
+#### INFORMATION ON APACHE AND DEPLOYMENT MODE
+---
+
+The information within this section is specific to projects that use either the development deployment or deployment mode.
+
+If you will not be installing the project at **/var/www/html/CodeTutorials/** or if you will not be using the path **/var/www/html/static/** for static files then you must read some notes at the beginning of **CodeTutorials/wsgi/wsgi_codetutorials.conf** about proper paths for this project (and if the latter point is the case, you will also need to edit **install.sh** slightly).
+
+Some values in the file **CodeTutorials/djangobox/src/CodeTutorials/settings.py** must be changed as well. You will need to change:
+
+- **DEBUG** to **False**
+- **SECRET_KEY** to something else
+- **ALLOWED_HOSTS** to include the hostnames that you will be serving from
+
+#### INSTALLATION
+---
+
+`cd` into the project directory and run the installer program:
 
 ```bash
-cd /var/www/html/CodeTutorials/
-virtualenv -p python3 ./djangobox/
+cd ./CodeTutorials/
+./install.sh # Use '-v' for verbose output
 ```
 
-The following commands are what you should always use to anoint your command prompt with the virtual environment before performing development or package management:
+You will then be provided with some prompts from 'devtools.sh' to fill out (more on this later), after which the installation process will proceed normally. In order to use Docker properly once the installation is finished, you may need to log out and then back in.
 
-```bash
-cd ./djangobox
-source ./bin/activate
-```
+The automatic installation process consists of the following steps:
 
-The correct version of **Django** can then be installed in the virtual environment along with **Django-codemirror** and other neccesary packages:
+1. Determine whether the project is for development, development of the deployment version, or deployment
+2. Initialize **devtools.sh** settings
+3. Update project permissions and ownership according to the type of installation from step '1'
+4. Set up virtual environment
+5. Install python packages in virtual environment
+6. Add developer to group 'docker' and/or add server user to group 'docker' according to the type of installation from step '1'
+7. Set up database for Django
+8. Update files in Django's static directory
+9. Build Docker images 'gccbox', 'rbox', and 'pythonbox'
+10. If the installation type from step '1' is either development deployment or deployment, symlink Django's static directory so that Apache can find it
+11. If the installation type from step '1' is either development deployment or deployment, copy some WSGI configuration files so that Apache can find them
 
-```bash
-pip3 install Django==2.1.7 djangocodemirror django-bootstrap3
-```
+#### DEVELOPMENT TOOLS
+---
 
-The following command can then be used to exit the virtual environment:
-
-```bash
-deactivate
-```
-
-## PROPER PROJECT PERMISSIONING
-
-In order for the server to be able to use docker, you must run the following command using the name of the owner of the project files (which is your own username for development purposes and **www-data** for apache-related deployment purposes; it should be run one time each with either option for deployment development):
-
-```bash
-sudo usermod -aG docker [USER]
-```
-
-You must log-in again after running the previous command for the changes to take effect.
-
-A tool named **devtools.sh** has been provided to allow you greater control over permissions related to this project. Run the file with:
+A toolbox named **devtools.sh** has been provided to give you some shortcuts for oft-used commands related to this project. To use these shortcuts in your shell, run:
 
 ```bash
 cd /var/www/html/CodeTutorials/
 source ./devtools.sh
 ```
 
-It will then provide you with some prompts to fill out, after which the following functions (which may require **sudo** capabilities) will be available for you to use at the command line:
+If this is the first time you are using **devtools.sh**, it will then provide you with some prompts to fill out in order to properly configure some parameters for the following shortcuts (which may require `sudo` capabilities):
 
 ```bash
 developer	[DIRECTORY]	# Changes all files under the given directory to the developer's owner and group
@@ -108,11 +118,12 @@ openaccess	[DIRECTORY]	# For all files under the given directory, grants file re
 closeaccess	[DIRECTORY]	# For all files under the given directory, revokes all permissions from everyone except the owner
 openproj				# Calls 'openaccess' upon 'CodeTutorials/djangobox/src/' and deals with a pesky file's permissions
 closeproj				# Calls 'closeaccess' upon 'CodeTutorials/djangobox/src/' and deals with a pesky file's permissions
+startserver				# Starts the server
+stopserver				# Stops the server
+collectstatic			# Updates files in Django's 'static' directory
 ```
 
-Depending on whether you are using the project solely for development, development of the deployment version, or deployment only, you should invoke the **developer**, **devdeploy**, or **deployment** function (respectively). It only needs to be invoked upon the files that need to have their owner & group changed (this is almost exclusively **CodeTutorials/djangobox/src** and files/directories within it, though you may have to run it every so often on a different directory depending upon your **umask** value).
-
-Finally, As part of the installation process, you should run **openbox** at least once in order to change some permissions.
+Sometimes, if you are developing the deployment version of this project, Apache will be unable to read a necessary file or open a necessary directory due to permission issues. In that case, simply running `devdeploy` and `openaccess` upon the file or directory should clear the problem. This is unlikely to ever happen with the development or deployment only project modes, though, if it does, you can take similar steps using `developer` and `deployment`. This issue is primarily caused by your 'umask' value.
 
 To deactivate the developer tools, simply run the following:
 
@@ -120,80 +131,30 @@ To deactivate the developer tools, simply run the following:
 undevtools
 ```
 
-## SETUP
+#### DJANGO'S VIRTUAL ENVIRONMENT
 
-To set up the database and statically hosted files, first activate the virtual environment and change directories:
+The following commands are what you should always use to anoint your command prompt with the virtual environment before performing development or python package management:
 
 ```bash
-cd /var/www/html/CodeTutorials/djangobox
+cd /var/www/html/CodeTutorials/djangobox/
 source ./bin/activate
-cd ./src
 ```
 
-**NOTE:** Remember the previous commands as they may be used implicitly within this document.
+This is because **CodeTutorials/djangobox/src/manage.py** relies upon the virtual environment being active in order to work properly.
 
-Once you have done that, run the following:
+The following command can be used to exit the virtual environment:
 
 ```bash
-./manage.py makemigrations
-./manage.py migrate
-./manage.py collectstatic <<<"yes"
+deactivate
 ```
 
-Next, refer to the invocation of **buildimages.sh** in **CodeTutorials/djangobox/src/docker/docker_wrapper/README.md** for information on setting up the Docker containers.
-
-## CREATING A TUTORIAL
+#### CREATING A TUTORIAL
+---
 
 Refer to the file **djangobox/src/tutorials/HOWTO.md** to create a coding tutorial.
 
-## STARTING THE SERVER
-
-If you are runnning the server in deployment mode, make sure that you start the **apache2.service**, **containerd.service**, **docker.service**, and **docker.socket** services:
-
-```bash
-# For Ubuntu and other systems that use 'systemd'
-sudo systemctl start apache2.service containerd.service docker.service docker.socket # Starts the server
-sudo systemctl stop apache2.service containerd.service docker.service docker.socket # Stops the server
-```
-
-If you are running the server in development-depoyment mode, there is a shortcut that you can use if you've sourced **devtools.sh**:
-
-```bash
-# For Ubuntu and other systems that use 'systemd'
-depserver # Starts the server
-killdepserver # Stops the server
-```
-
-If you are running the server solely for development, you can run django's built-in server using the following:
-
-```bash
-./manage.py runserver # Starts the server
-# Ctrl + C stops the server
-```
-
-## INFORMATION ON APACHE AND DEPLOYMENT USAGE
-
-In order to allow Apache to use the docker containers, refer to the 1st paragraph of **PROPER PROJECT PERMISSIONING**.
-
-The file **WSGI_Config.txt** contains the relevant lines that you'll want to copy into Apache's 'wsgi.conf' module file in order to run the project on an apache server (assuming the project is located at **/var/www/html/CodeTutorials/**). If you are unsure about Apache's default configuration path, you can find out by starting Apache and navigating to [localhost](localhost). As an example, the path would be **/etc/apache2/mods-enabled/wsgi.conf** on Ubuntu.
-
-You must read some notes at the beginning of said WSGI file about proper filesystem paths if you are not using the default ones.  Otherwise, you should be able to just start your apache server and navigate to the relevant URLs of your choice.
-
-The file **djangobox/src/CodeTutorials/urls.py** contains information about static URLs that MUST be heeded if putting the server into a deployment environment. If you're just developing, however, that shouldn't be a problem. Note that the following command (which is used to copy static files to the appropriate location before usage) will only work on apps listed under the **INSTALLED_APPS** variable in **djangobox/src/CodeTutorials/settings.py**:
-
-```bash
-./manage.py collectstatic
-```
-
-If you plan to deploy static files on the same server as Django, then, by default, the static files collected should be copied into (or their containing directory symlinked to) **/var/www/html/static/**.
-
-Some values in the file **djangobox/src/CodeTutorials/settings.py** must be changed before putting the project into deployment. You will need to change:
-
-- **DEBUG** to **False**
-- **SECRET_KEY** to something else
-- **ALLOWED_HOSTS** to include the hostnames that you will be serving from
-
-## ADDITIONAL INFORMATION
+#### ADDITIONAL INFORMATION
+---
 
 If necessary, remove the database with:
 
