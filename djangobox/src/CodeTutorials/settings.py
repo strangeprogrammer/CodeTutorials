@@ -21,8 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ep0t%co@qqnmc@d&u1*95_=)9ou^3-@0#7wt45=*-w77mh2q-k'
+# Use a separate file for the secret key
+with open(os.path.join(BASE_DIR, 'secretkey.txt'), 'r') as f:
+	SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     'resources',
     'tutorials',
     'djangocodemirror',
+    'django_generate_secret_key',
 ]
 
 MIDDLEWARE = [

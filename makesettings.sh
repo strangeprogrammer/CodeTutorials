@@ -152,4 +152,5 @@ fi
 
 function unsettings {
 	unset -v SETTINGS_DIR SETTINGS_FILE DEVELOPMENT DEPLOYMENT DEV_USER DEV_GROUP SERVER_USER SERVER_GROUP SERVER_START SERVER_STOP 1>/dev/null
+	unset -f unsettings 1>/dev/null
 }

@@ -18,7 +18,7 @@ set -o pipefail
 # Initialize project settings
 echo 1>&3
 echo "Initializing project settings..."
-rm ./.settings.sh || true &>/dev/null
+rm ./.settings.sh &>/dev/null || true
 source ./devtools.sh --installation
 
 # Change project permissions as appropriate
@@ -47,7 +47,7 @@ popd &>/dev/null
 # Install python packages
 echo 1>&3
 echo "Installing Django and useful packages in virtual environment..."
-pip3 install Django==2.1.7 djangocodemirror==2.1.0 django-bootstrap3==11.1.0 1>&3
+pip3 install Django==2.1.7 djangocodemirror==2.1.0 django-bootstrap3==11.1.0 django-generate-secret-key==1.0.2 1>&3
 
 # Add relevant users to group 'docker'
 echo 1>&3
@@ -61,6 +61,13 @@ then
 	echo "Adding '$SERVER_USER' to group 'docker'..."
 	sudo usermod -aG docker $SERVER_USER
 fi
+
+# Generate a secret key for Django
+echo 1>&3
+echo "Generating a secret key for Django..."
+pushd ./djangobox/src/ &>/dev/null
+	./manage.py generate_secret_key --replace
+popd &>/dev/null
 
 # Set up database
 echo 1>&3

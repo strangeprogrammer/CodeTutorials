@@ -69,7 +69,6 @@ If you will not be installing the project at **/var/www/html/CodeTutorials/** or
 Some values in the file **CodeTutorials/djangobox/src/CodeTutorials/settings.py** must be changed as well. You will need to change:
 
 - **DEBUG** to **False**
-- **SECRET_KEY** to something else
 - **ALLOWED_HOSTS** to include the hostnames that you will be serving from
 
 #### INSTALLATION
@@ -92,11 +91,12 @@ The automatic installation process consists of the following steps:
 4. Set up virtual environment
 5. Install python packages in virtual environment
 6. Add developer to group 'docker' and/or add server user to group 'docker' according to the type of installation from step '1'
-7. Set up database for Django
-8. Update files in Django's static directory
-9. Build Docker images 'gccbox', 'rbox', and 'pythonbox'
-10. If the installation type from step '1' is either development deployment or deployment, symlink Django's static directory so that Apache can find it
-11. If the installation type from step '1' is either development deployment or deployment, copy some WSGI configuration files so that Apache can find them
+7. Generate a secret key for Django
+8. Set up database for Django
+9. Update files in Django's static directory
+10. Build Docker images 'gccbox', 'rbox', and 'pythonbox'
+11. If the installation type from step '1' is either development deployment or deployment, symlink Django's static directory so that Apache can find it
+12. If the installation type from step '1' is either development deployment or deployment, copy some WSGI configuration files so that Apache can find them
 
 #### DEVELOPMENT TOOLS
 ---
