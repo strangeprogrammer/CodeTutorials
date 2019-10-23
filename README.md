@@ -15,7 +15,7 @@ docker-ce v.18.09.3
 
 # Python packages
 python3 v.3.5.3
-pip3 v.9.0.1
+pip3 (python3-pip) v.9.0.1
 virtualenv v.15.1.0
 
 # For development-deployment and deployment only installations
@@ -36,7 +36,7 @@ You can find information specifically for an Ubuntu installation of Docker here:
 
 Remember to install the **containerd.io**, **docker-ce-cli**, and **docker-ce** packages, in that order.
 
-Installation of **python3**, **pip3**, **virtualenv**, **apache2**, **libapache2-mod-wsgi-py3**, and **git** can be easily done through your package manager:
+Installation of **python3**, **pip3 (python3-pip)**, **virtualenv**, **apache2**, **libapache2-mod-wsgi-py3**, and **git** can be easily done through your package manager:
 
 ```bash
 sudo apt install python3 python3-pip virtualenv apache2 libapache2-mod-wsgi-py3 git
@@ -62,7 +62,7 @@ git clone https://github.com/strangeprogrammer/CodeTutorials ./CodeTutorials/
 #### INFORMATION ON APACHE AND DEPLOYMENT MODE
 ---
 
-The information within this section is specific to projects that use either the development deployment or deployment mode.
+NOTE: The information within this section is specific to projects that use either the development deployment or deployment mode.
 
 If you will not be installing the project at **/var/www/html/CodeTutorials/** or if you will not be using the path **/var/www/html/static/** for static files then you must read some notes at the beginning of **CodeTutorials/wsgi/wsgi_codetutorials.conf** about proper paths for this project (and if the latter point is the case, you will also need to edit **install.sh** slightly).
 
@@ -151,7 +151,7 @@ deactivate
 #### CREATING A TUTORIAL
 ---
 
-Refer to the file **djangobox/src/tutorials/HOWTO.md** to create a coding tutorial.
+Refer to the file **CodeTutorials/djangobox/src/tutorials/HOWTO.md** to create a coding tutorial.
 
 #### ADDITIONAL INFORMATION
 ---

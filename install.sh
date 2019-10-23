@@ -15,37 +15,11 @@ fi
 set -e
 set -o pipefail
 
-# Ask about project mode
-echo -n "Would you like to install the project for 1) development only, 2) development of the deployment version, or 3) deployment only? "
-read
-case "$REPLY" in
-"1")
-	DEVELOPMENT="true"
-	DEPLOYMENT="false"
-	;;
-"2")
-	DEVELOPMENT="true"
-	DEPLOYMENT="true"
-	;;
-"3")
-	DEVELOPMENT="false"
-	DEPLOYMENT="true"
-	;;
-*)
-	echo "Error: Invalid question response..."
-	exit 1
-	;;
-esac
-
-# Set up project configuration
+# Initialize project settings
 echo 1>&3
-echo "Setting up project configuration..."
-set +e
-set +o pipefail
-rm ./.settings.sh &>/dev/null
-source ./devtools.sh # TODO: PUT INFORMATION IN README FILE ABOUT THIS PART
-set -e
-set -o pipefail
+echo "Initializing project settings..."
+rm ./.settings.sh || true &>/dev/null
+source ./devtools.sh --installation
 
 # Change project permissions as appropriate
 echo 1>&3

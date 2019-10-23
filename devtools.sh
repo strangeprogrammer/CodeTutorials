@@ -6,18 +6,21 @@
 
 # Clear everything from a previous session
 
-undevtools &>/dev/null
+undevtools &>/dev/null || true
 
 # Global and static variables
 
-source ./makesettings.sh
+source ./makesettings.sh || return 1
 
 TOOLS_PROMPT="(devtools) "
 SRC_DIR=$SETTINGS_DIR/djangobox/src
 MANAGE_PY=$SRC_DIR/manage.py
 
-echo "Some commands in this suite invoke 'sudo'. Use them at your own risk!"
-echo "You can deactivate this suite at any time by running 'undevtools'."
+if [ ! "$1" == "--installation" ]
+then
+	echo "Some commands in this suite invoke 'sudo'. Use them at your own risk!"
+	echo "You can deactivate this suite at any time by running 'undevtools'."
+fi
 
 PS1=$TOOLS_PROMPT$PS1
 
@@ -122,12 +125,12 @@ function closeproj {
 eval "
 # Starts the deployment server
 function startserver {
-	$SERVER_START
+	$SERVER_START ;
 }
 
 # Stops the deployment server
 function stopserver {
-	$SERVER_STOP
+	$SERVER_STOP ;
 }
 "
 
