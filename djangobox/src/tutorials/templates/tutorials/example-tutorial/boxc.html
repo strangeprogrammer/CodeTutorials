@@ -1,9 +1,11 @@
 {% extends 'client/CodeBox.html' %}
 
+{# 1: The stuff that comes before the code container #}
 {% block preamble %}
 	<h2>This is Box C</h2>
 {% endblock %}
 
+{# 2: The preset code for the code container #}
 {% block presetcode %}
 	writeLines("Input a line of text: ")
 	input = readLines(con = file("stdin"), n = 1)
@@ -12,9 +14,11 @@
 	q(status = 11)
 {% endblock %}
 
+{# 3: The preset STDIN for the code container #}
 {% block presetSTDIN %}R spike
 {% endblock %}
 
+{# 4: The code language being used #}
 {% block codelang %}
 	R
 {% endblock %}

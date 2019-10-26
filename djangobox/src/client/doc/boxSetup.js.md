@@ -22,23 +22,29 @@
 	- Returns:
 		- A new 'boxSetup' object
 
-- Function 'cbox':
+- Constructor 'cbox':
 	- Arguments:
 		- url:
 		- id:
 	- Notes:
 		- Thin wrapper around 'boxSetup' for the 'C' language
+	- Returns:
+		- A new 'boxSetup' object specifically for the 'C' language
 
-- Function 'pybox':
+- Constructor 'pybox':
 	- Arguments:
 		- url:
 		- id:
 	- Notes:
 		- Thin wrapper around 'boxSetup' for the 'python' language
+	- Returns:
+		- A new 'boxSetup' object specifically for the 'python' language
 
-- Function 'rbox':
+- Constructor 'rbox':
 	- Arguments:
 		- url:
 		- id:
 	- Notes:
 		- Thin wrapper around 'boxSetup' for the 'R' language
+	- Returns:
+		- A new 'boxSetup' object specifically for the 'R' language

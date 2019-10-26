@@ -1,42 +1,48 @@
 # HOW TO CREATE A TUTORIAL
 
 ## PREPARATION
-All URL considerations are already taken care of for you. You do not have to manipulate URLs nor PATHs in order to allow a client access to a tutorial, since the process is automatic. However, you may want to run the following when you are done creating your tutorial after sourcing **devtools.sh**:
+All URL considerations are already taken care of for you. You do not have to manipulate URLs nor PATHs in order to allow a client access to a tutorial, since the process is automatic. However, you may want to run the following when you are done creating your tutorial, and after sourcing **devtools.sh**:
 
 ```bash
-openaccess $TUTORIAL_NAME
+openaccess [TUTORIAL_NAME]
 ```
 
 Once the tutorial has been created successfully, it should be available at the URL [http://localhost/CodeTutorials/tutorials/tutorial_name/](http://localhost/CodeTutorials/tutorials/tutorial_name/).
 
 You should probably acquaint yourself with Django's template system before reading through the rest of the guide since the tutorials are run through it before being pushed to the client's browser.
 
-## EXAMPLE
-An example tutorial has been provided in the folder **./templates/tutorials/example-tutorial/**. The following steps will be much more understandable if you have  said file open in a text editor to consult when needed (though you should either remove or 'chmod a-r' it in production).
+#### USEFUL TERMS
+Code Form: A form-like construction that the client can interact with to edit code, reset the code to its original state, submit code, and get results of said submission back.
 
-## Creation Steps
+#### EXAMPLE
+An example tutorial has been provided in the folder **./templates/tutorials/example-tutorial/**. You should either remove or 'chmod a-r' it in production.
+
+#### EXTERNAL DOCUMENTATION
+Documentation for **client/codeClient.js**, **client/boxSetup.js**, **client/CodeBox.html**, and **client/CodeRunner.html** is available under **CodeTutorials/djangobox/src/client/doc/**.
+
+## CREATION STEPS
 
 #### STEP 1:
-Start by creating a folder under **templates/tutorials** with a slug for a name (string of only letters, numbers, hyphens, and underscores). Then, create your primary HTML file within that directory, and call it **main.html**.
+Start by creating a folder under **./templates/tutorials/** with a slug for a name (string of only letters, numbers, hyphens, and underscores). Then, copy the contents of the example tutorial folder into this new one. This new copy will be modified throughout the rest of this guide. Finally, enter this new directory.
 
 #### STEP 2:
-You will have to load Django's **static** module into **main.html** in order to include some useful resources. Then, you can fill the file with the HTML content of the tutorial webpage.
+Open the file **./main.html** in a text editor and go to comment 3 (starts with '{# 3:' and ends with '#}'). The following paragraph communicates a little about its postceding script tags.
+
+The first script tag following the comment links to a file called **codeClient.js**. This file is responsible for allowing the browser to send code and STDIN via POST requests to be run by the server. The second script tag links to a file called **boxSetup.js**. This file acts as a coordinator between **codeClient.js** and CodeMirror, and performs some setup operations. Its constructors return objects representing code forms. If you need more fine-grained control over communication with the server, such as using your own event handlers when the browser gets a response, you may want to create your own wrapper over **codeClient.js** instead of including **boxSetup.js**.
+
+In comments 4 through 7, you will find that 3 constructors from the file **boxSetup.js** are being invoked: 'cbox', 'pybox', and 'rbox'. Each takes a URL to submit the code and STDIN to, as well as an HTML 'id' attriute to which it is bound (this will be used later when templates for the code forms are included).
+
+If you wish to create your own code form, be sure to invoke a constructor from the file **boxSetup.js** in window.onload. 
 
 #### STEP 3:
-Some of the resources provided by this project out-of-the-box are within various static or template files. The template files **templates/client/CodeRunner.html** and **templates/client/CodeBox.html** (preference toward **CodeBox.html**) are used to create a standard form-like structure used to transfer POST data to the server. The static files **static/client/codeClient.js** and **static/client/boxSetup.js** (preference toward **boxSetup.js** unless you need greater fine-control) are used to push runnable code to the server, after which the results will be returned and displayed to the user.
-
-These files and their interfaces are the standard basis for creating webpages that interact with the server. They are all located under **src/client/**, and documentation for them is located in **src/client/doc**.
-
-If you are content using the default options, you should include **static/client/boxSetup.js** and create some objects with the 'boxSetup' constructor (passing in a URL and an HTML **id** to be used later).
+As illustrated by comments 8 through 10, anywhere that you wish to include a code form wihin the main text of your tutorial, you should instead create a new file and include it at that point in **./main.html** using Django's template system, passing in the HTML **id** (declared earlier) that the new code form will be associated with. This is so that the constructors used earlier will be able to identify the HTML elements that they are to act upon.
 
 #### STEP 4:
-Anywhere that you wish to include a code editor, you should instead create a new file and include it at that point in the original file using the template system, passing in the HTML **id** (declared earlier) that the new editor will be associated with.
+Open the file **./boxa.html**. If you have created any files that you need to include to create a code form, model them after this one, for example. The file should be extended from **client/CodeBox.html**, or **client/CodeRunner.html** if you would like some finer-grained control (though you will have to add some container code around its inclusion in **./main.html** as a result).
 
-#### STEP 5:
-In any new files that you have created, fill them in with code that extends that file from **client/CodeBox.html**. The blocks that you can use in these new files are **preamble**, **presetcode**, **presetSTDIN**, and **codelang**, and **postamble**. The block **presetSTDIN** must contain the exact whitespacing to work properly. The blocks **preamble** and **postamble** are also sensitive to this.
+If you are extending these new files from **CodeBox.html**, then the template blocks that you can use in these new files are **preamble**, **presetcode**, **presetSTDIN**, and **codelang**, and **postamble**. Fill in these blocks with HTML that you would like to be within the same container element but before the code form, the preset code, the preset STDIN, the language of the code that is to be run, and HTML that you would like to be within the same container element but after the code form (respectively).
 
-#### STEP 6:
-Only the block **codelang** is requried to be filled by one of 'C', 'R', or 'python'. The block **presetcode** may optionally contain code that will be preloaded with the webpage, and the block **presetSTDIN** may optionally contain STDIN that will be preloaded with the webpage.
+Note that the block **presetSTDIN** must contain exact whitespacing to work properly. The block **codelang** is requried to be filled by one of 'C', 'R', or 'python', though it is whitespace-agnostic.
 
 ## SECURITY CONCERNS
-Currently, uploading tutorials should only be done by administrators after the tutorial in question has been properly screened (though, certainly, anyone could be a writer of such a tutorial). At the time of this writing, this is both the safest and easiest way to manage tutorial uploads.
+Currently, uploading tutorials should only be done by administrators after the tutorial in question has been properly screened (though, certainly, anyone could be a writer of such a tutorial). At the time of this writing, this is the safest and easiest way to manage tutorial uploads.

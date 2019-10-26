@@ -12,7 +12,7 @@
  * 
  * Notes:
  * This file contains code for the default setup of the codemirror/docker interface in JavaScript
- * This code may better serve example than practical use
+ * If you need more fine-grained control, this suite may not be what you're looking for
  * 
  * Returns:
  * A new 'boxSetup' object
@@ -36,7 +36,7 @@ onformsend = function(){}} = {}){
 	});
 	this.runner.preset();
 	
-	//Set up hooks form submission hooks
+	//Set up form submission hooks
 	this.runner.registerFormSend({
 		presubmit: () => {
 			this.editor.save();

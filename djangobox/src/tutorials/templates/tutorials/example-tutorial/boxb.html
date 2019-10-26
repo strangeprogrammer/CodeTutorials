@@ -1,9 +1,11 @@
 {% extends 'client/CodeBox.html' %}
 
+{# 1: The stuff that comes before the code container #}
 {% block preamble %}
 	<h2>This is Box B</h2>
 {% endblock %}
 
+{# 2: The preset code for the code container #}
 {% block presetcode %}
 	import sys
 	
@@ -17,8 +19,10 @@
 	main()
 {% endblock %}
 
+{# 3: The preset STDIN for the code container #}
 {% block presetSTDIN %}python spike{% endblock %}
 
+{# 4: The code language being used #}
 {% block codelang %}
 	python
 {% endblock %}

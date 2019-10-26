@@ -132,6 +132,7 @@ undevtools
 ```
 
 #### DJANGO'S VIRTUAL ENVIRONMENT
+---
 
 The following commands are what you should always use to anoint your command prompt with the virtual environment before performing development or python package management:
 
