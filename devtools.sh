@@ -52,7 +52,7 @@ function undevtools {
 	PS1=${PS1#$TOOLS_PROMPT}
 	
 	unset -v TOOLS_PROMPT SRC_DIR MANAGE_PY 1>/dev/null
-	unset -f undevtools changeperms developer devdeploy deployment openaccess openproj closeaccess closeproj startserver stopserver 1>/dev/null
+	unset -f undevtools redevtools changeperms developer devdeploy deployment openaccess openproj closeaccess closeproj startserver stopserver 1>/dev/null
 	
 	unalias collectstatic
 	
