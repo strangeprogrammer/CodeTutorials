@@ -1,6 +1,9 @@
 # HOW TO CREATE A TUTORIAL
 
 ## PREPARATION
+
+NOTE: The directory **./** used throughout this document references the directory containing this file.
+
 All URL considerations are already taken care of for you. You do not have to manipulate URLs nor PATHs in order to allow a client access to a tutorial, since the process is automatic. However, you may want to run the following when you are done creating your tutorial, and after sourcing **devtools.sh**:
 
 ```bash
