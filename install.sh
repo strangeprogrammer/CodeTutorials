@@ -27,14 +27,24 @@ echo "Updating project permissions..."
 openproj
 if $DEVELOPMENT && $DEPLOYMENT
 then
-	devdeploy .
+	function fixperms {
+		devdeploy "$@"
+		openaccess "$@"
+	}
 elif $DEVELOPMENT
 then
-	developer.
+	function fixperms {
+		developer "$@"
+		openaccess "$@"
+	}
 elif $DEPLOYMENT
 then
-	deployment .
+	function fixperms {
+		deployment "$@"
+		openaccess "$@"
+	}
 fi
+fixperms .
 
 # Set up and activate virtual environment
 echo 1>&3
@@ -67,6 +77,8 @@ echo 1>&3
 echo "Generating a secret key for Django..."
 pushd ./djangobox/src/ &>/dev/null
 	./manage.py generate_secret_key --replace
+	fixperms $SRC_DIR/secretkey.txt
+	closeaccess $SRC_DIR/secretkey.txt
 popd &>/dev/null
 
 # Set up database
@@ -75,6 +87,7 @@ echo "Setting up database..."
 pushd ./djangobox/src/ &>/dev/null
 	./manage.py makemigrations 1>&3
 	./manage.py migrate 1>&3
+	fixperms $SRC_DIR/db.sqlite3
 popd &>/dev/null
 
 # Collect static files
@@ -82,6 +95,7 @@ echo 1>&3
 echo "Collecting static files..."
 pushd ./djangobox/src/ &>/dev/null
 	./manage.py collectstatic <<<"yes" 1>&3
+	fixperms $SRC_DIR/static/
 popd &>/dev/null
 
 # Build Docker images
@@ -112,5 +126,6 @@ then
 fi
 
 # Cleanup
+unset -f fixperms
 undevtools
 deactivate

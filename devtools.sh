@@ -13,7 +13,7 @@ undevtools &>/dev/null || true
 source ./makesettings.sh || return 1
 
 TOOLS_PROMPT="(devtools) "
-SRC_DIR=$SETTINGS_DIR/djangobox/src
+SRC_DIR=$PROJECT_ROOT/djangobox/src
 MANAGE_PY=$SRC_DIR/manage.py
 
 if [ ! "$1" == "--installation" ]
@@ -59,6 +59,13 @@ function undevtools {
 	unsettings
 }
 
+# Re-initializes development tools
+function redevtools {
+	local PROJECT_ROOT_BKP=$PROJECT_ROOT
+	undevtools
+	source $PROJECT_ROOT_BKP/devtools.sh
+}
+
 # Ownership tools
 
 # Changes ownership and group of the given directories to the developer
@@ -100,7 +107,7 @@ function closeaccess {
 		local INDEX
 		for INDEX in "$@"
 		do
-			find $INDEX \( -type f -o -type d \) -execdir sudo chmod go-rwx \{\} +
+			find $INDEX \( -type f -o -type d \) -execdir sudo chmod o-rwx \{\} +
 		done
 	else
 		echo "Error: Missing parameter."
@@ -110,6 +117,7 @@ function closeaccess {
 # Makes the project's files accessible to everyone
 function openproj {
 	openaccess $SRC_DIR/
+	closeaccess $SRC_DIR/secretkey.txt
 	sudo chmod ug+x $SRC_DIR/docker/docker_wrapper/runContainer.sh
 	sudo chmod u+x $SRC_DIR/docker/docker_wrapper/buildimages.sh
 }

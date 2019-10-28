@@ -10,8 +10,8 @@ unsettings &>/dev/null || true
 
 # Global variables
 
-SETTINGS_DIR=$(realpath -m $(dirname "$PWD/$0"))
-SETTINGS_FILE=$SETTINGS_DIR/.settings.sh
+PROJECT_ROOT=$(realpath -m $(dirname "$PWD/$0"))
+SETTINGS_FILE=$PROJECT_ROOT/.settings.sh
 
 # Initialize or load configuration file
 
@@ -46,7 +46,7 @@ else
 	# Configure developer user and group
 	DEV_USER="$(id -un)"
 	cat <<- EOF
-		Input developer username
+		Input developer username (login name)
 		(default if empty: '$DEV_USER'):
 	EOF
 	read
@@ -74,7 +74,7 @@ else
 	cat <<- EOF
 		Input server username
 		(if not applicable, input: 'nobody')
-		(default if empty: '$SERVER_USER'):
+		(default if empty (uses Apache): '$SERVER_USER'):
 	EOF
 	read
 	if [ -n "$REPLY" ]
@@ -87,7 +87,7 @@ else
 	cat <<- EOF
 		Input server groupname
 		(if not applicable, input: 'nogroup')
-		(default if empty: '$SERVER_GROUP'):
+		(default if empty (uses Apache): '$SERVER_GROUP'):
 	EOF
 	read
 	if [ -n "$REPLY" ]
@@ -102,7 +102,7 @@ else
 	then
 		SERVER_START="sudo systemctl start apache2.service containerd.service docker.service docker.socket"
 	else
-		SERVER_START="sudo systemctl start containerd.service docker.service docker.socket && $SETTINGS_DIR/djangobox/src/manage.py runserver"
+		SERVER_START="sudo systemctl start containerd.service docker.service docker.socket && $PROJECT_ROOT/djangobox/src/manage.py runserver"
 	fi
 	cat <<- EOF
 		Input server startup command
@@ -151,6 +151,6 @@ fi
 ### Cleanup
 
 function unsettings {
-	unset -v SETTINGS_DIR SETTINGS_FILE DEVELOPMENT DEPLOYMENT DEV_USER DEV_GROUP SERVER_USER SERVER_GROUP SERVER_START SERVER_STOP 1>/dev/null
+	unset -v PROJECT_ROOT SETTINGS_FILE DEVELOPMENT DEPLOYMENT DEV_USER DEV_GROUP SERVER_USER SERVER_GROUP SERVER_START SERVER_STOP 1>/dev/null
 	unset -f unsettings 1>/dev/null
 }
