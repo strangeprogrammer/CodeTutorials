@@ -3,7 +3,7 @@
 #### MINIMUM SYSTEM REQUIREMENTS
 ---
 
-All commands referenced throughout this document should be run in the context of a system using **python3** via **BASH** or some similar shell running on **Ubuntu** (preferably, within a virtual machine).
+All commands referenced throughout this document should be run in **BASH** or some similar shell running on **Ubuntu** (preferably, within a virtual machine).
 
 This is a list of software and their minimum versions required on the host in order to use the code provided by this project:
 
@@ -30,9 +30,9 @@ Information to install Docker can be found at the following URL:
 
 [Docker Installation](https://docs.docker.com/install/)
 
-You can find information specifically for an Ubuntu installation of Docker here:
+You can find information specifically for installing Docker through Debian packages on Ubuntu here:
 
-[Docker Installation Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce)
+[Docker Installation Ubuntu Package](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package)
 
 Remember to install the **containerd.io**, **docker-ce-cli**, and **docker-ce** packages, in that order.
 
@@ -41,6 +41,10 @@ Installation of **python3**, **pip3 (python3-pip)**, **virtualenv**, **apache2**
 ```bash
 sudo apt install python3 python3-pip virtualenv apache2 libapache2-mod-wsgi-py3 git
 ```
+
+You may also want to install the markdown editor **remarkable** in order to view some '.md' files better, which is available here:
+
+[Remarkable Debian Package](https://remarkableapp.github.io/linux/download.html)
 
 #### PRE-INSTALLATION
 ---
@@ -59,17 +63,19 @@ Next, `git clone` the project repository into **CodeTutorials/**:
 git clone https://github.com/strangeprogrammer/CodeTutorials ./CodeTutorials/
 ```
 
+Finally, decide whether you would like this installation to be for development only, or development of the deployment version (development deployment) (deployment may also be called production). Currently, the deployment only mode is unavailable, though the development deployment mode can still be made deployment-ready by creating a fake developer to act as the project's owner.
+
 #### INFORMATION ON APACHE AND DEPLOYMENT MODE
 ---
 
-NOTE: The information within this section is specific to projects that use either the development deployment or deployment mode.
+NOTE: The information within this section is specific to projects that use either the development deployment or deployment only mode.
 
-If you will not be installing the project at **/var/www/html/CodeTutorials/** or if you will not be using the path **/var/www/html/static/** for static files then you must read some notes at the beginning of **CodeTutorials/wsgi/wsgi_codetutorials.conf** about proper paths for this project (and if the latter point is the case, you will also need to edit **install.sh** slightly).
-
-Some values in the file **CodeTutorials/djangobox/src/CodeTutorials/settings.py** must be changed as well. You will need to change:
+Some values in the file **CodeTutorials/djangobox/src/CodeTutorials/settings.py** must be changed. You will need to change:
 
 - **DEBUG** to **False**
 - **ALLOWED_HOSTS** to include the hostnames that you will be serving from
+
+If you have decided not to install the project at the default location of **/var/www/html/CodeTutorials/** or if you will not be using the default path **/var/www/html/static/** for static files then you must read some notes at the beginning of **CodeTutorials/mods-enabled/wsgi.conf** about proper paths for this project (and if the latter point is the case, you will also need to edit the symlinking step of **install.sh** slightly).
 
 #### INSTALLATION
 ---
@@ -81,7 +87,7 @@ cd ./CodeTutorials/
 ./install.sh # Use '-v' for verbose output
 ```
 
-You will then be provided with some prompts from 'devtools.sh' to fill out (more on this later), after which the installation process will proceed normally. In order to use Docker properly once the installation is finished, you may need to log out and then back in.
+You will then be provided with some prompts from **devtools.sh** to fill out. If you are unsure what responses you should provide to the prompts, you may want to press the 'enter' key for the default configuration. Afterward, the installation process will proceed normally. In order to use Docker properly once the installation is finished, you may need to log out and then back in.
 
 The automatic installation process consists of the following steps:
 
@@ -97,6 +103,13 @@ The automatic installation process consists of the following steps:
 10. Build Docker images 'gccbox', 'rbox', and 'pythonbox'
 11. If the installation type from step '1' is either development deployment or deployment, symlink Django's static directory so that Apache can find it
 12. If the installation type from step '1' is either development deployment or deployment, copy some WSGI configuration files so that Apache can find them
+
+In order to test that the server is running, navigate to [http://localhost/CodeTutorials/tutorials/example-tutorial/](http://localhost/CodeTutorials/tutorials/example-tutorial/) and see if the example tutorial renders correctly.
+
+#### CREATING A TUTORIAL
+---
+
+Refer to the file **CodeTutorials/djangobox/src/tutorials/HOWTO.md** to create a coding tutorial.
 
 #### DEVELOPMENT TOOLS
 ---
@@ -148,11 +161,6 @@ The following command can be used to exit the virtual environment:
 ```bash
 deactivate
 ```
-
-#### CREATING A TUTORIAL
----
-
-Refer to the file **CodeTutorials/djangobox/src/tutorials/HOWTO.md** to create a coding tutorial.
 
 #### ADDITIONAL INFORMATION
 ---
