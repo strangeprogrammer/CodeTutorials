@@ -1,0 +1,43 @@
+Copyright 2019 Stephen Fedele <stephen.m.fedele@wmich.edu>,
+Daniel Darcy, Timothy Curry
+
+A copy of the GNU General Public License version 2 can be found
+within the file 'CodeTutorials/gpl-2.0.txt'.
+
+All files in this project (CodeTutorials) are licensed under the
+GNU General Public License version 2 (or later), with the
+following exceptions:
+
+	1) Any material taken from the CodeMirror project that is located
+	within the folder:
+	
+	'CodeTutorials/djangobox/src/editor/static/codemirror/'
+	
+	(which is currently bundled with this project solely for
+	convenience) is copyrighted by and belongs solely to its
+	respective copyright holder(s).
+	
+	2) Any material taken from the QUnit project that is located
+	within the folder:
+	
+	'CodeTutorials/djangobox/src/resources/static/QUnit/'
+	
+	(which is currently bundled with this project solely for
+	convenience) is copyrighted by and belongs solely to its
+	respective copyright holder(s).
+	
+	3) Any material used that belongs to Western Michigan University
+	that is located within the folder:
+	
+	'CodeTutorials/djangobox/src/resources/static/images/'
+	
+	is owned and/or trademarked by and belongs solely to its
+	respective owner(s)/trademark holder(s).
+	
+	4) Some tools included in the project due to Django's setup
+	process, including:
+	
+	'CodeTutorials/djangobox/src/manage.py'
+	
+	is copyrighted by and belongs solely to its respective copyright
+	holder(s).

@@ -14,10 +14,13 @@ Git's container to track this project.
 A list of files to keep out of the repository.
 
 #### ./INSTALLATION.md
-Contains the installation instructions for this project.
+Contains the installation instructions for this project, as well as some additional information about **devtools.sh**, the virtual environment, and miscellaneous.
 
 #### ./install.sh
 A script used as part of the installation process.
+
+#### ./LICENSE.txt
+Contains information about the copyright license for this project.
 
 #### ./makesettings.sh
 A script used to help initialize some settings for this project.
